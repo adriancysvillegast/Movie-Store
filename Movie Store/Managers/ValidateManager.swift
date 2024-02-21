@@ -7,7 +7,10 @@
 
 import Foundation
 
-class ValidateManager {
+final class ValidateManager {
+    
+    // MARK: - Properties
+    static let shared = ValidateManager()
     
     // MARK: - Methods
 
