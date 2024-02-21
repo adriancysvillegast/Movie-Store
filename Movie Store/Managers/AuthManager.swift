@@ -6,13 +6,69 @@
 //
 
 import Foundation
+import FirebaseAuth
 
 final class AuthManager {
     // MARK: - Properties
-    
-    
+//    var db: DatabaseReference?
+
+
     // MARK: - Methods
-    
-    
-    
+
+    func createNewUser(email: String,
+                       password: String,
+                       userName: String,
+                       success: @escaping(Bool) -> Void) {
+        Auth.auth().createUser(
+            withEmail: email,
+            password: password
+        ) { authResponse, error in
+
+            guard let response = authResponse, error == nil else {
+                success(false)
+                return
+            }
+
+
+            self.saveUserName(user: response.user, userName: userName)
+            success(true)
+            print(response.user)
+
+        }
+    }
+
+    func logIn(email: String,
+               password: String,
+               success: @escaping (Bool) -> Void ) {
+        Auth.auth().signIn(
+            withEmail: email,
+            password: password
+        ) {  authResponse, error in
+
+            if error != nil {
+                success(false)
+            }else {
+                success(true)
+            }
+
+        }
+    }
+
+    func logOut() -> Bool {
+        do {
+            try Auth.auth().signOut()
+            return true
+        } catch  {
+            return false
+        }
+    }
+
+
+    // MARK: - Save username
+
+    func saveUserName(user: User, userName: String) {
+//        print(user.email)
+//        self.db?.child("users").child(user.uid).setValue(["username" : userName])
+//        self.db?.child("emails").child(user.uid).setValue(["email" : user.email])
+    }
 }

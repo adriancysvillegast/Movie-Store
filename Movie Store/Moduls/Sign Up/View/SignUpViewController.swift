@@ -7,6 +7,12 @@
 
 import UIKit
 
+protocol SignUpView: AnyObject {
+    func showAlertWithErrorInValidation()
+    func goToBrowser()
+    func showAlertWithErrorSignUp()
+}
+
 class SignUpViewController: UIViewController {
     
     // MARK: - Properties
@@ -67,11 +73,11 @@ class SignUpViewController: UIViewController {
     private lazy var signUpButton: UIButton = {
         let button = UIButton()
         button.setTitle("Sign Up".uppercased(), for: .normal)
-        button.backgroundColor = .gray
+        button.backgroundColor = .green
         button.layer.cornerRadius = 12
-        button.isEnabled = false
+        button.isEnabled = true
         button.translatesAutoresizingMaskIntoConstraints = false
-//        button.addTarget(self, action: #selector(logInTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(signUpWasTapped), for: .touchUpInside)
         return button
     }()
     
@@ -160,7 +166,42 @@ class SignUpViewController: UIViewController {
         ])
     }
 
+    
+    // MARK: - targets
+    
+    @objc func signUpWasTapped() {
+        presenter.signUpWasTapped(email: emailTextField.text,
+                                 name: userNameTextField.text,
+                                 password: passwordTextField.text,
+                                 passwordConf: confirmPasswordTextField.text)
+    }
+    
+    // MARK: - Methods
+    
+
+    
+    
 }
+
+
+extension SignUpViewController: SignUpView {
+    func showAlertWithErrorSignUp() {
+        let alert = UIAlertController(title: "Error", message: "Error when trying to sign up", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Close", style: .cancel))
+    }
+    
+    func goToBrowser() {
+        
+    }
+    
+    func showAlertWithErrorInValidation() {
+        let alert = UIAlertController(title: "Validation Error", message: "Try to add a correct email, name and password\nEmail must be in tihis format example@gmail.com\nName must have more than 3 characters\nPassword must have at leat 1 special character, 1 uppercase, 1 lowercase and 1 number ", preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+        present(alert, animated: true)
+    }
+    
+}
+// MARK: - UITextFieldDelegate
 
 extension SignUpViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
