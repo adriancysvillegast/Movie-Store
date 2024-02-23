@@ -9,7 +9,6 @@ import UIKit
 
 protocol SignUpView: AnyObject {
     func showAlertWithErrorInValidation()
-    func goToBrowser()
     func showAlertWithErrorSignUp()
 }
 
@@ -188,10 +187,6 @@ extension SignUpViewController: SignUpView {
     func showAlertWithErrorSignUp() {
         let alert = UIAlertController(title: "Error", message: "Error when trying to sign up", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Close", style: .cancel))
-    }
-    
-    func goToBrowser() {
-        
     }
     
     func showAlertWithErrorInValidation() {

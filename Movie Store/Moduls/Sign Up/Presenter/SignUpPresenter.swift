@@ -24,8 +24,10 @@ class SignUpPresenter: SignUpPresentable {
     weak var view: SignUpView?
     private let interactor: SignUpInteractable
     private var authManager: AuthManager
+    private let router: SignUpRouting
     
-    init(interactor: SignUpInteractable, authManager: AuthManager = AuthManager()) {
+    init(interactor: SignUpInteractable,router: SignUpRouting, authManager: AuthManager = AuthManager()) {
+        self.router = router
         self.interactor = interactor
         self.authManager = authManager
     }
@@ -34,12 +36,13 @@ class SignUpPresenter: SignUpPresentable {
     // MARK: - Methods
     
     func signUpWasTapped(email: String?, name: String?, password: String?, passwordConf: String?) {
-        if validateValues(email: email, name: name, password: password, passwordConf: passwordConf) {
-            self.signUpUser(email: email!, name: name!, password: password!, passwordConf: passwordConf!)
-        } else {
-//            show error on view
-            view?.showAlertWithErrorInValidation()
-        }
+//        if validateValues(email: email, name: name, password: password, passwordConf: passwordConf) {
+//            self.signUpUser(email: email!, name: name!, password: password!, passwordConf: passwordConf!)
+//        } else {
+////            show error on view
+//            view?.showAlertWithErrorInValidation()
+//        }
+        self.router.showBrowser()
     }
     
     func validateValues(email: String?, name: String?, password: String?, passwordConf: String?) -> Bool {
@@ -59,11 +62,11 @@ class SignUpPresenter: SignUpPresentable {
     func signUpUser(email: String, name: String, password: String, passwordConf: String) {
         authManager.createNewUser(email: email, password: password, userName: name) { success in
             
-            if success {
-                self.view?.goToBrowser()
-            }else {
-                
-            }
+//            if success {
+//                self.router.showBrowser()
+//            }else {
+//                self.view?.showAlertWithErrorSignUp()
+//            }
         }
     }
     
