@@ -9,15 +9,17 @@ import Foundation
 
 protocol BrowserPresentable: AnyObject {
     var view: BrowseView? { get }
-    
+    var dataBrowser: [DataMovie] { get }
     func getMovies()
     
 }
 
 class BrowserPresenter: BrowserPresentable {
 
+
     
     // MARK: - Properties
+    var dataBrowser: [DataMovie] = []
     
     weak var view: BrowseView?
     
@@ -36,9 +38,22 @@ class BrowserPresenter: BrowserPresentable {
         
         Task {
             do{
-                let topRate = try await interactor.getTopMovies().results
-                let topRateModel = formatItems(value: topRate)
-                view?.getMovies(movie: topRateModel)
+                let topRateMovies = try await interactor.getTopRateMovies().results
+                let populaMovies = try await interactor.getPopularMovies().results
+                let upComingMovie = try await interactor.getUpComingMovies().results
+                let nowPlayingMovies = try await interactor.getNowPlayingMovies().results
+                
+                let topRateModel = MapperManager.shared.formatItem(value: topRateMovies)
+                let popularModel = MapperManager.shared.formatItem(value: populaMovies)
+                let upComingModel = MapperManager.shared.formatItem(value: upComingMovie)
+                let nowPlayingModel = MapperManager.shared.formatItem(value: nowPlayingMovies)
+                
+                dataBrowser.append(.topRate(model: topRateModel))
+                dataBrowser.append(.nowPlaying(model: nowPlayingModel))
+                dataBrowser.append(.upComing(model: upComingModel))
+                dataBrowser.append(.popular(model: popularModel))
+                
+                view?.getMovies(movies: dataBrowser)
             } catch APIError.errorApi{
                 print("error getting info, internet problems")
             } catch APIError.errorUrl {
@@ -49,17 +64,5 @@ class BrowserPresenter: BrowserPresentable {
         }
         
     }
-    
-    private func formatItems(value: [TopRateEntity]) -> [ItemModelCell] {
-        let model = value.compactMap {
-            ItemModelCell(
-                adult: $0.adult,
-                id: $0.id,
-                artWork: URL(string: "https://image.tmdb.org/t/p/w200" + $0.posterPath),
-                releaseDate: $0.releaseDate,
-                title: $0.title)
-        }
-        return model
-    }
-    
+        
 }
