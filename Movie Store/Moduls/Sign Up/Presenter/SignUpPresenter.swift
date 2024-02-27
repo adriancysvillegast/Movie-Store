@@ -46,9 +46,9 @@ class SignUpPresenter: SignUpPresentable {
     }
     
     func validateValues(email: String?, name: String?, password: String?, passwordConf: String?) -> Bool {
-        guard let email = email, let name = name, let password = password, let passwordConf = passwordConf, password == passwordConf else {
-            return false
-        }
+//        guard let email = email, let name = name, let password = password, let passwordConf = passwordConf, password == passwordConf else {
+//            return false
+//        }
 
             if ValidateManager.shared.validateEmail(emailUser: email),
                ValidateManager.shared.validateName(nameUser: name),
