@@ -7,7 +7,7 @@
 
 import UIKit
 protocol BrowseView: AnyObject {
-    func getMovies(movie: [ItemModelCell])
+    func getMovies(movies: [DataMovie])
 }
 
 class BrowseViewController: UIViewController {
@@ -15,7 +15,7 @@ class BrowseViewController: UIViewController {
     // MARK: - Properties
     
     private let presenter: BrowserPresentable
-    private var topRate: [ItemModelCell] = []
+    private var dataMovies: [DataMovie] = []
     
     private lazy var aCollectionView: UICollectionView = {
         let aCollection = UICollectionView(frame: .zero,
@@ -126,23 +126,68 @@ class BrowseViewController: UIViewController {
 
 // MARK: - BrowseView
 extension BrowseViewController: BrowseView {
-    func getMovies(movie: [ItemModelCell]) {
+    func getMovies(movies: [DataMovie]) {
         DispatchQueue.main.async {
-            self.topRate = movie
+            self.dataMovies = movies
             self.aCollectionView.reloadData()
         }
     }
+    
+
+    
 }
 
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource
 
 extension BrowseViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return dataMovies.count
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return topRate.count
+        switch dataMovies[section] {
+        case .popular(let model):
+            return model.count
+        case .topRate(let model):
+            return model.count
+        case .nowPlaying(let model):
+            return model.count
+        case .upComing(let model):
+            return model.count
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let section = dataMovies[indexPath.section]
+        switch section {
+        case .popular(let model):
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CoverItemCell.identifier, for: indexPath) as? CoverItemCell else {
+                return UICollectionViewCell()
+            }
+            cell.configuration(model: model[indexPath.row])
+            return cell
+        case .topRate(let model):
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CoverItemCell.identifier, for: indexPath) as? CoverItemCell else {
+                return UICollectionViewCell()
+            }
+            cell.configuration(model: model[indexPath.row])
+            return cell
+        case .nowPlaying(let model):
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CoverItemCell.identifier, for: indexPath) as? CoverItemCell else {
+                return UICollectionViewCell()
+            }
+            cell.configuration(model: model[indexPath.row])
+            return cell
+        case .upComing(let model):
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CoverItemCell.identifier, for: indexPath) as? CoverItemCell else {
+                return UICollectionViewCell()
+            }
+            cell.configuration(model: model[indexPath.row])
+            return cell
+        }
+        
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CoverItemCell.identifier, for: indexPath) as? CoverItemCell else {
             return UICollectionViewCell()
         }
