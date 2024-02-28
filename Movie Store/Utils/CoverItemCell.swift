@@ -28,7 +28,7 @@ class CoverItemCell: UICollectionViewCell {
             contentView.addSubview($0)
         }
         contentView.layer.cornerRadius = 12
-        contentView.layer.borderWidth = 1.0
+        contentView.layer.borderWidth = 2.0//1.0
         contentView.layer.borderColor = UIColor.clear.cgColor
         contentView.layer.masksToBounds = true
     }

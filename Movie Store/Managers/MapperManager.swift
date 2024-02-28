@@ -76,11 +76,11 @@ enum DataMovie {
         case .popular:
             return "Popular Movies"
         case .nowPlaying:
-            return "Now Playing"
+            return "Now Playing Movies"
         case .topRate:
-            return "Top Rate"
+            return "Top Rate Movies"
         case .upComing:
-            return "Up Coming"
+            return "Up Coming Movies"
         }
     }
 }

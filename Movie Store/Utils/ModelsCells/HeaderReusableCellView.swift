@@ -16,7 +16,7 @@ class HeaderReusableCellView: UICollectionReusableView {
         let label = UILabel()
         label.textColor = .label
         label.numberOfLines = 1
-        label.font = .systemFont(ofSize: 22, weight: .regular)
+        label.font = .systemFont(ofSize: 22, weight: .bold)
         return label
     }()
 
