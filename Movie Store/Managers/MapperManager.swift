@@ -18,7 +18,6 @@ class MapperManager {
     func formatItem(value: [TopRateEntity]) -> [ItemModelCell] {
         let model = value.compactMap {
             ItemModelCell(
-                adult: $0.adult,
                 id: $0.id,
                 artWork: URL(string: "https://image.tmdb.org/t/p/w200" + $0.posterPath),
                 releaseDate: $0.releaseDate,
@@ -30,7 +29,6 @@ class MapperManager {
     func formatItem(value: [PopularMovieEntity]) -> [ItemModelCell] {
         let model = value.compactMap {
             ItemModelCell(
-                adult: $0.adult,
                 id: $0.id,
                 artWork: URL(string: "https://image.tmdb.org/t/p/w200" + $0.posterPath),
                 releaseDate: $0.releaseDate,
@@ -42,7 +40,6 @@ class MapperManager {
     func formatItem(value: [NowPlayingEntity]) -> [ItemModelCell] {
         let model = value.compactMap {
             ItemModelCell(
-                adult: $0.adult,
                 id: $0.id,
                 artWork: URL(string: "https://image.tmdb.org/t/p/w200" + $0.posterPath),
                 releaseDate: $0.releaseDate,
@@ -54,7 +51,6 @@ class MapperManager {
     func formatItem(value: [UpComingEntity]) -> [ItemModelCell] {
         let model = value.compactMap {
             ItemModelCell(
-                adult: $0.adult,
                 id: $0.id,
                 artWork: URL(string: "https://image.tmdb.org/t/p/w200" + $0.posterPath),
                 releaseDate: $0.releaseDate,
@@ -62,25 +58,81 @@ class MapperManager {
         }
         return model
     }
+    
+    func formatItem(value: [PopularTVEntity]) -> [ItemModelCell] {
+        let model = value.compactMap {
+            ItemModelCell(
+                id: $0.id,
+                artWork: URL(string: "https://image.tmdb.org/t/p/w200" + ($0.posterPath ?? "")),
+                releaseDate: $0.firstAirDate ?? "",
+                title: $0.originalName)
+        }
+        return model
+    }
+    
+    func formatItem(value: [TopRateTVEntity]) -> [ItemModelCell] {
+        let model = value.compactMap {
+            ItemModelCell(
+                id: $0.id,
+                artWork: URL(string: "https://image.tmdb.org/t/p/w200" + ($0.posterPath ?? "")),
+                releaseDate: $0.firstAirDate ?? "",
+                title: $0.originalName)
+        }
+        return model
+    }
+    
+    func formatItem(value: [OnAirTVEntity]) -> [ItemModelCell] {
+        let model = value.compactMap {
+            ItemModelCell(
+                id: $0.id,
+                artWork: URL(string: "https://image.tmdb.org/t/p/w200" + $0.posterPath),
+                releaseDate: $0.firstAirDate,
+                title: $0.name)
+        }
+        return model
+    }
+    
+    func formatItem(value: [TVAiringTodayEntity]) -> [ItemModelCell] {
+        let model = value.compactMap {
+            ItemModelCell(
+                id: $0.id,
+                artWork: URL(string: "https://image.tmdb.org/t/p/w200" + $0.posterPath),
+                releaseDate: $0.firstAirDate,
+                title: $0.name)
+        }
+        return model
+    }
 }
 
 
 enum DataMovie {
-    case topRate(model: [ItemModelCell])
-    case popular(model: [ItemModelCell])
-    case upComing(model: [ItemModelCell])
-    case nowPlaying(model: [ItemModelCell])
+    case topRateMovie(model: [ItemModelCell])
+    case popularMovie(model: [ItemModelCell])
+    case upComingMovie(model: [ItemModelCell])
+    case nowPlayingMovie(model: [ItemModelCell])
+    case topRateTV(model: [ItemModelCell])
+    case popularTV(model: [ItemModelCell])
+    case onAirTV(model: [ItemModelCell])
+    case airingTV(model: [ItemModelCell])
     
     var title: String {
         switch self {
-        case .popular:
+        case .popularMovie:
             return "Popular Movies"
-        case .nowPlaying:
+        case .nowPlayingMovie:
             return "Now Playing Movies"
-        case .topRate:
+        case .topRateMovie:
             return "Top Rate Movies"
-        case .upComing:
+        case .upComingMovie:
             return "Up Coming Movies"
+        case .topRateTV:
+            return "Top Rate TV Shows"
+        case .popularTV:
+            return "Popular Tv Shows"
+        case .onAirTV:
+            return "On Air TV Shows"
+        case .airingTV:
+            return "Airing TV Shows"
         }
     }
 }
