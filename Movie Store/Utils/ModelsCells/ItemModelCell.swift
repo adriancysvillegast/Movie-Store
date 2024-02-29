@@ -8,7 +8,7 @@
 import Foundation
 
 struct ItemModelCell {
-    let adult: Bool
+//    let adult: Bool
 //    let backdropPath: String
     let id: Int
 //    let genreIds: [Int]
