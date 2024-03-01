@@ -8,6 +8,7 @@
 import Foundation
 
 struct TopRateMovieResponseEntity: Codable {
+    
     let page: Int
     let results: [TopRateEntity]
     let totalPages, totalResults: Int
