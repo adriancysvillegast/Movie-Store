@@ -10,15 +10,15 @@ import Foundation
 protocol BrowserInteractable : AnyObject {
     var presenter: BrowserPresentable? { get }
     
-    func getTopRateMovies() async throws -> TopRateMovieResponseEntity
-    func getPopularMovies() async throws -> PopularMoviesResponseEntity
-    func getNowPlayingMovies() async throws -> NowPlayingResponseEntity
-    func getUpComingMovies() async throws -> UpComingResponseEntity
+    func getTopRateMovies(page: Int?) async throws -> TopRateMovieResponseEntity
+    func getPopularMovies(page: Int?) async throws -> PopularMoviesResponseEntity
+    func getNowPlayingMovies(page: Int?) async throws -> NowPlayingResponseEntity
+    func getUpComingMovies(page: Int?) async throws -> UpComingResponseEntity
     
-    func getTopRateTV() async throws -> TopRateTVResponseEntity
-    func getPopularTV() async throws -> PopularTVResponseEntity
-    func getOnAirTV() async throws -> OnAirTVResponseEntity
-    func getAiringTodayTV() async throws -> TVAiringTodayResponseEntity
+    func getTopRateTV(page: Int?) async throws -> TopRateTVResponseEntity
+    func getPopularTV(page: Int?) async throws -> PopularTVResponseEntity
+    func getOnAirTV(page: Int?) async throws -> OnAirTVResponseEntity
+    func getAiringTodayTV(page: Int?) async throws -> TVAiringTodayResponseEntity
 }
 
 class BrowserInteractor: BrowserInteractable {
@@ -29,10 +29,12 @@ class BrowserInteractor: BrowserInteractable {
     
     // MARK: - Methods
     
-    func getTopRateMovies() async throws -> TopRateMovieResponseEntity {
-        guard let url = URL(string: Constants.baseURL + "/movie/top_rated?api_key=" + Constants.token) else {
+    func getTopRateMovies(page: Int?) async throws -> TopRateMovieResponseEntity {
+        guard let url = URL(string: Constants.baseURL + "/movie/top_rated?api_key=" + Constants.token + "&page=\(page ?? 1)") else {
             throw APIError.errorUrl
         }
+        print(url.absoluteString)
+        
         let (data, _) = try await URLSession.shared.data(from: url)
         
         do {
@@ -44,8 +46,8 @@ class BrowserInteractor: BrowserInteractable {
         }
     }
     
-    func getPopularMovies() async throws -> PopularMoviesResponseEntity {
-        guard let url = URL(string: Constants.baseURL + "/movie/popular?api_key=" + Constants.token) else {
+    func getPopularMovies(page: Int?) async throws -> PopularMoviesResponseEntity {
+        guard let url = URL(string: Constants.baseURL + "/movie/popular?api_key=" + Constants.token + "&page=\(page ?? 1)") else {
             throw APIError.errorUrl
         }
         let (data, _) = try await URLSession.shared.data(from: url)
@@ -59,8 +61,8 @@ class BrowserInteractor: BrowserInteractable {
         }
     }
     
-    func getNowPlayingMovies() async throws -> NowPlayingResponseEntity {
-        guard let url = URL(string: Constants.baseURL + "/movie/now_playing?api_key=" + Constants.token) else {
+    func getNowPlayingMovies(page: Int?) async throws -> NowPlayingResponseEntity {
+        guard let url = URL(string: Constants.baseURL + "/movie/now_playing?api_key=" + Constants.token + "&page=\(page ?? 1)") else {
             throw APIError.errorUrl
         }
         let (data, _) = try await URLSession.shared.data(from: url)
@@ -74,8 +76,8 @@ class BrowserInteractor: BrowserInteractable {
         }
     }
     
-    func getUpComingMovies() async throws -> UpComingResponseEntity {
-        guard let url = URL(string: Constants.baseURL + "/movie/upcoming?api_key=" + Constants.token) else {
+    func getUpComingMovies(page: Int?) async throws -> UpComingResponseEntity {
+        guard let url = URL(string: Constants.baseURL + "/movie/upcoming?api_key=" + Constants.token + "&page=\(page ?? 1)") else {
             throw APIError.errorUrl
         }
         let (data, _) = try await URLSession.shared.data(from: url)
@@ -90,8 +92,8 @@ class BrowserInteractor: BrowserInteractable {
     }
     
     
-    func getTopRateTV() async throws -> TopRateTVResponseEntity {
-        guard let url = URL(string: Constants.baseURL + "/tv/top_rated?api_key=" + Constants.token) else {
+    func getTopRateTV(page: Int?) async throws -> TopRateTVResponseEntity {
+        guard let url = URL(string: Constants.baseURL + "/tv/top_rated?api_key=" + Constants.token + "&page=\(page ?? 1)") else {
             throw APIError.errorUrl
         }
         let (data, _) = try await URLSession.shared.data(from: url)
@@ -105,8 +107,8 @@ class BrowserInteractor: BrowserInteractable {
         }
     }
     
-    func getPopularTV() async throws -> PopularTVResponseEntity {
-        guard let url = URL(string: Constants.baseURL + "/tv/popular?api_key=" + Constants.token) else {
+    func getPopularTV(page: Int?) async throws -> PopularTVResponseEntity {
+        guard let url = URL(string: Constants.baseURL + "/tv/popular?api_key=" + Constants.token + "&page=\(page ?? 1)") else {
             throw APIError.errorUrl
         }
         let (data, _) = try await URLSession.shared.data(from: url)
@@ -120,11 +122,10 @@ class BrowserInteractor: BrowserInteractable {
         }
     }
     
-    func getOnAirTV() async throws -> OnAirTVResponseEntity {
-        guard let url = URL(string: Constants.baseURL + "/discover/tv?api_key=" + Constants.token) else {
+    func getOnAirTV(page: Int?) async throws -> OnAirTVResponseEntity {
+        guard let url = URL(string: Constants.baseURL + "/discover/tv?api_key=" + Constants.token + "&page=\(page ?? 1)") else {
             throw APIError.errorUrl
         }
-        print(url.absoluteString)
         let (data, _) = try await URLSession.shared.data(from: url)
         
         do {
@@ -137,8 +138,8 @@ class BrowserInteractor: BrowserInteractable {
         }
     }
     
-    func getAiringTodayTV() async throws -> TVAiringTodayResponseEntity {
-        guard let url = URL(string: Constants.baseURL + "/tv/airing_today?api_key=" + Constants.token) else {
+    func getAiringTodayTV(page: Int?) async throws -> TVAiringTodayResponseEntity {
+        guard let url = URL(string: Constants.baseURL + "/tv/airing_today?api_key=" + Constants.token + "&page=\(page ?? 1)") else {
             throw APIError.errorUrl
         }
         let (data, _) = try await URLSession.shared.data(from: url)

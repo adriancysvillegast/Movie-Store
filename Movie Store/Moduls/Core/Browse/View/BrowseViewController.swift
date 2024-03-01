@@ -8,6 +8,7 @@
 import UIKit
 protocol BrowseView: AnyObject {
     func getMovies(movies: [DataMovie])
+    func updateView(topRateMovie: [ItemModelCell], popularMovie: [ItemModelCell], upComing: [ItemModelCell], nowPlayingMovie: [ItemModelCell], topRateTV: [ItemModelCell], popularTV: [ItemModelCell], onAirTVModel: [ItemModelCell], airingTodayTvModel: [ItemModelCell] )
 }
 
 class BrowseViewController: UIViewController {
@@ -15,7 +16,17 @@ class BrowseViewController: UIViewController {
     // MARK: - Properties
     
     private let presenter: BrowserPresentable
-    private var dataMovies: [DataMovie] = []
+    private var Loading: Bool = false
+    
+    var topRateModelArray: [ItemModelCell] = []
+    var populaModelArray: [ItemModelCell] = []
+    var upCominModelArray: [ItemModelCell] = []
+    var nowPlayingModelArray: [ItemModelCell] = []
+    
+    var topRateTVArray: [ItemModelCell] = []
+    var popularTvArray: [ItemModelCell] = []
+    var onAirTVModel: [ItemModelCell] = []
+    var airingTodayTvModel: [ItemModelCell] = []
     
     private lazy var aCollectionView: UICollectionView = {
         let aCollection = UICollectionView(frame: .zero,
@@ -154,6 +165,47 @@ class BrowseViewController: UIViewController {
                     heightDimension: .fractionalHeight(1)
                 )
             )
+            item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
+            
+            let groupV = NSCollectionLayoutGroup.vertical(
+                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(0.5)),
+                repeatingSubitem: item, count: 2)
+
+            let group = NSCollectionLayoutGroup.horizontal(
+                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(520)),
+                subitems: [groupV]
+            )
+
+            let section = NSCollectionLayoutSection(group: group)
+            section.orthogonalScrollingBehavior = .groupPaging
+            section.boundarySupplementaryItems = supplementaryView
+            return section
+            
+        case 5:
+            let item = NSCollectionLayoutItem(
+                layoutSize: NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1),
+                    heightDimension: .fractionalHeight(1)
+                )
+            )
+            item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 2, bottom: 5, trailing: 2)
+            let groupH = NSCollectionLayoutGroup.horizontal(
+                layoutSize: NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(0.7),
+                    heightDimension: .absolute(410)),
+                subitems: [item])
+
+            let section = NSCollectionLayoutSection(group: groupH)
+            section.orthogonalScrollingBehavior = .groupPaging
+            section.boundarySupplementaryItems = supplementaryView
+            return section
+        case 6:
+            let item = NSCollectionLayoutItem(
+                layoutSize: NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1),
+                    heightDimension: .fractionalHeight(1)
+                )
+            )
             item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 2, bottom: 5, trailing: 2)
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.4), heightDimension: .absolute(240)), subitems: [item])
             
@@ -162,7 +214,21 @@ class BrowseViewController: UIViewController {
             section.boundarySupplementaryItems = supplementaryView
             return section
             
-        case 5:
+//        case 7:
+//            let item = NSCollectionLayoutItem(
+//                layoutSize: NSCollectionLayoutSize(
+//                    widthDimension: .fractionalWidth(1),
+//                    heightDimension: .fractionalHeight(1)
+//                )
+//            )
+//            item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 2, bottom: 5, trailing: 2)
+//            let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.4), heightDimension: .absolute(240)), subitems: [item])
+//            
+//            let section = NSCollectionLayoutSection(group: group)
+//            section.orthogonalScrollingBehavior = .groupPaging
+//            section.boundarySupplementaryItems = supplementaryView
+//            return section
+        default :
             let item = NSCollectionLayoutItem(
                 layoutSize: NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1),
@@ -184,69 +250,6 @@ class BrowseViewController: UIViewController {
             section.orthogonalScrollingBehavior = .groupPaging
             section.boundarySupplementaryItems = supplementaryView
             return section
-    
-        case 6:
-            let item = NSCollectionLayoutItem(
-                layoutSize: NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1),
-                    heightDimension: .fractionalHeight(1)
-                )
-            )
-            item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 2, bottom: 5, trailing: 2)
-            let groupH = NSCollectionLayoutGroup.horizontal(
-                layoutSize: NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(0.7),
-                    heightDimension: .absolute(410)),
-                subitems: [item])
-
-            let section = NSCollectionLayoutSection(group: groupH)
-            section.orthogonalScrollingBehavior = .groupPaging
-            section.boundarySupplementaryItems = supplementaryView
-            return section
-            
-        case 7:
-            let item = NSCollectionLayoutItem(
-                layoutSize: NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1),
-                    heightDimension: .fractionalHeight(1)
-                )
-            )
-            item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 2, bottom: 5, trailing: 2)
-            let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.4), heightDimension: .absolute(240)), subitems: [item])
-            
-            let section = NSCollectionLayoutSection(group: group)
-            section.orthogonalScrollingBehavior = .groupPaging
-            section.boundarySupplementaryItems = supplementaryView
-            return section
-        default :
-            let item = NSCollectionLayoutItem(
-                layoutSize: NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1),
-                    heightDimension: .fractionalHeight(1)
-                )
-            )
-            item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 2, bottom: 5, trailing: 2)
-            
-            let groupVertical = NSCollectionLayoutGroup.vertical(
-                layoutSize: NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1),
-                    heightDimension: .absolute(400))
-                ,subitem: item,
-                count: 2
-            )
-            
-            groupVertical.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 5, bottom: 2, trailing: 5)
-            
-            let horizontalGroup = NSCollectionLayoutGroup.horizontal(
-                layoutSize: NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(0.9),
-                    heightDimension: .absolute(400)),
-                subitem: groupVertical,
-                count: 2)
-            
-            let section = NSCollectionLayoutSection(group: horizontalGroup)
-            section.orthogonalScrollingBehavior = .groupPaging
-            return section
         }
         
     }
@@ -255,9 +258,35 @@ class BrowseViewController: UIViewController {
 
 // MARK: - BrowseView
 extension BrowseViewController: BrowseView {
+    
+    
+    func updateView(topRateMovie: [ItemModelCell],
+                    popularMovie: [ItemModelCell],
+                    upComing: [ItemModelCell],
+                    nowPlayingMovie: [ItemModelCell],
+                    topRateTV: [ItemModelCell],
+                    popularTV: [ItemModelCell],
+                    onAirTVModel: [ItemModelCell],
+                    airingTodayTvModel: [ItemModelCell]
+    ) {
+        DispatchQueue.main.async {
+            self.topRateModelArray = topRateMovie
+            self.populaModelArray = popularMovie
+            self.upCominModelArray = upComing
+            self.nowPlayingModelArray = nowPlayingMovie
+            
+            self.topRateTVArray = topRateTV
+            self.popularTvArray = popularTV
+            self.onAirTVModel = onAirTVModel
+            self.airingTodayTvModel = airingTodayTvModel
+            
+            self.aCollectionView.reloadData()
+        }
+    }
+    
     func getMovies(movies: [DataMovie]) {
         DispatchQueue.main.async {
-            self.dataMovies = movies
+//            self.dataMovies = movies
             self.aCollectionView.reloadData()
         }
     }
@@ -271,81 +300,90 @@ extension BrowseViewController: BrowseView {
 extension BrowseViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return dataMovies.count
+        return 8
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch dataMovies[section] {
-        case .popularMovie(let model):
-            return model.count
-        case .topRateMovie(let model):
-            return model.count
-        case .nowPlayingMovie(let model):
-            return model.count
-        case .upComingMovie(let model):
-            return model.count
-        case .topRateTV(let model):
-            return model.count
-        case .popularTV(let model):
-            return model.count
-        case .onAirTV(let model):
-            return model.count
-        case .airingTV(let model):
-            return model.count
+        switch section {
+        case 0:
+            return presenter.populaMovieModel.count
+        case 1:
+            return presenter.topRateTVModel.count
+        case 2:
+            return presenter.topRateMovieModel.count
+        case 3:
+            return presenter.popularTVModel.count
+        case 4:
+            return presenter.upCominMovieModel.count
+        case 5:
+            return presenter.onAirTVModel.count
+        case 6:
+            return presenter.airingTodayTvModel.count
+        default:
+            return presenter.nowPlayingMovieModel.count
         }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let section = dataMovies[indexPath.section]
+        let section = indexPath.section
         switch section {
-        case .popularMovie(let model):
+        case 0:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CoverItemCell.identifier, for: indexPath) as? CoverItemCell else {
                 return UICollectionViewCell()
             }
-            cell.configuration(model: model[indexPath.row])
+            let movies = presenter.populaMovieModel
+            cell.configuration(model: movies[indexPath.row])
             return cell
-        case .topRateMovie(let model):
+        case 1:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CoverItemCell.identifier, for: indexPath) as? CoverItemCell else {
                 return UICollectionViewCell()
             }
-            cell.configuration(model: model[indexPath.row])
+            let movies = presenter.topRateTVModel
+            cell.configuration(model: movies[indexPath.row])
             return cell
-        case .nowPlayingMovie(let model):
+        case 2:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CoverItemCell.identifier, for: indexPath) as? CoverItemCell else {
                 return UICollectionViewCell()
             }
-            cell.configuration(model: model[indexPath.row])
+            let movies = presenter.topRateMovieModel
+            cell.configuration(model: movies[indexPath.row])
             return cell
-        case .upComingMovie(let model):
+            
+        case 3:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CoverItemCell.identifier, for: indexPath) as? CoverItemCell else {
                 return UICollectionViewCell()
             }
-            cell.configuration(model: model[indexPath.row])
+            let movies = presenter.popularTVModel
+            cell.configuration(model: movies[indexPath.row])
             return cell
-        case .topRateTV(model: let model):
+        case 4:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CoverItemCell.identifier, for: indexPath) as? CoverItemCell else {
                 return UICollectionViewCell()
             }
-            cell.configuration(model: model[indexPath.row])
+            let movies = presenter.upCominMovieModel
+            cell.configuration(model: movies[indexPath.row])
             return cell
-        case .popularTV(model: let model):
+        case 5:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CoverItemCell.identifier, for: indexPath) as? CoverItemCell else {
                 return UICollectionViewCell()
             }
-            cell.configuration(model: model[indexPath.row])
+            let movies = presenter.onAirTVModel
+            cell.configuration(model: movies[indexPath.row])
             return cell
-        case .onAirTV(model: let model):
+        case 6:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CoverItemCell.identifier, for: indexPath) as? CoverItemCell else {
                 return UICollectionViewCell()
             }
-            cell.configuration(model: model[indexPath.row])
+            let movies = presenter.airingTodayTvModel
+            cell.configuration(model: movies[indexPath.row])
             return cell
-        case .airingTV(model: let model):
+        default:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CoverItemCell.identifier, for: indexPath) as? CoverItemCell else {
                 return UICollectionViewCell()
             }
-            cell.configuration(model: model[indexPath.row])
+            let movies = presenter.nowPlayingMovieModel
+            cell.configuration(model: movies[indexPath.row])
             return cell
         }
         
@@ -353,82 +391,139 @@ extension BrowseViewController: UICollectionViewDelegate, UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
-        let section = dataMovies[indexPath.section]
+        let section = indexPath.section
         switch section {
-        case .popularMovie:
+        case 0:
             guard let header = collectionView.dequeueReusableSupplementaryView(
                 ofKind: kind,
                 withReuseIdentifier: HeaderReusableCellView.identifier,
                 for: indexPath) as? HeaderReusableCellView else {
                 return UICollectionReusableView()
             }
-            header.configure(with: dataMovies[indexPath.section].title)
+            header.configure(with: "Popular Movies")
             return header
-        case .topRateMovie:
+        case 1:
             guard let header = collectionView.dequeueReusableSupplementaryView(
                 ofKind: kind,
                 withReuseIdentifier: HeaderReusableCellView.identifier,
                 for: indexPath) as? HeaderReusableCellView else {
                 return UICollectionReusableView()
             }
-            header.configure(with: dataMovies[indexPath.section].title)
+            header.configure(with: "Top Rate TV Shows")
             return header
-        case .nowPlayingMovie:
+        case 2:
             guard let header = collectionView.dequeueReusableSupplementaryView(
                 ofKind: kind,
                 withReuseIdentifier: HeaderReusableCellView.identifier,
                 for: indexPath) as? HeaderReusableCellView else {
                 return UICollectionReusableView()
             }
-            header.configure(with: dataMovies[indexPath.section].title)
+            header.configure(with: "Top Rate Movies")
             return header
-        case .upComingMovie:
+        case 3:
             guard let header = collectionView.dequeueReusableSupplementaryView(
                 ofKind: kind,
                 withReuseIdentifier: HeaderReusableCellView.identifier,
                 for: indexPath) as? HeaderReusableCellView else {
                 return UICollectionReusableView()
             }
-            header.configure(with: dataMovies[indexPath.section].title)
+            header.configure(with: "Popular TV Shows")
             return header
-        case .topRateTV:
+        case 4:
             guard let header = collectionView.dequeueReusableSupplementaryView(
                 ofKind: kind,
                 withReuseIdentifier: HeaderReusableCellView.identifier,
                 for: indexPath) as? HeaderReusableCellView else {
                 return UICollectionReusableView()
             }
-            header.configure(with: dataMovies[indexPath.section].title)
+            header.configure(with: "Up Coming Movies")
             return header
-        case .popularTV:
+        case 5:
             guard let header = collectionView.dequeueReusableSupplementaryView(
                 ofKind: kind,
                 withReuseIdentifier: HeaderReusableCellView.identifier,
                 for: indexPath) as? HeaderReusableCellView else {
                 return UICollectionReusableView()
             }
-            header.configure(with: dataMovies[indexPath.section].title)
+            header.configure(with: "On Air TV Shows")
             return header
-        case .onAirTV:
+        case 6:
             guard let header = collectionView.dequeueReusableSupplementaryView(
                 ofKind: kind,
                 withReuseIdentifier: HeaderReusableCellView.identifier,
                 for: indexPath) as? HeaderReusableCellView else {
                 return UICollectionReusableView()
             }
-            header.configure(with: dataMovies[indexPath.section].title)
+            header.configure(with: "Airing Today TV Shows")
             return header
-        case .airingTV:
+        default:
             guard let header = collectionView.dequeueReusableSupplementaryView(
                 ofKind: kind,
                 withReuseIdentifier: HeaderReusableCellView.identifier,
                 for: indexPath) as? HeaderReusableCellView else {
                 return UICollectionReusableView()
             }
-            header.configure(with: dataMovies[indexPath.section].title)
+            header.configure(with: "Now Playing Movies")
             return header
         }
         
         
     }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+        let section = indexPath.section
+        switch section {
+            
+        case 0:
+            if indexPath.row == presenter.populaMovieModel.count-1 {
+                self.Loading = true
+                presenter.validatePagesToDownloadData(option: .popularMovie)
+                collectionView.reloadData()
+            }
+        case 1:
+            if indexPath.row == presenter.topRateTVModel.count-1 {
+                self.Loading = true
+                presenter.validatePagesToDownloadData(option: .topRateTV)
+                collectionView.reloadData()
+            }
+        case 2:
+            if indexPath.row == presenter.topRateMovieModel.count-1 {
+                self.Loading = true
+                presenter.validatePagesToDownloadData(option: .topRateMovie)
+                collectionView.reloadData()
+            }
+        case 3:
+            if indexPath.row == presenter.popularTVModel.count-1 {
+                self.Loading = true
+                presenter.validatePagesToDownloadData(option: .popularTV)
+                collectionView.reloadData()
+            }
+        case 4:
+            if indexPath.row == presenter.upCominMovieModel.count-1 {
+                self.Loading = true
+                presenter.validatePagesToDownloadData(option: .upComingMovie)
+                collectionView.reloadData()
+            }
+        case 5:
+            if indexPath.row == presenter.onAirTVModel.count-1 {
+                self.Loading = true
+                presenter.validatePagesToDownloadData(option: .onAirTV)
+                collectionView.reloadData()
+            }
+        case 6:
+            if indexPath.row == presenter.airingTodayTvModel.count-1 {
+                self.Loading = true
+                presenter.validatePagesToDownloadData(option: .airingTV)
+                collectionView.reloadData()
+            }
+        default:
+            if indexPath.row == nowPlayingModelArray.count-1 {
+                self.Loading = true
+                presenter.validatePagesToDownloadData(option: .nowPlayingMovie)
+                collectionView.reloadData()
+            }
+        }
+    }
+    
 }
