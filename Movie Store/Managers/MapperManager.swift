@@ -85,8 +85,8 @@ class MapperManager {
         let model = value.compactMap {
             ItemModelCell(
                 id: $0.id,
-                artWork: URL(string: "https://image.tmdb.org/t/p/w200" + $0.posterPath),
-                releaseDate: $0.firstAirDate,
+                artWork: URL(string: "https://image.tmdb.org/t/p/w200" + ($0.posterPath ?? "")),
+                releaseDate: $0.firstAirDate ?? "",
                 title: $0.name)
         }
         return model
@@ -96,8 +96,8 @@ class MapperManager {
         let model = value.compactMap {
             ItemModelCell(
                 id: $0.id,
-                artWork: URL(string: "https://image.tmdb.org/t/p/w200" + $0.posterPath),
-                releaseDate: $0.firstAirDate,
+                artWork: URL(string: "https://image.tmdb.org/t/p/w200" + ($0.posterPath ?? "")),
+                releaseDate: $0.firstAirDate ?? "",
                 title: $0.name)
         }
         return model

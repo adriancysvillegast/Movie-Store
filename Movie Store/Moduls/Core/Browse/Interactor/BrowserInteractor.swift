@@ -33,7 +33,6 @@ class BrowserInteractor: BrowserInteractable {
         guard let url = URL(string: Constants.baseURL + "/movie/top_rated?api_key=" + Constants.token + "&page=\(page ?? 1)") else {
             throw APIError.errorUrl
         }
-        print(url.absoluteString)
         
         let (data, _) = try await URLSession.shared.data(from: url)
         
