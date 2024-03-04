@@ -60,6 +60,8 @@ class BrowserPresenter: BrowserPresentable {
     func getMovies() {
         
         Task {
+            self.view?.hiddenError()
+            self.view?.showSpinner()
             do{
                 let topRateMovies = try await interactor.getTopRateMovies(page: nil)
                 let populaMovies = try await interactor.getPopularMovies(page: nil)
@@ -76,12 +78,12 @@ class BrowserPresenter: BrowserPresentable {
                 let popularTv = try await interactor.getPopularTV(page: nil)
                 let onAirTv = try await interactor.getOnAirTV(page: nil)
                 let tvAiring = try await interactor.getAiringTodayTV(page: nil)
-                
+////
                 self.topRateTVContainer.append(topRateTv)
                 self.popularTVContainer.append(popularTv)
                 self.onAirTVContainer.append(onAirTv)
                 self.airingTodayTVContainer.append(tvAiring)
-                
+////
                 let topRateMovieFormat = MapperManager.shared.formatItem(value: topRateMovies.results)
                 let popularMovieFormat = MapperManager.shared.formatItem(value: populaMovies.results)
                 let upComingMovieFormat = MapperManager.shared.formatItem(value: upComingMovie.results)
@@ -96,20 +98,23 @@ class BrowserPresenter: BrowserPresentable {
                 let popularTVFormat = MapperManager.shared.formatItem(value: popularTv.results)
                 let onAirTVFormat = MapperManager.shared.formatItem(value: onAirTv.results)
                 let airingTVFormat = MapperManager.shared.formatItem(value: tvAiring.results)
-                
+
                 topRateTVModel.append(contentsOf: topRateTVFormat)
                 popularTVModel.append(contentsOf: popularTVFormat)
                 onAirTVModel.append(contentsOf: onAirTVFormat)
                 airingTodayTvModel.append(contentsOf: airingTVFormat)
                 
-                view?.updateView(topRateMovie: topRateMovieModel, popularMovie: populaMovieModel, upComing: upCominMovieModel, nowPlayingMovie: nowPlayingMovieModel, topRateTV: topRateTVModel, popularTV: popularTVModel, onAirTVModel: onAirTVModel, airingTodayTvModel: airingTodayTvModel)
-                
+                self.view?.hiddenSpinner()
+                view?.updateView()
             } catch APIError.errorApi{
-                print("error getting info, internet problems")
+                self.view?.hiddenSpinner()
+                view?.showError(message: "Error getting data, check your connection")
             } catch APIError.errorUrl {
-                print("url error")
+                self.view?.hiddenSpinner()
+                view?.showError(message: "We have problems to connect")
             } catch {
-                print("error")
+                self.view?.hiddenSpinner()
+                view?.showError(message: "Ups, We have problems to connect")
             }
         }
         

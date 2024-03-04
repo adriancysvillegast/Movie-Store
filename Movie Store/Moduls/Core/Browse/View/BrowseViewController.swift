@@ -7,8 +7,11 @@
 
 import UIKit
 protocol BrowseView: AnyObject {
-    func getMovies(movies: [DataMovie])
-    func updateView(topRateMovie: [ItemModelCell], popularMovie: [ItemModelCell], upComing: [ItemModelCell], nowPlayingMovie: [ItemModelCell], topRateTV: [ItemModelCell], popularTV: [ItemModelCell], onAirTVModel: [ItemModelCell], airingTodayTvModel: [ItemModelCell] )
+    func updateView()
+    func showSpinner()
+    func hiddenSpinner()
+    func hiddenError() 
+    func showError(message: String)
 }
 
 class BrowseViewController: UIViewController {
@@ -18,15 +21,15 @@ class BrowseViewController: UIViewController {
     private let presenter: BrowserPresentable
     private var Loading: Bool = false
     
-    var topRateModelArray: [ItemModelCell] = []
-    var populaModelArray: [ItemModelCell] = []
-    var upCominModelArray: [ItemModelCell] = []
-    var nowPlayingModelArray: [ItemModelCell] = []
-    
-    var topRateTVArray: [ItemModelCell] = []
-    var popularTvArray: [ItemModelCell] = []
-    var onAirTVModel: [ItemModelCell] = []
-    var airingTodayTvModel: [ItemModelCell] = []
+//    var topRateModelArray: [ItemModelCell] = []
+//    var populaModelArray: [ItemModelCell] = []
+//    var upCominModelArray: [ItemModelCell] = []
+//    var nowPlayingModelArray: [ItemModelCell] = []
+//
+//    var topRateTVArray: [ItemModelCell] = []
+//    var popularTvArray: [ItemModelCell] = []
+//    var onAirTVModel: [ItemModelCell] = []
+//    var airingTodayTvModel: [ItemModelCell] = []
     
     private lazy var aCollectionView: UICollectionView = {
         let aCollection = UICollectionView(frame: .zero,
@@ -36,13 +39,53 @@ class BrowseViewController: UIViewController {
 //        aCollection.backgroundColor = .systemBackground
         aCollection.delegate = self
         aCollection.dataSource = self
-//        aCollection.isHidden = true
+        aCollection.isHidden = true
         aCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         aCollection.register(HeaderReusableCellView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderReusableCellView.identifier)
         aCollection.register(CoverItemCell.self, forCellWithReuseIdentifier: CoverItemCell.identifier)
         return aCollection
     }()
     
+    private lazy var alertIcon: UIImageView = {
+        var aView = UIImageView(frame: CGRect(x: 0, y: 0, width: 100, height: 100) )
+        aView.image = UIImage(systemName: "exclamationmark.triangle")
+        aView.contentMode = .scaleAspectFit
+        aView.tintColor = .red
+        aView.isHidden = true
+        return aView
+    }()
+    
+    private lazy var messageError: UILabel = {
+        var aLable = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 60))
+        aLable.text = "Ups, We have problems to connect"
+        aLable.textColor = .secondaryLabel
+        aLable.numberOfLines = 2
+        aLable.textAlignment = .center
+        aLable.isHidden = true
+        aLable.font = .systemFont(ofSize: 20, weight: .bold)
+        return aLable
+    }()
+    
+    private lazy var tryAgainButton: UIButton = {
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 150, height: 60))
+        button.setTitle("Try Again".uppercased(), for: .normal)
+        button.backgroundColor = .systemGray4
+        button.layer.cornerRadius = 12
+//        button.isEnabled = false
+        button.isHidden = true
+        button.addTarget(self, action: #selector(tryAgain), for: .touchUpInside)
+        return button
+    }()
+    
+    private var spinnerLoading: UIActivityIndicatorView = {
+        let spinner = UIActivityIndicatorView()
+        spinner.style = .large
+        spinner.color = .systemRed
+        spinner.isHidden = true
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        return spinner
+    }()
+
     // MARK: - Init
     
     init(presenter: BrowserPresentable) {
@@ -64,12 +107,25 @@ class BrowseViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        alertIcon.center = CGPoint(x: view.frame.width/2, y: view.frame.height/2 - 90)
         aCollectionView.frame = view.bounds
+        messageError.center = CGPoint(x: view.frame.width/2, y: view.frame.height/2 - 20 )
+        tryAgainButton.center = CGPoint(x: view.frame.width/2, y: view.frame.height/2 + 50)
+        spinnerLoading.center = CGPoint(x: view.frame.width/2, y: view.frame.height/2)
+        
     }
     // MARK: - SetupView
 
     private func setUpView() {
-        view.addSubview(aCollectionView)
+        view.backgroundColor = .systemBackground
+        [alertIcon, aCollectionView, messageError, tryAgainButton, spinnerLoading].forEach {
+            view.addSubview($0)
+        }
+    }
+    
+    @objc func tryAgain() {
+        presenter.getMovies()
+        
     }
     
     // MARK: - Methods
@@ -214,20 +270,6 @@ class BrowseViewController: UIViewController {
             section.boundarySupplementaryItems = supplementaryView
             return section
             
-//        case 7:
-//            let item = NSCollectionLayoutItem(
-//                layoutSize: NSCollectionLayoutSize(
-//                    widthDimension: .fractionalWidth(1),
-//                    heightDimension: .fractionalHeight(1)
-//                )
-//            )
-//            item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 2, bottom: 5, trailing: 2)
-//            let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.4), heightDimension: .absolute(240)), subitems: [item])
-//            
-//            let section = NSCollectionLayoutSection(group: group)
-//            section.orthogonalScrollingBehavior = .groupPaging
-//            section.boundarySupplementaryItems = supplementaryView
-//            return section
         default :
             let item = NSCollectionLayoutItem(
                 layoutSize: NSCollectionLayoutSize(
@@ -258,39 +300,46 @@ class BrowseViewController: UIViewController {
 
 // MARK: - BrowseView
 extension BrowseViewController: BrowseView {
-    
-    
-    func updateView(topRateMovie: [ItemModelCell],
-                    popularMovie: [ItemModelCell],
-                    upComing: [ItemModelCell],
-                    nowPlayingMovie: [ItemModelCell],
-                    topRateTV: [ItemModelCell],
-                    popularTV: [ItemModelCell],
-                    onAirTVModel: [ItemModelCell],
-                    airingTodayTvModel: [ItemModelCell]
-    ) {
+    func showSpinner() {
         DispatchQueue.main.async {
-            self.topRateModelArray = topRateMovie
-            self.populaModelArray = popularMovie
-            self.upCominModelArray = upComing
-            self.nowPlayingModelArray = nowPlayingMovie
-            
-            self.topRateTVArray = topRateTV
-            self.popularTvArray = popularTV
-            self.onAirTVModel = onAirTVModel
-            self.airingTodayTvModel = airingTodayTvModel
-            
-            self.aCollectionView.reloadData()
+            self.spinnerLoading.isHidden = false
+            self.spinnerLoading.startAnimating()
         }
     }
     
-    func getMovies(movies: [DataMovie]) {
+    func hiddenSpinner() {
         DispatchQueue.main.async {
-//            self.dataMovies = movies
-            self.aCollectionView.reloadData()
+            self.spinnerLoading.isHidden = true
+            self.spinnerLoading.stopAnimating()
         }
     }
     
+    func showError(message: String) {
+        DispatchQueue.main.async {
+            self.aCollectionView.isHidden = true
+            self.alertIcon.isHidden = false
+            self.messageError.isHidden = false
+            self.tryAgainButton.isHidden = false
+            self.messageError.text = message
+        }
+    }
+    
+    func hiddenError() {
+        DispatchQueue.main.async {
+            self.aCollectionView.isHidden = false
+            self.alertIcon.isHidden = true
+            self.messageError.isHidden = true
+            self.tryAgainButton.isHidden = true
+        }
+        
+    }
+    
+    func updateView() {
+        DispatchQueue.main.async {
+            self.aCollectionView.reloadData()
+            self.aCollectionView.isHidden = false
+        }
+    }
 
     
 }
@@ -518,7 +567,7 @@ extension BrowseViewController: UICollectionViewDelegate, UICollectionViewDataSo
                 collectionView.reloadData()
             }
         default:
-            if indexPath.row == nowPlayingModelArray.count-1 {
+            if indexPath.row == presenter.nowPlayingMovieModel.count-1 {
                 self.Loading = true
                 presenter.validatePagesToDownloadData(option: .nowPlayingMovie)
                 collectionView.reloadData()
