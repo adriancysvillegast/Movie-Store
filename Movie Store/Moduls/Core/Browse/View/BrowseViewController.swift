@@ -8,35 +8,28 @@
 import UIKit
 protocol BrowseView: AnyObject {
     func updateView()
+    
     func showSpinner()
     func hiddenSpinner()
-    func hiddenError() 
+    func hiddenError()
     func showError(message: String)
+    func reloadTable()
+    
 }
 
 class BrowseViewController: UIViewController {
-
+    
     // MARK: - Properties
     
     private let presenter: BrowserPresentable
-    private var Loading: Bool = false
-    
-//    var topRateModelArray: [ItemModelCell] = []
-//    var populaModelArray: [ItemModelCell] = []
-//    var upCominModelArray: [ItemModelCell] = []
-//    var nowPlayingModelArray: [ItemModelCell] = []
-//
-//    var topRateTVArray: [ItemModelCell] = []
-//    var popularTvArray: [ItemModelCell] = []
-//    var onAirTVModel: [ItemModelCell] = []
-//    var airingTodayTvModel: [ItemModelCell] = []
+    private var loading: Bool = false
     
     private lazy var aCollectionView: UICollectionView = {
         let aCollection = UICollectionView(frame: .zero,
                                            collectionViewLayout: UICollectionViewCompositionalLayout(sectionProvider: { sections, _ in
             return self.createSectionLayout(with: sections)
         }))
-//        aCollection.backgroundColor = .systemBackground
+        //        aCollection.backgroundColor = .systemBackground
         aCollection.delegate = self
         aCollection.dataSource = self
         aCollection.isHidden = true
@@ -71,7 +64,7 @@ class BrowseViewController: UIViewController {
         button.setTitle("Try Again".uppercased(), for: .normal)
         button.backgroundColor = .systemGray4
         button.layer.cornerRadius = 12
-//        button.isEnabled = false
+        //        button.isEnabled = false
         button.isHidden = true
         button.addTarget(self, action: #selector(tryAgain), for: .touchUpInside)
         return button
@@ -85,7 +78,7 @@ class BrowseViewController: UIViewController {
         spinner.translatesAutoresizingMaskIntoConstraints = false
         return spinner
     }()
-
+    
     // MARK: - Init
     
     init(presenter: BrowserPresentable) {
@@ -112,20 +105,18 @@ class BrowseViewController: UIViewController {
         messageError.center = CGPoint(x: view.frame.width/2, y: view.frame.height/2 - 20 )
         tryAgainButton.center = CGPoint(x: view.frame.width/2, y: view.frame.height/2 + 50)
         spinnerLoading.center = CGPoint(x: view.frame.width/2, y: view.frame.height/2)
-        
     }
     // MARK: - SetupView
-
+    
     private func setUpView() {
         view.backgroundColor = .systemBackground
-        [alertIcon, aCollectionView, messageError, tryAgainButton, spinnerLoading].forEach {
+        [aCollectionView,alertIcon, messageError, tryAgainButton, spinnerLoading].forEach {
             view.addSubview($0)
         }
     }
     
     @objc func tryAgain() {
         presenter.getMovies()
-        
     }
     
     // MARK: - Methods
@@ -169,17 +160,17 @@ class BrowseViewController: UIViewController {
             let groupV = NSCollectionLayoutGroup.vertical(
                 layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(0.5)),
                 repeatingSubitem: item, count: 2)
-
+            
             let group = NSCollectionLayoutGroup.horizontal(
                 layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(520)),
                 subitems: [groupV]
             )
-
+            
             let section = NSCollectionLayoutSection(group: group)
             section.orthogonalScrollingBehavior = .groupPaging
             section.boundarySupplementaryItems = supplementaryView
             return section
-    
+            
         case 2:
             let item = NSCollectionLayoutItem(
                 layoutSize: NSCollectionLayoutSize(
@@ -193,7 +184,7 @@ class BrowseViewController: UIViewController {
                     widthDimension: .fractionalWidth(0.7),
                     heightDimension: .absolute(410)),
                 subitems: [item])
-
+            
             let section = NSCollectionLayoutSection(group: groupH)
             section.orthogonalScrollingBehavior = .groupPaging
             section.boundarySupplementaryItems = supplementaryView
@@ -226,12 +217,12 @@ class BrowseViewController: UIViewController {
             let groupV = NSCollectionLayoutGroup.vertical(
                 layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(0.5)),
                 repeatingSubitem: item, count: 2)
-
+            
             let group = NSCollectionLayoutGroup.horizontal(
                 layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(520)),
                 subitems: [groupV]
             )
-
+            
             let section = NSCollectionLayoutSection(group: group)
             section.orthogonalScrollingBehavior = .groupPaging
             section.boundarySupplementaryItems = supplementaryView
@@ -250,7 +241,7 @@ class BrowseViewController: UIViewController {
                     widthDimension: .fractionalWidth(0.7),
                     heightDimension: .absolute(410)),
                 subitems: [item])
-
+            
             let section = NSCollectionLayoutSection(group: groupH)
             section.orthogonalScrollingBehavior = .groupPaging
             section.boundarySupplementaryItems = supplementaryView
@@ -282,12 +273,12 @@ class BrowseViewController: UIViewController {
             let groupV = NSCollectionLayoutGroup.vertical(
                 layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(0.5)),
                 repeatingSubitem: item, count: 2)
-
+            
             let group = NSCollectionLayoutGroup.horizontal(
                 layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(520)),
                 subitems: [groupV]
             )
-
+            
             let section = NSCollectionLayoutSection(group: group)
             section.orthogonalScrollingBehavior = .groupPaging
             section.boundarySupplementaryItems = supplementaryView
@@ -295,13 +286,27 @@ class BrowseViewController: UIViewController {
         }
         
     }
-
+    
 }
 
 // MARK: - BrowseView
 extension BrowseViewController: BrowseView {
+    func reloadTable() {
+        DispatchQueue.main.async {
+            self.aCollectionView.reloadData()
+        }
+    }
+    
+    func updateView() {
+        DispatchQueue.main.async {
+            self.aCollectionView.reloadData()
+            self.aCollectionView.isHidden = false
+        }
+    }
+    
     func showSpinner() {
         DispatchQueue.main.async {
+            self.aCollectionView.isHidden = true
             self.spinnerLoading.isHidden = false
             self.spinnerLoading.startAnimating()
         }
@@ -326,21 +331,12 @@ extension BrowseViewController: BrowseView {
     
     func hiddenError() {
         DispatchQueue.main.async {
-            self.aCollectionView.isHidden = false
             self.alertIcon.isHidden = true
             self.messageError.isHidden = true
             self.tryAgainButton.isHidden = true
         }
-        
     }
     
-    func updateView() {
-        DispatchQueue.main.async {
-            self.aCollectionView.reloadData()
-            self.aCollectionView.isHidden = false
-        }
-    }
-
     
 }
 
@@ -372,7 +368,7 @@ extension BrowseViewController: UICollectionViewDelegate, UICollectionViewDataSo
             return presenter.nowPlayingMovieModel.count
         }
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let section = indexPath.section
@@ -515,64 +511,120 @@ extension BrowseViewController: UICollectionViewDelegate, UICollectionViewDataSo
             header.configure(with: "Now Playing Movies")
             return header
         }
-        
-        
     }
     
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let section = indexPath.section
         switch section {
-            
+        case 0:
+            let movies = presenter.populaMovieModel
+            presenter.getDetails(id: movies[indexPath.row].id, type: .movie)
+        case 1:
+            let tv = presenter.topRateTVModel
+            presenter.getDetails(id: tv[indexPath.row].id, type: .tv)
+        case 2:
+            let movies = presenter.topRateMovieModel
+            presenter.getDetails(id: movies[indexPath.row].id, type: .movie)
+        case 3:
+            let tv = presenter.popularTVModel
+            presenter.getDetails(id: tv[indexPath.row].id, type: .tv)
+        case 4:
+            let movies = presenter.upCominMovieModel
+            presenter.getDetails(id: movies[indexPath.row].id, type: .movie)
+        case 5:
+            let tv = presenter.onAirTVModel
+            presenter.getDetails(id: tv[indexPath.row].id, type: .tv)
+        case 6:
+            let tv = presenter.airingTodayTvModel
+            presenter.getDetails(id: tv[indexPath.row].id, type: .tv)
+        default:
+            let movies = presenter.nowPlayingMovieModel
+            presenter.getDetails(id: movies[indexPath.row].id, type: .movie)
+        }
+    }
+
+//
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+
+        let section = indexPath.section
+        switch section {
+
         case 0:
             if indexPath.row == presenter.populaMovieModel.count-1 {
-                self.Loading = true
+                print(indexPath.row)
+                guard !loading else { return }
+                self.loading = true
                 presenter.validatePagesToDownloadData(option: .popularMovie)
-                collectionView.reloadData()
+//                aCollectionView.reloadData()
+                self.loading = false
             }
         case 1:
+
             if indexPath.row == presenter.topRateTVModel.count-1 {
-                self.Loading = true
+                print(indexPath.row)
+                guard !loading else { return }
+                self.loading = true
                 presenter.validatePagesToDownloadData(option: .topRateTV)
-                collectionView.reloadData()
+//                aCollectionView.reloadData()
+                self.loading = false
             }
         case 2:
             if indexPath.row == presenter.topRateMovieModel.count-1 {
-                self.Loading = true
+                guard !loading else { return }
+                self.loading = true
                 presenter.validatePagesToDownloadData(option: .topRateMovie)
-                collectionView.reloadData()
+//                aCollectionView.reloadData()
+                self.loading = false
             }
         case 3:
             if indexPath.row == presenter.popularTVModel.count-1 {
-                self.Loading = true
+                guard !loading else { return }
+                self.loading = true
                 presenter.validatePagesToDownloadData(option: .popularTV)
-                collectionView.reloadData()
+//                aCollectionView.reloadData()
+                self.loading = false
             }
         case 4:
             if indexPath.row == presenter.upCominMovieModel.count-1 {
-                self.Loading = true
+                guard !loading else { return }
+                self.loading = true
                 presenter.validatePagesToDownloadData(option: .upComingMovie)
-                collectionView.reloadData()
+//                aCollectionView.reloadData()
+                self.loading = false
             }
         case 5:
             if indexPath.row == presenter.onAirTVModel.count-1 {
-                self.Loading = true
+                guard !loading else { return }
+                self.loading = true
                 presenter.validatePagesToDownloadData(option: .onAirTV)
-                collectionView.reloadData()
+//                aCollectionView.reloadData()
+                self.loading = false
             }
         case 6:
             if indexPath.row == presenter.airingTodayTvModel.count-1 {
-                self.Loading = true
+                guard !loading else { return }
+                self.loading = true
                 presenter.validatePagesToDownloadData(option: .airingTV)
-                collectionView.reloadData()
+//                aCollectionView.reloadData()
+                self.loading = false
             }
         default:
             if indexPath.row == presenter.nowPlayingMovieModel.count-1 {
-                self.Loading = true
+                guard !loading else { return }
+                self.loading = true
                 presenter.validatePagesToDownloadData(option: .nowPlayingMovie)
-                collectionView.reloadData()
+//                aCollectionView.reloadData()
+                self.loading = false
             }
         }
+        
+    }
+    
+
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        print("didDeselectItemAt")
     }
     
 }
