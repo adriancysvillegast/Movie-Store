@@ -53,4 +53,9 @@ class CoverItemCell: UICollectionViewCell {
         aImageCover.sd_setImage(with: model.artWork,
                                 placeholderImage: UIImage(named: "image-placeholder"))
     }
+    
+    func configuration(model: Companies) {
+        aImageCover.sd_setImage(with: model.logoPath,
+                                placeholderImage: UIImage(named: "image-placeholder"))
+    }
 }

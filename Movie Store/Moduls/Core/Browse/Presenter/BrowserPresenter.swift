@@ -19,11 +19,16 @@ protocol BrowserPresentable: AnyObject {
     var onAirTVModel: [ItemModelCell] { get }
     var airingTodayTvModel: [ItemModelCell] { get }
     
+    var newItems: [ItemModelCell] { get }
+    
     func getMovies()
     func validatePagesToDownloadData(option: RowSelected)
+    func getDetails(id: Int, type: ItemType)
+    func addItem() -> [ItemModelCell]
 }
 
 class BrowserPresenter: BrowserPresentable {
+    
     
     // MARK: - Properties
 
@@ -49,6 +54,8 @@ class BrowserPresenter: BrowserPresentable {
     var onAirTVModel: [ItemModelCell] = []
     var airingTodayTvModel: [ItemModelCell] = []
     
+    var newItems: [ItemModelCell] = []
+    
     init(interactor: BrowserInteractable, router: BrowserRouting) {
         self.interactor = interactor
         self.router = router
@@ -72,7 +79,6 @@ class BrowserPresenter: BrowserPresentable {
                 self.populaMoviesContainer.append(populaMovies)
                 self.upComingMovieContainer.append(upComingMovie)
                 self.nowPlayingMoviesContainer.append(nowPlayingMovies)
-                
                 
                 let topRateTv = try await interactor.getTopRateTV(page: nil)
                 let popularTv = try await interactor.getPopularTV(page: nil)
@@ -106,6 +112,7 @@ class BrowserPresenter: BrowserPresentable {
                 
                 self.view?.hiddenSpinner()
                 view?.updateView()
+//                
             } catch APIError.errorApi{
                 self.view?.hiddenSpinner()
                 view?.showError(message: "Error getting data, check your connection")
@@ -121,6 +128,7 @@ class BrowserPresenter: BrowserPresentable {
     }
     
     func validatePagesToDownloadData(option: RowSelected) {
+        
         Task {
             
             switch option {
@@ -128,82 +136,124 @@ class BrowserPresenter: BrowserPresentable {
             case .popularMovie:
                 guard let movies = self.populaMoviesContainer.last else { return }
                 if movies.page < movies.totalPages {
+                    newItems = []
                     let page = movies.page + 1
                     let newMovies = try await interactor.getPopularMovies(page: page)
                     self.populaMoviesContainer.append(newMovies)
-                    let model = MapperManager.shared.formatItem(value: newMovies.results)
-                    
-                    self.populaMovieModel.append(contentsOf: model)
+                    newItems = MapperManager.shared.formatItem(value: newMovies.results)
+                    print("presenter newitems \(newItems.count)")
+                    self.populaMovieModel.append(contentsOf: newItems)
+                    self.view?.reloadTable()
+//                    print("-popularMovie--")
                 }
             case .topRateMovie:
                 guard let movies = self.topRateMoviesContainer.last else { return }
                 if movies.page < movies.totalPages  {
+                    newItems = []
                     let page = movies.page + 1
                     let newMovies = try await interactor.getTopRateMovies(page: page)
                     self.topRateMoviesContainer.append(newMovies)
-                    let model = MapperManager.shared.formatItem(value: newMovies.results)
-                    self.topRateMovieModel.append(contentsOf: model)
+                    newItems = MapperManager.shared.formatItem(value: newMovies.results)
+                    print("presenter newitems \(newItems.count)")
+                    self.topRateMovieModel.append(contentsOf: newItems)
+                    self.view?.reloadTable()
+//                    print("-topRateMovie--")
                 }
             case .upComingMovie:
                 guard let movies = self.upComingMovieContainer.last else { return }
                 if movies.page < movies.totalPages  {
+                    newItems = []
                     let page = movies.page + 1
                     let newMovies = try await interactor.getUpComingMovies(page: page)
                     self.upComingMovieContainer.append(newMovies)
-                    let model = MapperManager.shared.formatItem(value: newMovies.results)
-                    self.upCominMovieModel.append(contentsOf: model)
+                    newItems = MapperManager.shared.formatItem(value: newMovies.results)
+                    print("presenter newitems \(newItems.count)")
+                    self.upCominMovieModel.append(contentsOf: newItems)
+                    self.view?.reloadTable()
+//                    print("-upComingMovie--")
                 }
             case .nowPlayingMovie:
                 guard let movies = self.nowPlayingMoviesContainer.last else { return }
                 if movies.page < movies.totalPages  {
+                    newItems = []
                     let page = movies.page + 1
                     let newMovies = try await interactor.getNowPlayingMovies(page: page)
                     self.nowPlayingMoviesContainer.append(newMovies)
-                    let model = MapperManager.shared.formatItem(value: newMovies.results)
-                    self.nowPlayingMovieModel.append(contentsOf: model)
+                    newItems = MapperManager.shared.formatItem(value: newMovies.results)
+                    print("presenter newitems \(newItems.count)")
+                    self.nowPlayingMovieModel.append(contentsOf: newItems)
+                    self.view?.reloadTable()
+//                    print("-nowPlayingMovie--")
                 }
             case .topRateTV:
                 guard let movies = self.topRateMoviesContainer.last else { return }
                 if movies.page < movies.totalPages  {
+                    newItems = []
                     let page = movies.page + 1
                     let newMovies = try await interactor.getTopRateTV(page: page)
                     self.topRateTVContainer.append(newMovies)
-                    let model = MapperManager.shared.formatItem(value: newMovies.results)
-                    self.topRateTVModel.append(contentsOf: model)
+                    newItems = MapperManager.shared.formatItem(value: newMovies.results)
+                    print("presenter newitems \(newItems.count)")
+                    self.topRateTVModel.append(contentsOf: newItems)
+                    self.view?.reloadTable()
+//                    print("-topRateTV--")
                 }
             case .popularTV:
                 guard let movies = self.popularTVContainer.last else { return }
                 if movies.page < movies.totalPages  {
+                    newItems = []
                     let page = movies.page + 1
                     let newMovies = try await interactor.getTopRateTV(page: page)
                     self.topRateTVContainer.append(newMovies)
-                    let model = MapperManager.shared.formatItem(value: newMovies.results)
-                    self.popularTVModel.append(contentsOf: model)
+                    newItems = MapperManager.shared.formatItem(value: newMovies.results)
+                    print("presenter newitems \(newItems.count)")
+                    self.popularTVModel.append(contentsOf: newItems)
+                    self.view?.reloadTable()
+//                    print("-popularTV--")
                 }
             case .onAirTV:
                 guard let movies = self.onAirTVContainer.last else { return }
                 if movies.page < movies.totalPages  {
+                    newItems = []
                     let page = movies.page + 1
                     let newMovies = try await interactor.getOnAirTV(page: page)
                     self.onAirTVContainer.append(newMovies)
-                    let model = MapperManager.shared.formatItem(value: newMovies.results)
-                    self.onAirTVModel.append(contentsOf: model)
+                    newItems = MapperManager.shared.formatItem(value: newMovies.results)
+                    print("presenter newitems \(newItems.count)")
+                    self.onAirTVModel.append(contentsOf: newItems)
+                    self.view?.reloadTable()
+//                    print("-onAirTV--")
                 }
             case .airingTV:
                 guard let movies = self.airingTodayTVContainer.last else { return }
                 if movies.page < movies.totalPages  {
+                    newItems = []
                     let page = movies.page + 1
                     let newMovies = try await interactor.getAiringTodayTV(page: page)
                     self.airingTodayTVContainer.append(newMovies)
-                    let model = MapperManager.shared.formatItem(value: newMovies.results)
-                    self.onAirTVModel.append(contentsOf: model)
+                    newItems = MapperManager.shared.formatItem(value: newMovies.results)
+                    print("presenter newitems \(newItems.count)")
+                    self.onAirTVModel.append(contentsOf: newItems)
+                    self.view?.reloadTable()
+//                    print("-airingTV--")
                 }
             }
         }
         
     }
 
+    func getDetails(id: Int, type: ItemType) {
+        switch type {
+        case .movie:
+            router.showDetails(id: String(id), type: type)
+        case .tv:
+            router.showDetails(id: String(id), type: type)
+        }
+    }
     
+    func addItem() -> [ItemModelCell] {
+        return self.newItems
+    }
 }
 
 enum RowSelected {
@@ -215,4 +265,9 @@ enum RowSelected {
     case popularTV
     case onAirTV
     case airingTV
+}
+
+enum ItemType {
+    case movie
+    case tv
 }

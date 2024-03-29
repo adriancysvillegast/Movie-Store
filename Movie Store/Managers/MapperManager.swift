@@ -102,6 +102,60 @@ class MapperManager {
         }
         return model
     }
+    
+    func formatItem(value: DetailMovieResponseEntity) -> DetailModelCell {
+        let companies = value.productionCompanies.compactMap {
+            Companies(id: $0.id,
+                      logoPath: ($0.logoPath != nil) ? URL(string: "https://image.tmdb.org/t/p/w200" + $0.logoPath!) : nil,
+                      name: $0.name,
+                      originCountry: $0.originCountry)
+        }
+        let detail = DetailModelCell(isAMovie: true,
+                                     adult: value.adult,
+                                     backdropPath: (value.backdropPath != nil) ? URL(string: "https://image.tmdb.org/t/p/w200" + value.backdropPath!) : nil,
+                                     episodeRunTimeTV: nil,
+                                     firstAirDate: nil,
+                                     genres: value.genres,
+                                     id: String(value.id),
+                                     inProductionTv: nil,
+                                     lenguage: value.originalLanguage,
+                                     name: value.originalTitle,
+                                     overview: value.overview,
+                                     numSeasons: nil,
+                                     numSpisodes: nil,
+                                     productionCompanies: companies,
+                                     artwork: (value.posterPath != nil) ? URL(string: "https://image.tmdb.org/t/p/w200" + value.posterPath!) : nil,
+                                     voteCount: value.voteCount)
+        return detail
+    }
+    
+    func formatItem(value: DetailTVResponseEntity) -> DetailModelCell {
+        let companies = value.productionCompanies.compactMap {
+            Companies(id: $0.id,
+                      logoPath: ($0.logoPath != nil) ? URL(string: "https://image.tmdb.org/t/p/w200" + $0.logoPath!) : nil,
+                      name: $0.name,
+                      originCountry: $0.originCountry)
+        }
+        let detail = DetailModelCell(isAMovie: false,
+                                     adult: value.adult,
+                                     backdropPath: (value.backdropPath != nil) ? URL(string: "https://image.tmdb.org/t/p/w200" + value.backdropPath!) : nil,
+                                     episodeRunTimeTV: value.episodeRunTime,
+                                     firstAirDate: value.firstAirDate,
+                                     genres: value.genres,
+                                     id: String(value.id) ,
+                                     inProductionTv: value.inProduction,
+                                     lenguage: value.originalLanguage ?? "",
+                                     name: value.name ?? value.originalName ?? "--",
+                                     overview: value.overview,
+                                     numSeasons: value.numberOfSeasons,
+                                     numSpisodes: value.numberOfSeasons,
+                                     productionCompanies: companies,
+                                     artwork: (value.posterPath != nil) ? URL(string: "https://image.tmdb.org/t/p/w200" + value.posterPath!) : nil,
+                                     voteCount: value.voteCount)
+        return detail
+    }
+    
+    
 }
 
 
