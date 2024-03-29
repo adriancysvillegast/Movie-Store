@@ -186,7 +186,7 @@ class BrowserPresenter: BrowserPresentable {
 //                    print("-nowPlayingMovie--")
                 }
             case .topRateTV:
-                guard let movies = self.topRateMoviesContainer.last else { return }
+                guard let movies = self.topRateTVContainer.last else { return }
                 if movies.page < movies.totalPages  {
                     newItems = []
                     let page = movies.page + 1

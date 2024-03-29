@@ -552,7 +552,6 @@ extension BrowseViewController: UICollectionViewDelegate, UICollectionViewDataSo
 
         case 0:
             if indexPath.row == presenter.populaMovieModel.count-1 {
-                print(indexPath.row)
                 guard !loading else { return }
                 self.loading = true
                 presenter.validatePagesToDownloadData(option: .popularMovie)
@@ -562,7 +561,6 @@ extension BrowseViewController: UICollectionViewDelegate, UICollectionViewDataSo
         case 1:
 
             if indexPath.row == presenter.topRateTVModel.count-1 {
-                print(indexPath.row)
                 guard !loading else { return }
                 self.loading = true
                 presenter.validatePagesToDownloadData(option: .topRateTV)
