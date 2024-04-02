@@ -8,6 +8,7 @@ target 'Movie Store' do
   # Pods for Movie Store
 pod 'FirebaseAuth'
 pod 'SDWebImage'
+pod 'Braintree'
 
   target 'Movie StoreTests' do
     inherit! :search_paths
