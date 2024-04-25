@@ -11,4 +11,6 @@ struct Constants {
     static let baseURL: String = ProcessInfo.processInfo.environment["baseURL"] ?? "https://api.themoviedb.org/3"
     static let token: String = ProcessInfo.processInfo.environment["token"] ?? ""
     
+    
+    static let collectionItems : String = "cart-Items"
 }

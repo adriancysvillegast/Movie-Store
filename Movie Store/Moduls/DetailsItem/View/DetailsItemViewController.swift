@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 protocol DetailsItemView: AnyObject {
     func updateViewTv(item: DetailModelCell)
@@ -272,7 +273,8 @@ class DetailsItemViewController: UIViewController {
     }
     
     @objc func buyMovie() {
-        
+        presenter.addToCart(from: self)
+    
     }
     
     @objc func showDescription() {
@@ -291,7 +293,8 @@ extension DetailsItemViewController: DetailsItemView {
             self.adultIcon.isHidden = item.adult ?? false
             self.numberSeasons.isHidden = true
             
-            self.aImageCover.sd_setImage(with: item.artwork)
+            self.aImageCover.kf.setImage(with: item.artwork)
+//                .sd_setImage(with: item.artwork)
             self.titleLabel.text = item.name
             self.overview.text = item.overview
             self.descriptionItem = item.overview
@@ -311,7 +314,8 @@ extension DetailsItemViewController: DetailsItemView {
             self.adultIcon.isHidden = item.adult ?? false
             
             
-            self.aImageCover.sd_setImage(with: item.artwork)
+            self.aImageCover.kf.setImage(with: item.artwork)
+//                .sd_setImage(with: item.artwork)
             self.titleLabel.text = item.name
             self.overview.text = item.overview
             self.descriptionItem = item.overview

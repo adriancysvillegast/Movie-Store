@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import SDWebImage
+import Kingfisher
 
 class CoverItemCell: UICollectionViewCell {
     // MARK: - Properties
@@ -50,12 +50,10 @@ class CoverItemCell: UICollectionViewCell {
     // MARK: - configuration
     
     func configuration(model: ItemModelCell) {
-        aImageCover.sd_setImage(with: model.artWork,
-                                placeholderImage: UIImage(named: "image-placeholder"))
+        aImageCover.kf.setImage(with: model.artWork)
     }
     
     func configuration(model: Companies) {
-        aImageCover.sd_setImage(with: model.logoPath,
-                                placeholderImage: UIImage(named: "image-placeholder"))
+        aImageCover.kf.setImage(with: model.logoPath)
     }
 }
