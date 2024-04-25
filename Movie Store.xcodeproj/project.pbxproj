@@ -12,6 +12,11 @@
 		091E281E2B87D95300957CE6 /* TopRateMovieResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 091E281D2B87D95300957CE6 /* TopRateMovieResponseEntity.swift */; };
 		091E28202B87D9EC00957CE6 /* TopRateEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 091E281F2B87D9EC00957CE6 /* TopRateEntity.swift */; };
 		091E28222B87DE7700957CE6 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 091E28212B87DE7700957CE6 /* APIError.swift */; };
+		092832EF2BD6B9DB003376BC /* CartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092832EE2BD6B9DB003376BC /* CartViewController.swift */; };
+		092832F12BD6BA0C003376BC /* CartInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092832F02BD6BA0C003376BC /* CartInteractor.swift */; };
+		092832F32BD6BA20003376BC /* CartPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092832F22BD6BA20003376BC /* CartPresenter.swift */; };
+		092832F52BD6BA5D003376BC /* CartRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092832F42BD6BA5D003376BC /* CartRouter.swift */; };
+		092832F72BD6DCC7003376BC /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092832F62BD6DCC7003376BC /* FirestoreManager.swift */; };
 		092B23EB2B8D579100B2CB69 /* PopularMovieResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092B23EA2B8D579100B2CB69 /* PopularMovieResponseEntity.swift */; };
 		092B23ED2B8D57B400B2CB69 /* PopularMovieEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092B23EC2B8D57B400B2CB69 /* PopularMovieEntity.swift */; };
 		092B23EF2B8D57D300B2CB69 /* NowPlayingResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092B23EE2B8D57D300B2CB69 /* NowPlayingResponseEntity.swift */; };
@@ -24,6 +29,11 @@
 		0967825A2B87CAA600BB1C7A /* BrowserInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096782592B87CAA600BB1C7A /* BrowserInteractor.swift */; };
 		0967825C2B87CB1600BB1C7A /* BrowserPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0967825B2B87CB1600BB1C7A /* BrowserPresenter.swift */; };
 		0967825E2B87D48300BB1C7A /* BrowserRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0967825D2B87D48300BB1C7A /* BrowserRouter.swift */; };
+		0971319D2BCFDA0400A009ED /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0971319C2BCFDA0400A009ED /* FirebaseAnalytics */; };
+		0971319F2BCFDA0400A009ED /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 0971319E2BCFDA0400A009ED /* FirebaseAuth */; };
+		097131A12BCFDA0400A009ED /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 097131A02BCFDA0400A009ED /* FirebaseDatabase */; };
+		097131A32BCFDA0400A009ED /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 097131A22BCFDA0400A009ED /* FirebaseFirestore */; };
+		097131A52BCFDA0400A009ED /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 097131A42BCFDA0400A009ED /* FirebaseStorage */; };
 		0986035D2B71976C00F275FC /* ValidateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0986035C2B71976C00F275FC /* ValidateManager.swift */; };
 		098603622B769AB700F275FC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 098603612B769AB700F275FC /* GoogleService-Info.plist */; };
 		098DF05B2B96279500580718 /* DetailsItemRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 098DF05A2B96279500580718 /* DetailsItemRouter.swift */; };
@@ -33,6 +43,8 @@
 		098DF0632B96376800580718 /* DetailTVResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 098DF0622B96376800580718 /* DetailTVResponseEntity.swift */; };
 		098DF0652B96385A00580718 /* DetailMovieResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 098DF0642B96385A00580718 /* DetailMovieResponseEntity.swift */; };
 		098DF0672B9638A800580718 /* GenresResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 098DF0662B9638A800580718 /* GenresResponseEntity.swift */; };
+		0998E4A52BD956D700C55407 /* ItemFirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0998E4A42BD956D700C55407 /* ItemFirestoreModel.swift */; };
+		09BB924F2BCEE64500550031 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 09BB924E2BCEE64500550031 /* Kingfisher */; };
 		09BC1E152B8FC81500646B72 /* PopularTVResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09BC1E142B8FC81500646B72 /* PopularTVResponseEntity.swift */; };
 		09BC1E172B8FC86C00646B72 /* PopularTVEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09BC1E162B8FC86C00646B72 /* PopularTVEntity.swift */; };
 		09BC1E192B8FC8F600646B72 /* TopRateTVResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09BC1E182B8FC8F600646B72 /* TopRateTVResponseEntity.swift */; };
@@ -64,9 +76,6 @@
 		09E5CE242B88FE4700060770 /* Test_AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09E5CE232B88FE4700060770 /* Test_AuthManager.swift */; };
 		09FECB682B9F652F00AB5DD9 /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09FECB672B9F652F00AB5DD9 /* DescriptionView.swift */; };
 		09FECB6A2B9FA7C400AB5DD9 /* GenresCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09FECB692B9FA7C400AB5DD9 /* GenresCell.swift */; };
-		76E8AEEABB5595D05D1BE4B6 /* Pods_Movie_StoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F38E0938C1B9E3A9FB9C405 /* Pods_Movie_StoreTests.framework */; };
-		7C72F61039585F265C0C664B /* Pods_Movie_Store_Movie_StoreUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E35D04E50726719BB9B10C4F /* Pods_Movie_Store_Movie_StoreUITests.framework */; };
-		B4091805199284766043F61F /* Pods_Movie_Store.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20C1CAE2BEA487A34D54AC19 /* Pods_Movie_Store.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,6 +101,11 @@
 		091E281D2B87D95300957CE6 /* TopRateMovieResponseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopRateMovieResponseEntity.swift; sourceTree = "<group>"; };
 		091E281F2B87D9EC00957CE6 /* TopRateEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopRateEntity.swift; sourceTree = "<group>"; };
 		091E28212B87DE7700957CE6 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
+		092832EE2BD6B9DB003376BC /* CartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewController.swift; sourceTree = "<group>"; };
+		092832F02BD6BA0C003376BC /* CartInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartInteractor.swift; sourceTree = "<group>"; };
+		092832F22BD6BA20003376BC /* CartPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartPresenter.swift; sourceTree = "<group>"; };
+		092832F42BD6BA5D003376BC /* CartRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartRouter.swift; sourceTree = "<group>"; };
+		092832F62BD6DCC7003376BC /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
 		092B23EA2B8D579100B2CB69 /* PopularMovieResponseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularMovieResponseEntity.swift; sourceTree = "<group>"; };
 		092B23EC2B8D57B400B2CB69 /* PopularMovieEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularMovieEntity.swift; sourceTree = "<group>"; };
 		092B23EE2B8D57D300B2CB69 /* NowPlayingResponseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingResponseEntity.swift; sourceTree = "<group>"; };
@@ -113,6 +127,7 @@
 		098DF0622B96376800580718 /* DetailTVResponseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTVResponseEntity.swift; sourceTree = "<group>"; };
 		098DF0642B96385A00580718 /* DetailMovieResponseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMovieResponseEntity.swift; sourceTree = "<group>"; };
 		098DF0662B9638A800580718 /* GenresResponseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenresResponseEntity.swift; sourceTree = "<group>"; };
+		0998E4A42BD956D700C55407 /* ItemFirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemFirestoreModel.swift; sourceTree = "<group>"; };
 		09BC1E142B8FC81500646B72 /* PopularTVResponseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularTVResponseEntity.swift; sourceTree = "<group>"; };
 		09BC1E162B8FC86C00646B72 /* PopularTVEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularTVEntity.swift; sourceTree = "<group>"; };
 		09BC1E182B8FC8F600646B72 /* TopRateTVResponseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopRateTVResponseEntity.swift; sourceTree = "<group>"; };
@@ -148,15 +163,6 @@
 		09E5CE232B88FE4700060770 /* Test_AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_AuthManager.swift; sourceTree = "<group>"; };
 		09FECB672B9F652F00AB5DD9 /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		09FECB692B9FA7C400AB5DD9 /* GenresCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenresCell.swift; sourceTree = "<group>"; };
-		1F38E0938C1B9E3A9FB9C405 /* Pods_Movie_StoreTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Movie_StoreTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		20C1CAE2BEA487A34D54AC19 /* Pods_Movie_Store.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Movie_Store.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		4CB5DDB58989D6059D8C3AB6 /* Pods-Movie Store.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Movie Store.release.xcconfig"; path = "Target Support Files/Pods-Movie Store/Pods-Movie Store.release.xcconfig"; sourceTree = "<group>"; };
-		AEF1C6D8A8573194FC472E4A /* Pods-Movie Store-Movie StoreUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Movie Store-Movie StoreUITests.release.xcconfig"; path = "Target Support Files/Pods-Movie Store-Movie StoreUITests/Pods-Movie Store-Movie StoreUITests.release.xcconfig"; sourceTree = "<group>"; };
-		D0E3A915D4B4B90938DFE5FF /* Pods-Movie StoreTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Movie StoreTests.debug.xcconfig"; path = "Target Support Files/Pods-Movie StoreTests/Pods-Movie StoreTests.debug.xcconfig"; sourceTree = "<group>"; };
-		DEE984EB278C22040B1866DC /* Pods-Movie StoreTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Movie StoreTests.release.xcconfig"; path = "Target Support Files/Pods-Movie StoreTests/Pods-Movie StoreTests.release.xcconfig"; sourceTree = "<group>"; };
-		E35D04E50726719BB9B10C4F /* Pods_Movie_Store_Movie_StoreUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Movie_Store_Movie_StoreUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EA10085E1FA87911114DB047 /* Pods-Movie Store-Movie StoreUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Movie Store-Movie StoreUITests.debug.xcconfig"; path = "Target Support Files/Pods-Movie Store-Movie StoreUITests/Pods-Movie Store-Movie StoreUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		F76C753B4C2AA3A848155018 /* Pods-Movie Store.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Movie Store.debug.xcconfig"; path = "Target Support Files/Pods-Movie Store/Pods-Movie Store.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,7 +170,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B4091805199284766043F61F /* Pods_Movie_Store.framework in Frameworks */,
+				0971319D2BCFDA0400A009ED /* FirebaseAnalytics in Frameworks */,
+				0971319F2BCFDA0400A009ED /* FirebaseAuth in Frameworks */,
+				097131A12BCFDA0400A009ED /* FirebaseDatabase in Frameworks */,
+				097131A32BCFDA0400A009ED /* FirebaseFirestore in Frameworks */,
+				09BB924F2BCEE64500550031 /* Kingfisher in Frameworks */,
+				097131A52BCFDA0400A009ED /* FirebaseStorage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -172,7 +183,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				76E8AEEABB5595D05D1BE4B6 /* Pods_Movie_StoreTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -180,13 +190,63 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7C72F61039585F265C0C664B /* Pods_Movie_Store_Movie_StoreUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		092832E82BD6B8BB003376BC /* Cart Items */ = {
+			isa = PBXGroup;
+			children = (
+				092832E92BD6B8D8003376BC /* View */,
+				092832ED2BD6B8F9003376BC /* Interactor */,
+				092832EC2BD6B8EC003376BC /* Presenter */,
+				092832EB2BD6B8E5003376BC /* Entity */,
+				092832EA2BD6B8DE003376BC /* Router */,
+			);
+			path = "Cart Items";
+			sourceTree = "<group>";
+		};
+		092832E92BD6B8D8003376BC /* View */ = {
+			isa = PBXGroup;
+			children = (
+				092832EE2BD6B9DB003376BC /* CartViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		092832EA2BD6B8DE003376BC /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				092832F42BD6BA5D003376BC /* CartRouter.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		092832EB2BD6B8E5003376BC /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
+		092832EC2BD6B8EC003376BC /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				092832F22BD6BA20003376BC /* CartPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		092832ED2BD6B8F9003376BC /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				092832F02BD6BA0C003376BC /* CartInteractor.swift */,
+			);
+			path = Interactor;
+			sourceTree = "<group>";
+		};
 		096782522B86D1F000BB1C7A /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -303,8 +363,6 @@
 				09E026542B7014530033B2D4 /* Movie StoreTests */,
 				09E0265E2B7014540033B2D4 /* Movie StoreUITests */,
 				09E0263C2B7014490033B2D4 /* Products */,
-				2C52E70FAF075A3698CD10CC /* Pods */,
-				D0F04E9BD48583E43F4BB182 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -363,6 +421,7 @@
 				09E5CE1C2B88153600060770 /* CoverItemCell.swift */,
 				09FECB692B9FA7C400AB5DD9 /* GenresCell.swift */,
 				09FECB672B9F652F00AB5DD9 /* DescriptionView.swift */,
+				0998E4A42BD956D700C55407 /* ItemFirestoreModel.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -381,6 +440,7 @@
 		09E026702B7021360033B2D4 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				092832E82BD6B8BB003376BC /* Cart Items */,
 				09E026722B7021530033B2D4 /* Browse */,
 			);
 			path = Core;
@@ -455,6 +515,7 @@
 				09E026792B7022B80033B2D4 /* AuthManager.swift */,
 				0986035C2B71976C00F275FC /* ValidateManager.swift */,
 				092B23F62B8D59DB00B2CB69 /* MapperManager.swift */,
+				092832F62BD6DCC7003376BC /* FirestoreManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -520,29 +581,6 @@
 			path = ModelsCells;
 			sourceTree = "<group>";
 		};
-		2C52E70FAF075A3698CD10CC /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				F76C753B4C2AA3A848155018 /* Pods-Movie Store.debug.xcconfig */,
-				4CB5DDB58989D6059D8C3AB6 /* Pods-Movie Store.release.xcconfig */,
-				EA10085E1FA87911114DB047 /* Pods-Movie Store-Movie StoreUITests.debug.xcconfig */,
-				AEF1C6D8A8573194FC472E4A /* Pods-Movie Store-Movie StoreUITests.release.xcconfig */,
-				D0E3A915D4B4B90938DFE5FF /* Pods-Movie StoreTests.debug.xcconfig */,
-				DEE984EB278C22040B1866DC /* Pods-Movie StoreTests.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
-		D0F04E9BD48583E43F4BB182 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				20C1CAE2BEA487A34D54AC19 /* Pods_Movie_Store.framework */,
-				E35D04E50726719BB9B10C4F /* Pods_Movie_Store_Movie_StoreUITests.framework */,
-				1F38E0938C1B9E3A9FB9C405 /* Pods_Movie_StoreTests.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -550,17 +588,23 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 09E026652B7014540033B2D4 /* Build configuration list for PBXNativeTarget "Movie Store" */;
 			buildPhases = (
-				1EDEE6CB3AE198D1AD90F8E5 /* [CP] Check Pods Manifest.lock */,
 				09E026372B7014490033B2D4 /* Sources */,
 				09E026382B7014490033B2D4 /* Frameworks */,
 				09E026392B7014490033B2D4 /* Resources */,
-				065CE9E2CFAA591B082F6049 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = "Movie Store";
+			packageProductDependencies = (
+				09BB924E2BCEE64500550031 /* Kingfisher */,
+				0971319C2BCFDA0400A009ED /* FirebaseAnalytics */,
+				0971319E2BCFDA0400A009ED /* FirebaseAuth */,
+				097131A02BCFDA0400A009ED /* FirebaseDatabase */,
+				097131A22BCFDA0400A009ED /* FirebaseFirestore */,
+				097131A42BCFDA0400A009ED /* FirebaseStorage */,
+			);
 			productName = "Movie Store";
 			productReference = 09E0263B2B7014490033B2D4 /* Movie Store.app */;
 			productType = "com.apple.product-type.application";
@@ -569,7 +613,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 09E026682B7014540033B2D4 /* Build configuration list for PBXNativeTarget "Movie StoreTests" */;
 			buildPhases = (
-				920AC318F1A70AFC7CB3C794 /* [CP] Check Pods Manifest.lock */,
 				09E0264D2B7014530033B2D4 /* Sources */,
 				09E0264E2B7014530033B2D4 /* Frameworks */,
 				09E0264F2B7014530033B2D4 /* Resources */,
@@ -588,11 +631,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 09E0266B2B7014540033B2D4 /* Build configuration list for PBXNativeTarget "Movie StoreUITests" */;
 			buildPhases = (
-				0290A8B03D3D422E00F632B2 /* [CP] Check Pods Manifest.lock */,
 				09E026572B7014540033B2D4 /* Sources */,
 				09E026582B7014540033B2D4 /* Frameworks */,
 				09E026592B7014540033B2D4 /* Resources */,
-				8724F0E678BA9B270655A698 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -636,6 +677,10 @@
 				Base,
 			);
 			mainGroup = 09E026322B7014480033B2D4;
+			packageReferences = (
+				09BB924D2BCEE64500550031 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				0971319B2BCFDA0400A009ED /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 09E0263C2B7014490033B2D4 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -674,119 +719,19 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		0290A8B03D3D422E00F632B2 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Movie Store-Movie StoreUITests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		065CE9E2CFAA591B082F6049 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Movie Store/Pods-Movie Store-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Movie Store/Pods-Movie Store-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Movie Store/Pods-Movie Store-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		1EDEE6CB3AE198D1AD90F8E5 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Movie Store-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8724F0E678BA9B270655A698 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Movie Store-Movie StoreUITests/Pods-Movie Store-Movie StoreUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Movie Store-Movie StoreUITests/Pods-Movie Store-Movie StoreUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Movie Store-Movie StoreUITests/Pods-Movie Store-Movie StoreUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		920AC318F1A70AFC7CB3C794 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Movie StoreTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		09E026372B7014490033B2D4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				098DF05B2B96279500580718 /* DetailsItemRouter.swift in Sources */,
+				0998E4A52BD956D700C55407 /* ItemFirestoreModel.swift in Sources */,
 				09E026882B7041270033B2D4 /* LogInInterector.swift in Sources */,
 				09BC1E1D2B8FC9EB00646B72 /* OnAirTVResponseEntity.swift in Sources */,
 				09E026802B703CA90033B2D4 /* LogInRouter.swift in Sources */,
+				092832F32BD6BA20003376BC /* CartPresenter.swift in Sources */,
 				09E026432B7014490033B2D4 /* ViewController.swift in Sources */,
+				092832F12BD6BA0C003376BC /* CartInteractor.swift in Sources */,
 				09E026862B703F940033B2D4 /* SignUpRouter.swift in Sources */,
 				09E0267A2B7022B80033B2D4 /* AuthManager.swift in Sources */,
 				09E0263F2B7014490033B2D4 /* AppDelegate.swift in Sources */,
@@ -810,10 +755,12 @@
 				09BC1E152B8FC81500646B72 /* PopularTVResponseEntity.swift in Sources */,
 				09E0267C2B7024420033B2D4 /* LogInViewController.swift in Sources */,
 				09BC1E1F2B8FCA3B00646B72 /* OnAirTVEntity.swift in Sources */,
+				092832F52BD6BA5D003376BC /* CartRouter.swift in Sources */,
 				09BC1E212B8FCD7200646B72 /* TVAiringTodayResponseEntity.swift in Sources */,
 				09E026412B7014490033B2D4 /* SceneDelegate.swift in Sources */,
 				09BC1E172B8FC86C00646B72 /* PopularTVEntity.swift in Sources */,
 				092B23EB2B8D579100B2CB69 /* PopularMovieResponseEntity.swift in Sources */,
+				092832EF2BD6B9DB003376BC /* CartViewController.swift in Sources */,
 				09E5CE202B88194C00060770 /* ItemModelCell.swift in Sources */,
 				098DF05F2B962B5600580718 /* DetailsItemInteractor.swift in Sources */,
 				09BC1E192B8FC8F600646B72 /* TopRateTVResponseEntity.swift in Sources */,
@@ -821,6 +768,7 @@
 				0967825C2B87CB1600BB1C7A /* BrowserPresenter.swift in Sources */,
 				09E0268D2B7042980033B2D4 /* SignUpPresenter.swift in Sources */,
 				09E0268B2B7042400033B2D4 /* LogInPresenter.swift in Sources */,
+				092832F72BD6DCC7003376BC /* FirestoreManager.swift in Sources */,
 				092B23F52B8D588B00B2CB69 /* UpComingEntity.swift in Sources */,
 				091E281C2B87D77300957CE6 /* Constants.swift in Sources */,
 				098DF0632B96376800580718 /* DetailTVResponseEntity.swift in Sources */,
@@ -996,7 +944,6 @@
 		};
 		09E026662B7014540033B2D4 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F76C753B4C2AA3A848155018 /* Pods-Movie Store.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1023,7 +970,6 @@
 		};
 		09E026672B7014540033B2D4 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4CB5DDB58989D6059D8C3AB6 /* Pods-Movie Store.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1050,7 +996,6 @@
 		};
 		09E026692B7014540033B2D4 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D0E3A915D4B4B90938DFE5FF /* Pods-Movie StoreTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1071,7 +1016,6 @@
 		};
 		09E0266A2B7014540033B2D4 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DEE984EB278C22040B1866DC /* Pods-Movie StoreTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1092,7 +1036,6 @@
 		};
 		09E0266C2B7014540033B2D4 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EA10085E1FA87911114DB047 /* Pods-Movie Store-Movie StoreUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1111,7 +1054,6 @@
 		};
 		09E0266D2B7014540033B2D4 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AEF1C6D8A8573194FC472E4A /* Pods-Movie Store-Movie StoreUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1168,6 +1110,58 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0971319B2BCFDA0400A009ED /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		09BB924D2BCEE64500550031 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0971319C2BCFDA0400A009ED /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0971319B2BCFDA0400A009ED /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		0971319E2BCFDA0400A009ED /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0971319B2BCFDA0400A009ED /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		097131A02BCFDA0400A009ED /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0971319B2BCFDA0400A009ED /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		097131A22BCFDA0400A009ED /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0971319B2BCFDA0400A009ED /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		097131A42BCFDA0400A009ED /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0971319B2BCFDA0400A009ED /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+		09BB924E2BCEE64500550031 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 09BB924D2BCEE64500550031 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 09E026332B7014480033B2D4 /* Project object */;
 }

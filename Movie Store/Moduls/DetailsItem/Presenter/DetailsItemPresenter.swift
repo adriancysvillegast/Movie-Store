@@ -6,12 +6,14 @@
 //
 
 import Foundation
+import UIKit
 
 protocol DetailsItemPresentable: AnyObject {
     var view: DetailsItemView? { get }
     var idItem: String { get }
     
     func getItem()
+    func addToCart(from: UIViewController)
 }
 
 class DetailsItemPresenter: DetailsItemPresentable {
@@ -20,6 +22,7 @@ class DetailsItemPresenter: DetailsItemPresentable {
     weak var view: DetailsItemView?
     private let interactor: DetailsItemInteractable
     private let router: DetailsItemRouting
+    
     var idItem: String
     var typeItem: ItemType
     
@@ -49,5 +52,8 @@ class DetailsItemPresenter: DetailsItemPresentable {
         
     }
     
+    func addToCart(from: UIViewController) {
+        router.showCart(itemId: idItem, type: typeItem)
+    }
     
 }
