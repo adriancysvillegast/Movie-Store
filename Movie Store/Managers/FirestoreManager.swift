@@ -11,6 +11,7 @@ import FirebaseFirestore
 // MARK: - FirestoreError
 enum FirestoreError: Error {
     case errorSaving
+    case errorReading
 }
 
 
@@ -41,19 +42,22 @@ final class FirestoreManager {
         }
     }
     
-    func readItems() async {
-        let items: [ItemFirestoreModel] = []
+    func readItems() async throws -> [ItemFirestoreModel] {
+        var items: [ItemFirestoreModel] = []
+        
         do {
           let snapshot = try await db.collection(Constants.collectionItems).getDocuments()
           for document in snapshot.documents {
-              
-              let item = ItemFirestoreModel(dictionary: document.data())
-              print(item)
-              
-//            print("\(document.documentID) => \(document.data())")
+              guard let item = ItemFirestoreModel(dictionary: document.data()) else {
+                  throw FirestoreError.errorReading
+              }
+              items.append(item)
           }
+            return items
+            
         } catch {
           print("Error getting documents: \(error)")
+            throw FirestoreError.errorReading
         }
     }
 }
