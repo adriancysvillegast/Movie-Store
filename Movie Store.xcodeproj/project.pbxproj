@@ -44,6 +44,7 @@
 		098DF0652B96385A00580718 /* DetailMovieResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 098DF0642B96385A00580718 /* DetailMovieResponseEntity.swift */; };
 		098DF0672B9638A800580718 /* GenresResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 098DF0662B9638A800580718 /* GenresResponseEntity.swift */; };
 		0998E4A52BD956D700C55407 /* ItemFirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0998E4A42BD956D700C55407 /* ItemFirestoreModel.swift */; };
+		0998E4A72BDC0A5400C55407 /* ItemsCartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0998E4A62BDC0A5400C55407 /* ItemsCartCell.swift */; };
 		09BB924F2BCEE64500550031 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 09BB924E2BCEE64500550031 /* Kingfisher */; };
 		09BC1E152B8FC81500646B72 /* PopularTVResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09BC1E142B8FC81500646B72 /* PopularTVResponseEntity.swift */; };
 		09BC1E172B8FC86C00646B72 /* PopularTVEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09BC1E162B8FC86C00646B72 /* PopularTVEntity.swift */; };
@@ -128,6 +129,7 @@
 		098DF0642B96385A00580718 /* DetailMovieResponseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMovieResponseEntity.swift; sourceTree = "<group>"; };
 		098DF0662B9638A800580718 /* GenresResponseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenresResponseEntity.swift; sourceTree = "<group>"; };
 		0998E4A42BD956D700C55407 /* ItemFirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemFirestoreModel.swift; sourceTree = "<group>"; };
+		0998E4A62BDC0A5400C55407 /* ItemsCartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsCartCell.swift; sourceTree = "<group>"; };
 		09BC1E142B8FC81500646B72 /* PopularTVResponseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularTVResponseEntity.swift; sourceTree = "<group>"; };
 		09BC1E162B8FC86C00646B72 /* PopularTVEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularTVEntity.swift; sourceTree = "<group>"; };
 		09BC1E182B8FC8F600646B72 /* TopRateTVResponseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopRateTVResponseEntity.swift; sourceTree = "<group>"; };
@@ -422,6 +424,7 @@
 				09FECB692B9FA7C400AB5DD9 /* GenresCell.swift */,
 				09FECB672B9F652F00AB5DD9 /* DescriptionView.swift */,
 				0998E4A42BD956D700C55407 /* ItemFirestoreModel.swift */,
+				0998E4A62BDC0A5400C55407 /* ItemsCartCell.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -750,6 +753,7 @@
 				091E28202B87D9EC00957CE6 /* TopRateEntity.swift in Sources */,
 				0986035D2B71976C00F275FC /* ValidateManager.swift in Sources */,
 				092B23F72B8D59DB00B2CB69 /* MapperManager.swift in Sources */,
+				0998E4A72BDC0A5400C55407 /* ItemsCartCell.swift in Sources */,
 				09E026912B70442D0033B2D4 /* SignUpViewController.swift in Sources */,
 				09E5CE222B88201700060770 /* HeaderReusableCellView.swift in Sources */,
 				09BC1E152B8FC81500646B72 /* PopularTVResponseEntity.swift in Sources */,

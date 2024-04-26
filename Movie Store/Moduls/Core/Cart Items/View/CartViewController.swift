@@ -12,6 +12,7 @@ import UIKit
 protocol CartView: AnyObject {
     func errorAddingItem()
     func success()
+    func showItems(items: [DetailModelCell])
 }
 
 
@@ -24,10 +25,14 @@ class CartViewController: UIViewController {
     
     private let presenter: CartPresenter
     
+    private var items: [DetailModelCell] = []
+    
     private lazy var aTableView: UITableView = {
         let aTable = UITableView()
         aTable.delegate = self
         aTable.dataSource = self
+        aTable.register(ItemsCartCell.self, forCellReuseIdentifier: ItemsCartCell.identifier)
+        aTable.rowHeight = 110
         aTable.translatesAutoresizingMaskIntoConstraints = false
         return aTable
     }()
@@ -77,6 +82,14 @@ class CartViewController: UIViewController {
 // MARK: - Extension - CartView
 
 extension CartViewController: CartView {
+    func showItems(items: [DetailModelCell]) {
+        DispatchQueue.main.async {
+            self.items = items
+            self.aTableView.reloadData()
+            print("showItems running")
+        }
+    }
+    
     func errorAddingItem() {
         let alert = UIAlertController(
             title: "Error",
@@ -96,11 +109,20 @@ extension CartViewController: CartView {
 // MARK: - UITableViewDelegate, UITableViewDataSource
 extension CartViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return items.count
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as UITableViewCell
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: ItemsCartCell.identifier,
+            for: indexPath) as? ItemsCartCell else {
+            return UITableViewCell()
+        }
+        cell.configure(with: items[indexPath.row])
         return cell
     }
     

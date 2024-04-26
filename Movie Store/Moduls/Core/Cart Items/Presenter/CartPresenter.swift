@@ -41,10 +41,11 @@ class CartPresenter: CartPresentable {
     }
     
     // MARK: - Methods
+    
     func addItemToCart() {
-//        llamar a las funciones que guardan los datos en la db de firebase
+        
         Task {
-        let type = detectType()
+            let type = detectType()
             
             let success = try await FirestoreManager.shared.addItem(
                 id: idItem,
@@ -53,22 +54,44 @@ class CartPresenter: CartPresentable {
             
             switch success {
             case true:
-                print("trueeeeee")
                 view?.success()
             case false:
-                print("falssseeeee")
                 view?.errorAddingItem()
             }
             
-            await FirestoreManager.shared.readItems()
+            let itemsSaved = try await FirestoreManager.shared.readItems()
+            getItemInfo(items: itemsSaved)
         }
     }
     
     private func detectType() -> String {
+        
         if typeItem == .movie {
             return "movie"
         }else {
             return "tv"
+        }
+    }
+    
+    private func getItemInfo(items: [ItemFirestoreModel]) {
+        
+        Task {
+            var itemsModel: [DetailModelCell] = []
+            
+            for item in items {
+                
+                if item.type == "movie" {
+                    
+                    let movie = try await interactor.getMovieDetails(id: item.id)
+                    let model = MapperManager.shared.formatItem(value: movie)
+                    itemsModel.append(model)
+                }else {
+                    let tv = try await interactor.getTVDetails(id: item.id)
+                    let model = MapperManager.shared.formatItem(value: tv)
+                    itemsModel.append(model)
+                }
+            }
+            view?.showItems(items: itemsModel)
         }
     }
     
