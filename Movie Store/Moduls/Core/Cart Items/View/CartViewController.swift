@@ -10,7 +10,7 @@ import UIKit
 
 // MARK: - CartView
 protocol CartView: AnyObject {
-    func errorAddingItem()
+    func error(title: String, message: String)
     func success()
     func showItems(items: [DetailModelCell])
 }
@@ -90,10 +90,10 @@ extension CartViewController: CartView {
         }
     }
     
-    func errorAddingItem() {
+    func error(title: String, message: String) {
         let alert = UIAlertController(
-            title: "Error",
-            message: "We got an error adding the item to the Cart. Please try again",
+            title: title,
+            message: message,
             preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
         present(alert, animated: true)
@@ -127,4 +127,16 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete{
+            presenter.deleteItem(id: items[indexPath.row].id)
+            items.remove(at: indexPath.row)
+            tableView.reloadData()
+        }
+    }
 }

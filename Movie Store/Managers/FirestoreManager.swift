@@ -12,6 +12,7 @@ import FirebaseFirestore
 enum FirestoreError: Error {
     case errorSaving
     case errorReading
+    case errorDeleting
 }
 
 
@@ -58,6 +59,15 @@ final class FirestoreManager {
         } catch {
           print("Error getting documents: \(error)")
             throw FirestoreError.errorReading
+        }
+    }
+    
+    func delete(id: String) async throws -> Bool {
+        do {
+            try await db.collection(Constants.collectionItems).document(id).delete()
+            return true
+        } catch {
+            throw FirestoreError.errorDeleting
         }
     }
 }
