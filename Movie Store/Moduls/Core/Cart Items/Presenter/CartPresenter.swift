@@ -56,11 +56,27 @@ class CartPresenter: CartPresentable {
             case true:
                 view?.success()
             case false:
-                view?.errorAddingItem()
+                view?.error(title: "Error", message: "We got an error adding the item to the Cart. Please try again")
             }
             
             let itemsSaved = try await FirestoreManager.shared.readItems()
+            print("step 1 -- \(itemsSaved.count)" )
             getItemInfo(items: itemsSaved)
+        }
+    }
+    
+    func deleteItem(id: String) {
+        Task {
+            let success = try await FirestoreManager.shared.delete(id: id)
+            print("here success \(success)")
+            switch success {
+            case true:
+                let itemsSaved = try await FirestoreManager.shared.readItems()
+//                getItemInfo(items: itemsSaved)
+
+            case false:
+                view?.error(title: "Error", message: "we got an error trying to delete the item")
+            }
         }
     }
     
@@ -94,5 +110,7 @@ class CartPresenter: CartPresentable {
             view?.showItems(items: itemsModel)
         }
     }
+    
+
     
 }
