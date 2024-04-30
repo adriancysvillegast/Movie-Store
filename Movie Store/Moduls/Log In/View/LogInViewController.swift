@@ -7,6 +7,14 @@
 
 import UIKit
 
+protocol LogInView: AnyObject {
+    func showTabBar()
+    func showError(title: String, message: String)
+    func activateButton()
+    func deactivateButton()
+    
+}
+
 class LogInViewController: UIViewController {
     
     // MARK: - Properties
@@ -111,15 +119,15 @@ class LogInViewController: UIViewController {
     
     // MARK: - Targets
     @objc func emailValidate() {
-        
+        presenter.activateButton(email: emailTextField.text, password: passwordTextField.text)
     }
     
     @objc func passwordValidate() {
-        
+        presenter.activateButton(email: emailTextField.text, password: passwordTextField.text)
     }
     
     @objc func logInTapped() {
-        
+        presenter.createAccount(email: emailTextField.text, password: passwordTextField.text)
     }
     
     @objc func goToSignUp() {
@@ -131,6 +139,36 @@ class LogInViewController: UIViewController {
     
 }
 
+// MARK: - LogInView
+extension LogInViewController: LogInView {
+    func activateButton() {
+        DispatchQueue.main.async {
+            self.logInButton.isEnabled = true
+            self.logInButton.backgroundColor = .green
+        }
+    }
+    
+    func deactivateButton() {
+        DispatchQueue.main.async {
+            self.logInButton.isEnabled = false
+            self.logInButton.backgroundColor = .gray
+        }
+    }
+    
+    func showTabBar() {
+        let vc = TabBarController()
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true)
+    }
+    
+    func showError(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+        present(alert, animated: true)
+    }
+}
+
+// MARK: - UITextFieldDelegate
 
 extension LogInViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
