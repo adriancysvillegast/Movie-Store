@@ -7,10 +7,11 @@
 
 import Foundation
 import FirebaseAuth
+import FirebaseDatabase
 
 final class AuthManager {
     // MARK: - Properties
-//    var db: DatabaseReference?
+    var db: DatabaseReference?
 
 
     // MARK: - Methods
@@ -63,12 +64,19 @@ final class AuthManager {
         }
     }
 
+    func isSectionActive() -> Bool {
+        if let _ = Auth.auth().currentUser?.email {
+            return true
+        }else {
+            return false
+        }
+    }
 
     // MARK: - Save username
 
     func saveUserName(user: User, userName: String) {
-//        print(user.email)
-//        self.db?.child("users").child(user.uid).setValue(["username" : userName])
-//        self.db?.child("emails").child(user.uid).setValue(["email" : user.email])
+        print(user.email)
+        self.db?.child("users").child(user.uid).setValue(["username" : userName])
+        self.db?.child("emails").child(user.uid).setValue(["email" : user.email])
     }
 }

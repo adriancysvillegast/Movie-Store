@@ -13,6 +13,7 @@ protocol BrowserRouting: AnyObject {
     var itemDetail: DetailsItemRouting? { get }
     
     func showBrowser(fromVC: UIViewController)
+    func showBrowser() -> UIViewController
     func showDetails(id: String, type: ItemType)
     
 }
@@ -25,6 +26,19 @@ class BrowserRouter: BrowserRouting {
     
     
     // MARK: - Methods
+    
+    func showBrowser() -> UIViewController {
+        itemDetail = DetailsItemRouter()
+        let interactor = BrowserInteractor()
+        let presenter = BrowserPresenter(interactor: interactor, router: self)
+        let view = BrowseViewController(presenter: presenter)
+        
+        viewBrowse = view
+        presenter.view = view
+        interactor.presenter = presenter
+        
+        return view
+    }
     
     func showBrowser(fromVC: UIViewController) {
         itemDetail = DetailsItemRouter()
