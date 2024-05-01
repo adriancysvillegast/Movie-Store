@@ -20,8 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         if AuthManager().isSectionActive() {
             let vc = TabBarController()
-            let nav = UINavigationController(rootViewController: vc)
-            window?.rootViewController = nav
+            window?.rootViewController = vc
             window?.makeKeyAndVisible()
         }else {
             let vc = logInRouter.showLogIn()
