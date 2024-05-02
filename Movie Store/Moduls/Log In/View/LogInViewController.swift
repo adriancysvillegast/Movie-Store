@@ -156,6 +156,9 @@ extension LogInViewController: LogInView {
     }
     
     func showTabBar() {
+        emailTextField.text = ""
+        passwordTextField.text = ""
+        
         let vc = TabBarController()
         vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true)

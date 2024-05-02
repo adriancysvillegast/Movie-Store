@@ -13,6 +13,7 @@ protocol LogInInteractable: AnyObject {
     func validateEmail(email: String?) -> Bool
     func validatePass(password: String?) -> Bool
     func logIn(email: String, password: String, complation: @escaping (Bool ) -> () )
+    
 }
 
 class LogInInterector: LogInInteractable {

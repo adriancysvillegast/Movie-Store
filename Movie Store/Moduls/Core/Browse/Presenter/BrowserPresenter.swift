@@ -25,6 +25,8 @@ protocol BrowserPresentable: AnyObject {
     func validatePagesToDownloadData(option: RowSelected)
     func getDetails(id: Int, type: ItemType)
     func addItem() -> [ItemModelCell]
+    func logOutAccount()
+    
 }
 
 class BrowserPresenter: BrowserPresentable {
@@ -253,6 +255,16 @@ class BrowserPresenter: BrowserPresentable {
     
     func addItem() -> [ItemModelCell] {
         return self.newItems
+    }
+    
+    
+    func logOutAccount() {
+        if interactor.logOutAccount() {
+            view?.goBackToLogIn() //este no esta funcionando 
+        }else {
+            view?.showError(message: "Error trying to log out")
+        }
+        
     }
 }
 

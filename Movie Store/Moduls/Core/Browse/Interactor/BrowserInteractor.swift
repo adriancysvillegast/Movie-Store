@@ -19,6 +19,7 @@ protocol BrowserInteractable : AnyObject {
     func getPopularTV(page: Int?) async throws -> PopularTVResponseEntity
     func getOnAirTV(page: Int?) async throws -> OnAirTVResponseEntity
     func getAiringTodayTV(page: Int?) async throws -> TVAiringTodayResponseEntity
+    func logOutAccount() -> Bool
 }
 
 class BrowserInteractor: BrowserInteractable {
@@ -26,6 +27,12 @@ class BrowserInteractor: BrowserInteractable {
     // MARK: - Properties
     
     weak var presenter: BrowserPresentable?
+    private var authManager: AuthManager
+    
+    init(authManager: AuthManager = AuthManager() ) {
+        self.authManager = authManager
+    }
+    
     
     // MARK: - Methods
     
@@ -150,5 +157,10 @@ class BrowserInteractor: BrowserInteractable {
         } catch  {
             throw APIError.errorApi
         }
+    }
+    
+    func logOutAccount() -> Bool {
+        let result = authManager.logOut()
+        return result
     }
 }
