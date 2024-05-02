@@ -14,6 +14,7 @@ protocol BrowseView: AnyObject {
     func hiddenError()
     func showError(message: String)
     func reloadTable()
+    func goBackToLogIn()
     
 }
 
@@ -110,6 +111,13 @@ class BrowseViewController: UIViewController {
     
     private func setUpView() {
         view.backgroundColor = .systemBackground
+        
+        navigationItem.setRightBarButton(
+            UIBarButtonItem(image: UIImage(systemName: "person"),
+                            style: .done,
+                            target: self,
+                            action: #selector(logOut)),
+            animated: true)
         [aCollectionView,alertIcon, messageError, tryAgainButton, spinnerLoading].forEach {
             view.addSubview($0)
         }
@@ -117,6 +125,11 @@ class BrowseViewController: UIViewController {
     
     @objc func tryAgain() {
         presenter.getMovies()
+    }
+    
+    
+    @objc func logOut() {
+        presenter.logOutAccount()
     }
     
     // MARK: - Methods
@@ -291,6 +304,12 @@ class BrowseViewController: UIViewController {
 
 // MARK: - BrowseView
 extension BrowseViewController: BrowseView {
+    func goBackToLogIn() {
+        DispatchQueue.main.async {
+            self.navigationController?.dismiss(animated: true)
+        }
+    }
+    
     func reloadTable() {
         DispatchQueue.main.async {
             self.aCollectionView.reloadData()
