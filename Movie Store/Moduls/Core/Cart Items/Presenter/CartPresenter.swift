@@ -45,38 +45,38 @@ class CartPresenter: CartPresentable {
     func addItemToCart() {
         
         Task {
-            let type = detectType()
-            
-            let success = try await FirestoreManager.shared.addItem(
-                id: idItem,
-                type: type
-            )
-            
-            switch success {
-            case true:
-                view?.success()
-            case false:
-                view?.error(title: "Error", message: "We got an error adding the item to the Cart. Please try again")
-            }
-            
-            let itemsSaved = try await FirestoreManager.shared.readItems()
-            print("step 1 -- \(itemsSaved.count)" )
-            getItemInfo(items: itemsSaved)
+//            let type = detectType()
+//
+//            let success = try await FirestoreManager.shared.addItem(
+//                id: idItem,
+//                type: type
+//            )
+//
+//            switch success {
+//            case true:
+//                view?.success()
+//            case false:
+//                view?.error(title: "Error", message: "We got an error adding the item to the Cart. Please try again")
+//            }
+//
+//            let itemsSaved = try await FirestoreManager.shared.readItems()
+//            print("step 1 -- \(itemsSaved.count)" )
+//            getItemInfo(items: itemsSaved)
         }
     }
     
     func deleteItem(id: String) {
         Task {
-            let success = try await FirestoreManager.shared.delete(id: id)
-            print("here success \(success)")
-            switch success {
-            case true:
-                let itemsSaved = try await FirestoreManager.shared.readItems()
-//                getItemInfo(items: itemsSaved)
-
-            case false:
-                view?.error(title: "Error", message: "we got an error trying to delete the item")
-            }
+//            let success = try await FirestoreManager.shared.delete(id: id)
+//            print("here success \(success)")
+//            switch success {
+//            case true:
+//                let itemsSaved = try await FirestoreManager.shared.readItems()
+////                getItemInfo(items: itemsSaved)
+//
+//            case false:
+//                view?.error(title: "Error", message: "we got an error trying to delete the item")
+//            }
         }
     }
     
