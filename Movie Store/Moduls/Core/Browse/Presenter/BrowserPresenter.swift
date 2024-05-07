@@ -264,8 +264,8 @@ class BrowserPresenter: BrowserPresentable {
         }else {
             view?.showError(message: "Error trying to log out")
         }
-        
     }
+    
 }
 
 enum RowSelected {

@@ -129,7 +129,13 @@ class BrowseViewController: UIViewController {
     
     
     @objc func logOut() {
-        presenter.logOutAccount()
+        
+        let alert = UIAlertController(title: "Leave your Account", message: "", preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Log out", style: .default, handler: { _ in
+            self.presenter.logOutAccount()
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        present(alert, animated: true)
     }
     
     // MARK: - Methods
