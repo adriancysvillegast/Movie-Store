@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum APIError: Error{
+enum APIError: Error {
     case errorUrl
     case errorApi
     

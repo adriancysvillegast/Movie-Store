@@ -12,9 +12,10 @@ import Foundation
 protocol CartPresentable: AnyObject {
     var view: CartView? { get }
     var idItem: String { get }
-    
+    var itemsInDB: [ItemsDB] { get }
     
     func addItemToCart()
+    func readItemsOnDB()
 }
 
 
@@ -25,6 +26,7 @@ class CartPresenter: CartPresentable {
     
     var view: CartView?
     var idItem: String
+    var itemsInDB: [ItemsDB] = []
     
     private var interactor: CartInteractable
     private var router: CartRouting
@@ -43,40 +45,68 @@ class CartPresenter: CartPresentable {
     // MARK: - Methods
     
     func addItemToCart() {
-        
         Task {
-//            let type = detectType()
-//
-//            let success = try await FirestoreManager.shared.addItem(
-//                id: idItem,
-//                type: type
-//            )
-//
-//            switch success {
-//            case true:
-//                view?.success()
-//            case false:
-//                view?.error(title: "Error", message: "We got an error adding the item to the Cart. Please try again")
-//            }
-//
-//            let itemsSaved = try await FirestoreManager.shared.readItems()
-//            print("step 1 -- \(itemsSaved.count)" )
-//            getItemInfo(items: itemsSaved)
+            print("start task")
+            let type = detectType()
+            
+            FirestoreDatabaseManager.shared.saveItem(id: idItem, type: type) { success in
+                switch success {
+                case true:
+                    self.view?.success()
+                    self.readItemsOnDB()
+                    print("self.view?.success() and self.readItemsOnDB()")
+                case false:
+                    self.view?.error(title: "Error", message: "We got an error adding the item to the Cart. Please try again")
+
+                }
+            }
         }
+        
+        
+    }
+    
+    
+    func readItemsOnDB()  {
+        Task {
+            var itemsModel : [DetailModelCell] = []
+            do {
+                let items = try await FirestoreDatabaseManager.shared.readItems(section: .cart)
+                itemsInDB = items
+                
+                for item in items {
+                    
+                    switch item.type {
+                    case "movie":
+                        let movie = try await interactor.getMovieDetails(id: item.idObjc)
+                        let model = MapperManager.shared.formatItem(value: movie)
+                        itemsModel.append(model)
+                    case "tv":
+                        let tv = try await interactor.getTVDetails(id: item.idObjc)
+                        let model = MapperManager.shared.formatItem(value: tv)
+                        itemsModel.append(model)
+                    default:
+                        break
+                    }
+                }
+                
+                self.view?.showItems(items: itemsModel)
+            }catch errorDB.errorID {
+                self.view?.error(title: "Ups!", message: "we got an error trying to get the items in the cart ")
+            } catch errorDB.error {
+                self.view?.error(title: "Ups!", message: "we got an error trying to get the items in the cart ")
+            }catch errorDB.withOutData {
+                self.view?.error(title: "Ups!", message: "we got an error trying to get the items in the cart ")
+            } catch {
+                self.view?.error(title: "Ups!", message: "we got an error trying to get the items in the cart ")
+            }
+            
+        }
+        
     }
     
     func deleteItem(id: String) {
         Task {
-//            let success = try await FirestoreManager.shared.delete(id: id)
-//            print("here success \(success)")
-//            switch success {
-//            case true:
-//                let itemsSaved = try await FirestoreManager.shared.readItems()
-////                getItemInfo(items: itemsSaved)
-//
-//            case false:
-//                view?.error(title: "Error", message: "we got an error trying to delete the item")
-//            }
+            
         }
     }
     
@@ -110,7 +140,5 @@ class CartPresenter: CartPresentable {
             view?.showItems(items: itemsModel)
         }
     }
-    
-
     
 }
