@@ -13,6 +13,10 @@ final class AuthManager {
     // MARK: - Properties
     var db: DatabaseReference?
 
+    var user: User? = {
+        guard let user = Auth.auth().currentUser else { return nil }
+        return user
+    }()
 
     // MARK: - Methods
 
