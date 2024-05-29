@@ -44,6 +44,10 @@
 		098DF0632B96376800580718 /* DetailTVResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 098DF0622B96376800580718 /* DetailTVResponseEntity.swift */; };
 		098DF0652B96385A00580718 /* DetailMovieResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 098DF0642B96385A00580718 /* DetailMovieResponseEntity.swift */; };
 		098DF0672B9638A800580718 /* GenresResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 098DF0662B9638A800580718 /* GenresResponseEntity.swift */; };
+		0992BED32C0784F0007E202C /* FavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0992BED22C0784F0007E202C /* FavoriteViewController.swift */; };
+		0992BED52C0785FB007E202C /* FavoriteInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0992BED42C0785FB007E202C /* FavoriteInteractor.swift */; };
+		0992BED72C078645007E202C /* FavoritePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0992BED62C078645007E202C /* FavoritePresenter.swift */; };
+		0992BED92C078659007E202C /* FavoriteRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0992BED82C078659007E202C /* FavoriteRouter.swift */; };
 		0998E4A52BD956D700C55407 /* ItemFirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0998E4A42BD956D700C55407 /* ItemFirestoreModel.swift */; };
 		0998E4A72BDC0A5400C55407 /* ItemsCartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0998E4A62BDC0A5400C55407 /* ItemsCartCell.swift */; };
 		099CCCC02BF29842002C3199 /* FirestoreDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099CCCBF2BF29842002C3199 /* FirestoreDatabaseManager.swift */; };
@@ -131,6 +135,10 @@
 		098DF0622B96376800580718 /* DetailTVResponseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTVResponseEntity.swift; sourceTree = "<group>"; };
 		098DF0642B96385A00580718 /* DetailMovieResponseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMovieResponseEntity.swift; sourceTree = "<group>"; };
 		098DF0662B9638A800580718 /* GenresResponseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenresResponseEntity.swift; sourceTree = "<group>"; };
+		0992BED22C0784F0007E202C /* FavoriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteViewController.swift; sourceTree = "<group>"; };
+		0992BED42C0785FB007E202C /* FavoriteInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteInteractor.swift; sourceTree = "<group>"; };
+		0992BED62C078645007E202C /* FavoritePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritePresenter.swift; sourceTree = "<group>"; };
+		0992BED82C078659007E202C /* FavoriteRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRouter.swift; sourceTree = "<group>"; };
 		0998E4A42BD956D700C55407 /* ItemFirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemFirestoreModel.swift; sourceTree = "<group>"; };
 		0998E4A62BDC0A5400C55407 /* ItemsCartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsCartCell.swift; sourceTree = "<group>"; };
 		099CCCBF2BF29842002C3199 /* FirestoreDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDatabaseManager.swift; sourceTree = "<group>"; };
@@ -362,6 +370,57 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		0992BECC2C0783EA007E202C /* Favorite Items */ = {
+			isa = PBXGroup;
+			children = (
+				0992BECD2C0783FF007E202C /* View */,
+				0992BECE2C07840E007E202C /* Interactor */,
+				0992BECF2C07841A007E202C /* Presenter */,
+				0992BED02C078422007E202C /* Entity */,
+				0992BED12C078430007E202C /* Router */,
+			);
+			path = "Favorite Items";
+			sourceTree = "<group>";
+		};
+		0992BECD2C0783FF007E202C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				0992BED22C0784F0007E202C /* FavoriteViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		0992BECE2C07840E007E202C /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				0992BED42C0785FB007E202C /* FavoriteInteractor.swift */,
+			);
+			path = Interactor;
+			sourceTree = "<group>";
+		};
+		0992BECF2C07841A007E202C /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				0992BED62C078645007E202C /* FavoritePresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		0992BED02C078422007E202C /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
+		0992BED12C078430007E202C /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				0992BED82C078659007E202C /* FavoriteRouter.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
 		09E026322B7014480033B2D4 = {
 			isa = PBXGroup;
 			children = (
@@ -447,6 +506,7 @@
 		09E026702B7021360033B2D4 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				0992BECC2C0783EA007E202C /* Favorite Items */,
 				092832E82BD6B8BB003376BC /* Cart Items */,
 				09E026722B7021530033B2D4 /* Browse */,
 				098A579B2BE11A8D008F3329 /* TabBarController.swift */,
@@ -733,6 +793,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0992BED92C078659007E202C /* FavoriteRouter.swift in Sources */,
 				098DF05B2B96279500580718 /* DetailsItemRouter.swift in Sources */,
 				0998E4A52BD956D700C55407 /* ItemFirestoreModel.swift in Sources */,
 				09E026882B7041270033B2D4 /* LogInInterector.swift in Sources */,
@@ -740,6 +801,7 @@
 				09E026802B703CA90033B2D4 /* LogInRouter.swift in Sources */,
 				092832F32BD6BA20003376BC /* CartPresenter.swift in Sources */,
 				09E026432B7014490033B2D4 /* ViewController.swift in Sources */,
+				0992BED32C0784F0007E202C /* FavoriteViewController.swift in Sources */,
 				092832F12BD6BA0C003376BC /* CartInteractor.swift in Sources */,
 				09E026862B703F940033B2D4 /* SignUpRouter.swift in Sources */,
 				09E0267A2B7022B80033B2D4 /* AuthManager.swift in Sources */,
@@ -758,6 +820,7 @@
 				0911703B2B98DFB3002B9DE8 /* DetailModelCell.swift in Sources */,
 				091E28202B87D9EC00957CE6 /* TopRateEntity.swift in Sources */,
 				0986035D2B71976C00F275FC /* ValidateManager.swift in Sources */,
+				0992BED52C0785FB007E202C /* FavoriteInteractor.swift in Sources */,
 				092B23F72B8D59DB00B2CB69 /* MapperManager.swift in Sources */,
 				099CCCC02BF29842002C3199 /* FirestoreDatabaseManager.swift in Sources */,
 				0998E4A72BDC0A5400C55407 /* ItemsCartCell.swift in Sources */,
@@ -787,6 +850,7 @@
 				092B23EF2B8D57D300B2CB69 /* NowPlayingResponseEntity.swift in Sources */,
 				098DF0612B962C1F00580718 /* DetailsItemViewController.swift in Sources */,
 				09BC1E232B8FCDA400646B72 /* TVAiringTodayEntity.swift in Sources */,
+				0992BED72C078645007E202C /* FavoritePresenter.swift in Sources */,
 				091E28222B87DE7700957CE6 /* APIError.swift in Sources */,
 				092B23F12B8D581700B2CB69 /* NowPlayingEntity.swift in Sources */,
 				09BC1E1B2B8FC96800646B72 /* TopRateTVEntity.swift in Sources */,
