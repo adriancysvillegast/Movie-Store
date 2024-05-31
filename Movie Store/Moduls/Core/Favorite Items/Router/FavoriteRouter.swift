@@ -11,7 +11,8 @@ import UIKit
 protocol FavoriteRouting: AnyObject {
     var favoriteView: FavoriteView? { get }
     
-    func showFavorite() -> UIViewController
+    func showFavoriteFromTabBar() -> UIViewController
+    func showFavorite(from: UIViewController, idItem: String, type: ItemType)
 }
 
 class FavoriteRouter: FavoriteRouting {
@@ -22,10 +23,13 @@ class FavoriteRouter: FavoriteRouting {
     // MARK: - Init
     
     // MARK: - Methods
-    func showFavorite() -> UIViewController {
+    func showFavoriteFromTabBar() -> UIViewController {
         
         let interactor = FavoriteInteractor()
-        let presenter = FavoritePresenter(interactor: interactor, router: self)
+        let presenter = FavoritePresenter(interactor: interactor,
+                                          router: self,
+                                          idItem: nil,
+                                          typeItem: nil)
         let view = FavoriteViewController(presenter: presenter)
         
         favoriteView = view
@@ -33,5 +37,24 @@ class FavoriteRouter: FavoriteRouting {
         interactor.presenter = presenter
         return view
     }
+    
+    func showFavorite(from: UIViewController,
+                      idItem: String,
+                      type: ItemType) {
+        
+        let interactor = FavoriteInteractor()
+        let presenter = FavoritePresenter(interactor: interactor,
+                                          router: self,
+                                          idItem: idItem,
+                                          typeItem: type)
+        let view = FavoriteViewController(presenter: presenter)
+        view.title = "Favorite"
+        view.navigationItem.largeTitleDisplayMode = .never
+        presenter.view = view
+        interactor.presenter = presenter
+        
+        from.navigationController?.pushViewController(view, animated: true)
+    }
+    
     
 }

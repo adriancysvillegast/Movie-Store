@@ -46,10 +46,8 @@ class CartPresenter: CartPresentable {
     
     func addItemToCart() {
         Task {
-            print("start task")
-            let type = detectType()
             
-            FirestoreDatabaseManager.shared.saveItem(id: idItem, type: type) { success in
+            FirestoreDatabaseManager.shared.saveItem(id: idItem, typeItem: typeItem, section: .cart) { success in
                 switch success {
                 case true:
                     self.view?.success()
@@ -110,14 +108,17 @@ class CartPresenter: CartPresentable {
         }
     }
     
-    private func detectType() -> String {
-        
-        if typeItem == .movie {
-            return "movie"
-        }else {
-            return "tv"
-        }
-    }
+//    private func detectType() -> String {
+//
+//        switch typeItem {
+////        case .favorite:
+////            return "favorite"
+//        case .tv:
+//            return "tv"
+//        case .movie:
+//            return "movie"
+//        }
+//    }
     
     private func getItemInfo(items: [ItemFirestoreModel]) {
         
@@ -131,7 +132,7 @@ class CartPresenter: CartPresentable {
                     let movie = try await interactor.getMovieDetails(id: item.id)
                     let model = MapperManager.shared.formatItem(value: movie)
                     itemsModel.append(model)
-                }else {
+                }else if item.type == "tv" {
                     let tv = try await interactor.getTVDetails(id: item.id)
                     let model = MapperManager.shared.formatItem(value: tv)
                     itemsModel.append(model)

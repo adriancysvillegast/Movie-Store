@@ -11,17 +11,21 @@ import UIKit
 protocol DetailsItemRouting: AnyObject {
     var viewDetail: DetailsItemViewController? { get }
     var cartRouter: CartRouting? { get }
+    var favoriteRouter: FavoriteRouting? { get }
     
     func showDetails(idItem: String, type: ItemType, fromVC: UIViewController)
     func showCart(itemId: String, type: ItemType)
+    func saveInFavoriteList(itemID: String, type: ItemType)
 }
 
 class DetailsItemRouter: DetailsItemRouting {
     var cartRouter: CartRouting?
+    var favoriteRouter: FavoriteRouting?
     var viewDetail: DetailsItemViewController?
     
     func showDetails(idItem: String, type: ItemType, fromVC: UIViewController) {
         cartRouter = CartRouter()
+        favoriteRouter = FavoriteRouter()
         
         let interactor = DetailsItemInteractor()
         let presenter = DetailsItemPresenter(interactor: interactor, router: self, idItem: idItem, type: type)
@@ -39,5 +43,14 @@ class DetailsItemRouter: DetailsItemRouting {
             return
         }
         cartRouter?.showCart(from: VC, idItem: itemId, type: type)
+    }
+    
+    func saveInFavoriteList(itemID: String, type: ItemType) {
+        guard let vc = viewDetail else {
+            print("error in \(#function)")
+            return
+        }
+        
+        favoriteRouter?.showFavorite(from: vc, idItem: itemID, type: type)
     }
 }

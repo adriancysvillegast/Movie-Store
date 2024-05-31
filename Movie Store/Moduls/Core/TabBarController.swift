@@ -34,7 +34,7 @@ class TabBarController: UITabBarController {
     func setupVCs() {
             viewControllers = [
                 createNavController(for: BrowserRouter().showBrowser(), title: NSLocalizedString("Browse", comment: ""), image: UIImage(systemName: "house")!),
-                createNavController(for: FavoriteRouter().showFavorite(), title: NSLocalizedString("Favorite", comment: ""), image: UIImage(systemName: "bookmark")!)
+                createNavController(for: FavoriteRouter().showFavoriteFromTabBar(), title: NSLocalizedString("Favorite", comment: ""), image: UIImage(systemName: "bookmark")!)
                 
             ]
         }
