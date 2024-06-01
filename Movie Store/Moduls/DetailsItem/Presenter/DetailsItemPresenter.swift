@@ -14,6 +14,7 @@ protocol DetailsItemPresentable: AnyObject {
     
     func getItem()
     func addToCart(from: UIViewController)
+    func addToFavorite(from: UIViewController)
 }
 
 class DetailsItemPresenter: DetailsItemPresentable {
@@ -56,4 +57,7 @@ class DetailsItemPresenter: DetailsItemPresentable {
         router.showCart(itemId: idItem, type: typeItem)
     }
     
+    func addToFavorite(from: UIViewController) {
+        router.saveInFavoriteList(itemID: idItem, type: typeItem)
+    }
 }

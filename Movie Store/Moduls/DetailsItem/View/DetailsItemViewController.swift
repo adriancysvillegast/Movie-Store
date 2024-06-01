@@ -269,7 +269,7 @@ class DetailsItemViewController: UIViewController {
     // MARK: - Targets
     
     @objc func addToSaved() {
-        
+        presenter.addToFavorite(from: self)
     }
     
     @objc func buyMovie() {
