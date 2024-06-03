@@ -13,6 +13,11 @@ protocol FavoriteInteractable: AnyObject {
     func saveItem(id: String, type: ItemType, completion: @escaping (Bool) -> Void)
     func getItems() async throws -> [ItemsDB]
     
+    func deleteItems(section: SectionDB,
+                     type: ItemType,
+                     idDB: String,
+                     completion: @escaping (Bool) -> Void)
+    
     func getMovieDetails(id: String) async throws -> DetailMovieResponseEntity
     func getTVDetails(id: String) async throws -> DetailTVResponseEntity
 }
@@ -26,7 +31,11 @@ class FavoriteInteractor: FavoriteInteractable {
     
     // MARK: - Methods
     
-    func saveItem(id: String, type: ItemType, completion: @escaping (Bool) -> Void ){
+    func saveItem(
+        id: String,
+        type: ItemType,
+        completion: @escaping (Bool) -> Void
+    ){
         
         FirestoreDatabaseManager.shared.saveItem(
             id: id,
@@ -48,6 +57,16 @@ class FavoriteInteractor: FavoriteInteractable {
         }
     }
     
+    func deleteItems(
+        section: SectionDB,
+        type: ItemType,
+        idDB: String,
+        completion: @escaping (Bool) -> Void
+    ) {
+        FirestoreDatabaseManager.shared.deleteItems(section: section, type: type, idDB: idDB) { success in
+            completion(success)
+        }
+    }
     
     func getMovieDetails(id: String) async throws -> DetailMovieResponseEntity {
         

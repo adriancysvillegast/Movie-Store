@@ -14,6 +14,7 @@ protocol FavoritePresentable: AnyObject {
     
     func addItems()
     func getItems()
+    func deleteItem(index: Int)
     
 }
 
@@ -90,5 +91,24 @@ class FavoritePresenter : FavoritePresentable {
         }
     }
     
-    
+    func deleteItem(index: Int) {
+        
+        let item = itemsInDB[index]
+        let type: ItemType = item.type == "movie" ? .movie : .tv
+        
+        interactor.deleteItems(
+            section: .favorite,
+            type: type ,
+            idDB: item.idDB) { success in
+                switch success {
+                case true:
+                    self.itemsInDB.remove(at: index)
+                    self.view?.reloadCell(index: index)
+                case false:
+                    self.view?.showAlert(title: "Error", message: "we got an error trying to delete the item")
+                }
+            }
+        
+        
+    }
 }

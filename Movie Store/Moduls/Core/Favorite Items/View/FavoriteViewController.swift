@@ -12,6 +12,7 @@ protocol FavoriteView: AnyObject {
     func desactivateSpinner()
     func getItems(items: [DetailModelCell])
     func showAlert(title: String, message: String)
+    func reloadCell(index: Int)
 }
 
 class FavoriteViewController: UIViewController {
@@ -66,10 +67,10 @@ class FavoriteViewController: UIViewController {
     
     // MARK: - LifeCicle
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        refreshData()
-    }
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        refreshData()
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -149,6 +150,12 @@ extension FavoriteViewController: FavoriteView {
         
     }
     
+    func reloadCell(index: Int) {
+        DispatchQueue.main.async {
+            self.items.remove(at: index)
+            self.aTableView.reloadData()
+        }
+    }
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
@@ -167,6 +174,11 @@ extension FavoriteViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            presenter.deleteItem(index: indexPath.row)
+        }
+    }
     
     
 }

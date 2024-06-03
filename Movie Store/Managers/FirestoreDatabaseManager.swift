@@ -26,7 +26,7 @@ final class FirestoreDatabaseManager {
         
         guard let user = auth.user?.uid else {
             completion(false)
-            print("false -----")
+            //            print("false -----")
             return
         }
         
@@ -73,44 +73,6 @@ final class FirestoreDatabaseManager {
                 }
             }
         }
-        
-        //    func saveItem(id: String, section: ItemType,
-        //                  completion: @escaping (Bool) -> Void) {
-        //
-        //        guard let user = auth.user?.uid else {
-        //            completion(false)
-        //            print("false -----")
-        //            return
-        //        }
-        //
-        //        switch section {
-        //        case .movie:
-        //            self.ref.child("itemsOnBag").child(user).child("items").child("movies").childByAutoId().setValue(id) { error, success in
-        //                guard error == nil else {
-        //                    completion(false)
-        //                    return
-        //                }
-        //                completion(true)
-        //            }
-        //
-        //        case .tv:
-        //            self.ref.child("itemsOnBag").child(user).child("items").child("tv").childByAutoId().setValue(id) { error, success in
-        //                guard error == nil else {
-        //                    completion(false)
-        //                    return
-        //                }
-        //                completion(true)
-        //            }
-        //        case .favorite:
-        //            self.ref.child("itemsOnBag").child(user).child("items").child("favorite").childByAutoId().setValue(id) { error, success in
-        //                guard error == nil else {
-        //                    completion(false)
-        //                    return
-        //                }
-        //                completion(true)
-        //            }
-        //        }
-        //    }
     }
     
     func readItems(section: SectionDB) async throws -> [ItemsDB] {
@@ -163,26 +125,74 @@ final class FirestoreDatabaseManager {
                 } catch  {
                     throw errorDB.error
                 }
-//                do {
-//                    let snapFavorite = try await ref.child("itemsOnBag/\(id)/items/favorite/").getData()
-//                    let movieObj = snapFavorite.value as? [String: String] ?? [:]
-//                    for (key, value ) in movieObj {
-//                        let item = ItemsDB(type: "favorite", idObjc: value, idDB: key)
-//                        items.append(item)
-//                    }
-//                    return items
-//                } catch  {
-//                    throw errorDB.error
-//                }
             }
-            
-            
-            
         }else {
             print("error with id user")
             throw errorDB.errorID
         }
         
+    }
+    
+    func deleteItems(
+        section: SectionDB,
+        type: ItemType,
+        idDB: String,
+        completion: @escaping (Bool) -> Void
+    ) {
+        
+        guard let id = auth.user?.uid else {
+            return
+        }
+        
+        switch section {
+        case .cart:
+            
+            switch type {
+            case .movie:
+                let item = ref.child("itemsOnBag/\(id)/items/favorite/movie/\(idDB)")
+                item.removeValue { error, reference in
+                    if let error = error {
+                        completion(false)
+                    }else {
+                        completion(true)
+                    }
+                }
+            case .tv:
+                let item = ref.child("itemsOnBag/\(id)/items/favorite/tv/\(idDB)")
+                item.removeValue { error, reference in
+                    if let error = error {
+                        completion(false)
+                    }else {
+                        completion(true)
+                    }
+                }
+            }
+        case .favorite:
+            
+            switch type {
+            case .movie:
+                let item = ref.child("itemsOnBag/\(id)/items/favorite/movies/\(idDB)")
+                item.removeValue { error, reference in
+                    if let error = error {
+                        completion(false)
+                    }else {
+                        completion(true)
+                    }
+                }
+                
+                
+                
+            case .tv :
+                let item = ref.child("itemsOnBag/\(id)/items/favorite/tv/\(idDB)")
+                item.removeValue { error, reference in
+                    if let error = error {
+                        completion(false)
+                    }else {
+                        completion(true)
+                    }
+                }
+            }
+        }
     }
     
 }
