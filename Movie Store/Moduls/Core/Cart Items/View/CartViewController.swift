@@ -13,6 +13,7 @@ protocol CartView: AnyObject {
     func error(title: String, message: String)
     func success()
     func showItems(items: [DetailModelCell])
+    func reloadCell(index: Int)
 }
 
 
@@ -103,6 +104,12 @@ extension CartViewController: CartView {
         print(" Was success")
     }
     
+    func reloadCell(index: Int) {
+        DispatchQueue.main.async {
+            self.items.remove(at: index)
+            self.aTableView.reloadData()
+        }
+    }
     
 }
 
@@ -134,9 +141,7 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete{
-            presenter.deleteItem(id: items[indexPath.row].id)
-            items.remove(at: indexPath.row)
-            tableView.reloadData()
+            presenter.deleteItem(index: indexPath.row)
         }
     }
 }

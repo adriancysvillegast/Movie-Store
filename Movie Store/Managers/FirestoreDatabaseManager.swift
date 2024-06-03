@@ -149,7 +149,7 @@ final class FirestoreDatabaseManager {
             
             switch type {
             case .movie:
-                let item = ref.child("itemsOnBag/\(id)/items/favorite/movie/\(idDB)")
+                let item = ref.child("itemsOnBag/\(id)/items/movies/\(idDB)")
                 item.removeValue { error, reference in
                     if let error = error {
                         completion(false)
@@ -158,7 +158,7 @@ final class FirestoreDatabaseManager {
                     }
                 }
             case .tv:
-                let item = ref.child("itemsOnBag/\(id)/items/favorite/tv/\(idDB)")
+                let item = ref.child("itemsOnBag/\(id)/items/tv/\(idDB)")
                 item.removeValue { error, reference in
                     if let error = error {
                         completion(false)
