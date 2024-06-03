@@ -15,6 +15,11 @@ protocol CartInteractable: AnyObject {
     
     func getMovieDetails(id: String) async throws -> DetailMovieResponseEntity
     func getTVDetails(id: String) async throws -> DetailTVResponseEntity
+    
+    func deleteItem(section: SectionDB,
+                    type: ItemType,
+                    idDB: String,
+                    completion: @escaping (Bool) -> Void)
 }
 
 // MARK: - CartInteractor
@@ -54,4 +59,15 @@ class CartInteractor: CartInteractable {
         }
     }
     
+    func deleteItem(section: SectionDB,
+                    type: ItemType,
+                    idDB: String,
+                    completion: @escaping (Bool) -> Void) {
+        FirestoreDatabaseManager.shared.deleteItems(
+            section: section,
+            type: type,
+            idDB: idDB) { success in
+                completion(success)
+            }
+    }
 }
