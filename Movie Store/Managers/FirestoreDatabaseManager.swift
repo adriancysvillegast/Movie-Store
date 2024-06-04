@@ -151,7 +151,7 @@ final class FirestoreDatabaseManager {
             case .movie:
                 let item = ref.child("itemsOnBag/\(id)/items/movies/\(idDB)")
                 item.removeValue { error, reference in
-                    if let error = error {
+                    if let _ = error {
                         completion(false)
                     }else {
                         completion(true)
@@ -160,7 +160,7 @@ final class FirestoreDatabaseManager {
             case .tv:
                 let item = ref.child("itemsOnBag/\(id)/items/tv/\(idDB)")
                 item.removeValue { error, reference in
-                    if let error = error {
+                    if let _ = error {
                         completion(false)
                     }else {
                         completion(true)
@@ -173,7 +173,7 @@ final class FirestoreDatabaseManager {
             case .movie:
                 let item = ref.child("itemsOnBag/\(id)/items/favorite/movies/\(idDB)")
                 item.removeValue { error, reference in
-                    if let error = error {
+                    if let _ = error {
                         completion(false)
                     }else {
                         completion(true)
@@ -185,7 +185,7 @@ final class FirestoreDatabaseManager {
             case .tv :
                 let item = ref.child("itemsOnBag/\(id)/items/favorite/tv/\(idDB)")
                 item.removeValue { error, reference in
-                    if let error = error {
+                    if let _ = error {
                         completion(false)
                     }else {
                         completion(true)
