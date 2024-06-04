@@ -79,7 +79,7 @@ final class AuthManager {
     // MARK: - Save username
 
     func saveUserName(user: User, userName: String) {
-        print(user.email)
+        print(user.email ?? "without Email Address")
 //        self.db?.child("users").child(user.uid).setValue(["username" : userName])
 //        self.db?.child("emails").child(user.uid).setValue(["email" : user.email])
     }
