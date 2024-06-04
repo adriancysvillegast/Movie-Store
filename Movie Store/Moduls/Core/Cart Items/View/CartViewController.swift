@@ -10,7 +10,9 @@ import UIKit
 
 // MARK: - CartView
 protocol CartView: AnyObject {
-    func error(title: String, message: String)
+    func showError(message: String)
+    func hideError(message: String)
+    func showAlert(title: String, message: String)
     func showItems(items: [DetailModelCell])
     func reloadCell(index: Int)
     func showSpinner()
@@ -49,6 +51,38 @@ class CartViewController: UIViewController {
         return spinner
     }()
     
+    
+    private lazy var alertIcon: UIImageView = {
+        var aView = UIImageView(frame: CGRect(x: 0, y: 0, width: 100, height: 100) )
+        aView.image = UIImage(systemName: "exclamationmark.triangle")
+        aView.contentMode = .scaleAspectFit
+        aView.tintColor = .red
+        aView.isHidden = true
+        return aView
+    }()
+    
+    private lazy var messageError: UILabel = {
+        var aLable = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 60))
+        aLable.text = "Ups, We have problems to connect"
+        aLable.textColor = .secondaryLabel
+        aLable.numberOfLines = 2
+        aLable.textAlignment = .center
+        aLable.isHidden = true
+        aLable.font = .systemFont(ofSize: 20, weight: .bold)
+        return aLable
+    }()
+    
+    private lazy var tryAgainButton: UIButton = {
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 150, height: 60))
+        button.setTitle("Try Again".uppercased(), for: .normal)
+        button.backgroundColor = .systemGray4
+        button.layer.cornerRadius = 12
+        //        button.isEnabled = false
+        button.isHidden = true
+        button.addTarget(self, action: #selector(tryAgain), for: .touchUpInside)
+        return button
+    }()
+    
     // MARK: - Init
     
     init(presenter: CartPresenter) {
@@ -63,20 +97,32 @@ class CartViewController: UIViewController {
     
     // MARK: - LifeCycle
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        presenter.reloadIfItNeeded()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpView()
         presenter.addItemToCart()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        messageError.center = CGPoint(x: view.frame.width/2, y: view.frame.height/2 - 20 )
+        tryAgainButton.center = CGPoint(x: view.frame.width/2, y: view.frame.height/2 + 50)
+        alertIcon.center = CGPoint(x: view.frame.width/2, y: view.frame.height/2 - 90)
+    }
     // MARK: - SetUpView
     
     private func setUpView() {
         title = "Cart"
         navigationItem.largeTitleDisplayMode = .always
         view.backgroundColor = .systemBackground
-        view.addSubview(aTableView)
-        view.addSubview(spinner)
+//        view.addSubview(aTableView)
+//        view.addSubview(spinner)
+        [aTableView, spinner, messageError, tryAgainButton, alertIcon].forEach { view.addSubview($0) }
         
         NSLayoutConstraint.activate([
             aTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -92,12 +138,32 @@ class CartViewController: UIViewController {
     // MARK: - Methods
     
 
+    @objc func tryAgain() {
+        presenter.readItemsOnDB()
+    }
 }
 
 
 // MARK: - Extension - CartView
 
 extension CartViewController: CartView {
+    func hideError(message: String) {
+        DispatchQueue.main.async {
+            self.alertIcon.isHidden = true
+            self.messageError.isHidden = true
+            self.tryAgainButton.isHidden = true
+            self.messageError.text = ""
+        }
+    }
+    
+    func showAlert(title: String, message: String) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+            self.present(alert, animated: true)
+        }
+    }
+    
     func showItems(items: [DetailModelCell]) {
         DispatchQueue.main.async {
             self.items = items
@@ -106,14 +172,12 @@ extension CartViewController: CartView {
         }
     }
     
-    func error(title: String, message: String) {
+    func showError(message: String) {
         DispatchQueue.main.async {
-            let alert = UIAlertController(
-                title: title,
-                message: message,
-                preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
-            self.present(alert, animated: true)
+            self.alertIcon.isHidden = false
+            self.messageError.isHidden = false
+            self.tryAgainButton.isHidden = false
+            self.messageError.text = message
         }
         
     }
