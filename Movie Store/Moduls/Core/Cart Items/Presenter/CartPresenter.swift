@@ -17,6 +17,8 @@ protocol CartPresentable: AnyObject {
     func addItemToCart()
     func readItemsOnDB()
     func deleteItem(index: Int)
+    func reloadIfItNeeded()
+    
 }
 
 
@@ -58,11 +60,11 @@ class CartPresenter: CartPresentable {
             type: type) { success in
                 switch success {
                 case true:
+                    self.itNeedUpdate()
                     self.readItemsOnDB()
-                    
                 case false:
                     self.view?.hideSpinner()
-                    self.view?.error(title: "Error", message: "We got an error adding the item to the Cart. Please try again")
+                    self.view?.showError( message: "We got an error adding the item to the Cart. Please try again")
                     self.readItemsOnDB()
                 }
             }
@@ -71,6 +73,8 @@ class CartPresenter: CartPresentable {
     
     
     func readItemsOnDB()  {
+        self.view?.hideError(message: "")
+        self.view?.showSpinner()
         Task {
             var itemsModel : [DetailModelCell] = []
             do {
@@ -97,20 +101,27 @@ class CartPresenter: CartPresentable {
                 
             }catch errorDB.errorID {
                 self.view?.hideSpinner()
-                self.view?.error(title: "Ups!", message: "we got an error trying to get the items in the cart ")
+                self.view?.showError( message: "we got an error trying to get the items in the cart ")
             } catch errorDB.error {
                 self.view?.hideSpinner()
-                self.view?.error(title: "Ups!", message: "we got an error trying to get the items in the cart ")
+                self.view?.showError(message: "we got an error trying to get the items in the cart ")
             }catch errorDB.withOutData {
                 self.view?.hideSpinner()
-                self.view?.error(title: "Ups!", message: "we got an error trying to get the items in the cart ")
+                self.view?.showError(message: "we got an error trying to get the items in the cart ")
             } catch {
                 self.view?.hideSpinner()
-                self.view?.error(title: "Ups!", message: "we got an error trying to get the items in the cart ")
+                self.view?.showError(message: "we got an error trying to get the items in the cart ")
             }
             
         }
         
+    }
+    
+    func reloadIfItNeeded() {
+        if UserDefaults.standard.bool(forKey: "updateView"){
+            readItemsOnDB()
+            self.notNeedUpdate()
+        }
     }
     
     func deleteItem(index: Int) {
@@ -127,7 +138,8 @@ class CartPresenter: CartPresentable {
                 self.itemsInDB.remove(at: index)
                 self.view?.reloadCell(index: index)
             case false:
-                self.view?.error(title: "Error", message: "We got an error trying to delete the item")
+                
+                self.view?.showAlert(title: "Error", message: "We got an error trying to delete the item")
             }
         }
     }
@@ -153,5 +165,14 @@ class CartPresenter: CartPresentable {
             view?.showItems(items: itemsModel)
         }
     }
+    
+    private func itNeedUpdate() {
+        UserDefaults.standard.set(true, forKey: "updateView")
+    }
+    
+    private func notNeedUpdate() {
+        UserDefaults.standard.set(false, forKey: "updateView")
+    }
+    
     
 }
