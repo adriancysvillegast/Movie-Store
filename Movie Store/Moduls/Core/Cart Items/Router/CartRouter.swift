@@ -13,6 +13,7 @@ protocol CartRouting: AnyObject {
     var viewCart: CartViewController? { get }
     
     func showCart(from: UIViewController, idItem: String, type: ItemType)
+    func showCartFromTabBar() -> UIViewController
 }
 
 // MARK: - CartRouter
@@ -39,6 +40,20 @@ class CartRouter: CartRouting {
         presenter.view = view
         interactor.presenter = presenter
         from.navigationController?.pushViewController(view, animated: true)
+    }
+    
+    func showCartFromTabBar() -> UIViewController {
+        let interactor = CartInteractor()
+        let presenter = CartPresenter(
+            interactor: interactor,
+            router: self,
+            idItem: nil,
+            type: nil)
+        let view = CartViewController(presenter: presenter)
+        
+        interactor.presenter = presenter
+        presenter.view = view
+        return view
     }
     
     

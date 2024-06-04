@@ -11,7 +11,7 @@ import Foundation
 
 protocol CartPresentable: AnyObject {
     var view: CartView? { get }
-    var idItem: String { get }
+    var idItem: String? { get }
     var itemsInDB: [ItemsDB] { get }
     
     func addItemToCart()
@@ -26,17 +26,17 @@ class CartPresenter: CartPresentable {
     // MARK: - Properties
     
     var view: CartView?
-    var idItem: String
+    var idItem: String?
     var itemsInDB: [ItemsDB] = []
     
     private var interactor: CartInteractable
     private var router: CartRouting
-    var typeItem: ItemType
+    var typeItem: ItemType?
     
     
     // MARK: - Init
     
-    init(interactor: CartInteractable, router: CartRouting, idItem: String, type: ItemType) {
+    init(interactor: CartInteractable, router: CartRouting, idItem: String?, type: ItemType?) {
         self.interactor = interactor
         self.router = router
         self.idItem = idItem
@@ -46,21 +46,26 @@ class CartPresenter: CartPresentable {
     // MARK: - Methods
     
     func addItemToCart() {
-        Task {
-            
-            FirestoreDatabaseManager.shared.saveItem(id: idItem, typeItem: typeItem, section: .cart) { success in
-                switch success {
-                case true:
-                    self.view?.success()
-                    self.readItemsOnDB()
-                    print("self.view?.success() and self.readItemsOnDB()")
-                case false:
-                    self.view?.error(title: "Error", message: "We got an error adding the item to the Cart. Please try again")
-
-                }
-            }
+        self.view?.showSpinner()
+        guard let id = idItem, let type = typeItem else {
+            self.readItemsOnDB()
+            return
         }
         
+        interactor.saveItem(
+            section: .cart,
+            idItem: id,
+            type: type) { success in
+                switch success {
+                case true:
+                    self.readItemsOnDB()
+                    
+                case false:
+                    self.view?.hideSpinner()
+                    self.view?.error(title: "Error", message: "We got an error adding the item to the Cart. Please try again")
+                    self.readItemsOnDB()
+                }
+            }
         
     }
     
@@ -87,15 +92,20 @@ class CartPresenter: CartPresentable {
                         break
                     }
                 }
-                
+                self.view?.hideSpinner()
                 self.view?.showItems(items: itemsModel)
+                
             }catch errorDB.errorID {
+                self.view?.hideSpinner()
                 self.view?.error(title: "Ups!", message: "we got an error trying to get the items in the cart ")
             } catch errorDB.error {
+                self.view?.hideSpinner()
                 self.view?.error(title: "Ups!", message: "we got an error trying to get the items in the cart ")
             }catch errorDB.withOutData {
+                self.view?.hideSpinner()
                 self.view?.error(title: "Ups!", message: "we got an error trying to get the items in the cart ")
             } catch {
+                self.view?.hideSpinner()
                 self.view?.error(title: "Ups!", message: "we got an error trying to get the items in the cart ")
             }
             
@@ -112,14 +122,14 @@ class CartPresenter: CartPresentable {
             type: type,
             idDB: item.idDB
         ) { success in
-                switch success {
-                case true:
-                    self.itemsInDB.remove(at: index)
-                    self.view?.reloadCell(index: index)
-                case false:
-                    self.view?.error(title: "Error", message: "We got an error trying to delete the item")
-                }
+            switch success {
+            case true:
+                self.itemsInDB.remove(at: index)
+                self.view?.reloadCell(index: index)
+            case false:
+                self.view?.error(title: "Error", message: "We got an error trying to delete the item")
             }
+        }
     }
     
     private func getItemInfo(items: [ItemFirestoreModel]) {

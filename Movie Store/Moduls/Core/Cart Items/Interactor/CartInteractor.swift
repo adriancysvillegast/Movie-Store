@@ -20,6 +20,7 @@ protocol CartInteractable: AnyObject {
                     type: ItemType,
                     idDB: String,
                     completion: @escaping (Bool) -> Void)
+    func saveItem(section: SectionDB,idItem: String, type: ItemType, completion: @escaping (Bool) -> Void)
 }
 
 // MARK: - CartInteractor
@@ -67,6 +68,21 @@ class CartInteractor: CartInteractable {
             section: section,
             type: type,
             idDB: idDB) { success in
+                completion(success)
+            }
+    }
+    
+    func saveItem(
+        section: SectionDB,
+        idItem: String,
+        type: ItemType,
+        completion: @escaping (Bool) -> Void
+    ) {
+        
+        FirestoreDatabaseManager.shared.saveItem(
+            id: idItem,
+            typeItem: type,
+            section: section) { success in
                 completion(success)
             }
     }

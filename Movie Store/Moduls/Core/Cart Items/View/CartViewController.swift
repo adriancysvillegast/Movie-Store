@@ -11,9 +11,10 @@ import UIKit
 // MARK: - CartView
 protocol CartView: AnyObject {
     func error(title: String, message: String)
-    func success()
     func showItems(items: [DetailModelCell])
     func reloadCell(index: Int)
+    func showSpinner()
+    func hideSpinner()
 }
 
 
@@ -38,6 +39,15 @@ class CartViewController: UIViewController {
         return aTable
     }()
     
+    private var spinner: UIActivityIndicatorView = {
+        let spinner = UIActivityIndicatorView()
+        spinner.style = .large
+        spinner.color = .label
+        spinner.isHidden = true
+        spinner.stopAnimating()
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        return spinner
+    }()
     
     // MARK: - Init
     
@@ -66,11 +76,16 @@ class CartViewController: UIViewController {
         navigationItem.largeTitleDisplayMode = .always
         view.backgroundColor = .systemBackground
         view.addSubview(aTableView)
+        view.addSubview(spinner)
+        
         NSLayoutConstraint.activate([
             aTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             aTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             aTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            aTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            aTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            
+            spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
     }
     
@@ -92,16 +107,15 @@ extension CartViewController: CartView {
     }
     
     func error(title: String, message: String) {
-        let alert = UIAlertController(
-            title: title,
-            message: message,
-            preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
-        present(alert, animated: true)
-    }
-    
-    func success() {
-        print(" Was success")
+        DispatchQueue.main.async {
+            let alert = UIAlertController(
+                title: title,
+                message: message,
+                preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+            self.present(alert, animated: true)
+        }
+        
     }
     
     func reloadCell(index: Int) {
@@ -111,6 +125,20 @@ extension CartViewController: CartView {
         }
     }
     
+    
+    func showSpinner() {
+        DispatchQueue.main.async {
+            self.spinner.isHidden = false
+            self.spinner.startAnimating()
+        }
+    }
+    
+    func hideSpinner() {
+        DispatchQueue.main.async {
+            self.spinner.isHidden = true
+            self.spinner.stopAnimating() 
+        }
+    }
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
