@@ -14,9 +14,12 @@ protocol CartView: AnyObject {
     func hideError(message: String)
     func showAlert(title: String, message: String)
     func showItems(items: [DetailModelCell])
+    func hideItems()
     func reloadCell(index: Int)
     func showSpinner()
     func hideSpinner()
+    func showSuggestion(items: [ItemModelCell])
+    func hideSuggestion()
 }
 
 
@@ -30,6 +33,7 @@ class CartViewController: UIViewController {
     private let presenter: CartPresenter
     
     private var items: [DetailModelCell] = []
+    private var itemsSugguest: [ItemModelCell] = []
     
     private lazy var aTableView: UITableView = {
         let aTable = UITableView()
@@ -40,6 +44,22 @@ class CartViewController: UIViewController {
         aTable.translatesAutoresizingMaskIntoConstraints = false
         return aTable
     }()
+    
+    private lazy var aCollectionView: UICollectionView = {
+        let aCollection = UICollectionView(frame: .zero,
+                                           collectionViewLayout: UICollectionViewCompositionalLayout(sectionProvider: { sections, _ in
+            return self.createSectionLayout(with: sections)
+        }))
+        //        aCollection.backgroundColor = .systemBackground
+        aCollection.delegate = self
+        aCollection.dataSource = self
+        aCollection.isHidden = true
+        aCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        aCollection.register(HeaderReusableCellView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderReusableCellView.identifier)
+        aCollection.register(CoverItemCell.self, forCellWithReuseIdentifier: CoverItemCell.identifier)
+        return aCollection
+    }()
+    
     
     private var spinner: UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView()
@@ -99,13 +119,15 @@ class CartViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        presenter.reloadIfItNeeded()
+//        presenter.reloadIfItNeeded()
+        presenter.loadCartPresenter()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpView()
-        presenter.addItemToCart()
+//        presenter.loadCartPresenter()
+//        presenter.getRecommendation()
     }
     
     override func viewDidLayoutSubviews() {
@@ -113,6 +135,8 @@ class CartViewController: UIViewController {
         messageError.center = CGPoint(x: view.frame.width/2, y: view.frame.height/2 - 20 )
         tryAgainButton.center = CGPoint(x: view.frame.width/2, y: view.frame.height/2 + 50)
         alertIcon.center = CGPoint(x: view.frame.width/2, y: view.frame.height/2 - 90)
+        
+        aCollectionView.frame = view.bounds
     }
     // MARK: - SetUpView
     
@@ -120,9 +144,8 @@ class CartViewController: UIViewController {
         title = "Cart"
         navigationItem.largeTitleDisplayMode = .always
         view.backgroundColor = .systemBackground
-//        view.addSubview(aTableView)
-//        view.addSubview(spinner)
-        [aTableView, spinner, messageError, tryAgainButton, alertIcon].forEach { view.addSubview($0) }
+        
+        [aTableView, spinner, messageError, tryAgainButton, alertIcon, aCollectionView].forEach { view.addSubview($0) }
         
         NSLayoutConstraint.activate([
             aTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -135,11 +158,73 @@ class CartViewController: UIViewController {
         ])
     }
     
-    // MARK: - Methods
     
-
+    // MARK: - Targets
+    
     @objc func tryAgain() {
         presenter.readItemsOnDB()
+    }
+    
+    // MARK: - Methods
+    
+    private func createSectionLayout(with section: Int) -> NSCollectionLayoutSection {
+        
+        let supplementaryView = [
+            NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1),
+                    heightDimension: .absolute(50)),
+                elementKind: UICollectionView.elementKindSectionHeader,
+                alignment: .top)
+        ]
+        
+        switch section{
+        case 0:
+            let item = NSCollectionLayoutItem(
+                layoutSize: NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1),
+                    heightDimension: .fractionalHeight(1)
+                )
+            )
+            item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
+            
+            let groupV = NSCollectionLayoutGroup.vertical(
+                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(0.5)),
+                repeatingSubitem: item, count: 2)
+            
+            let group = NSCollectionLayoutGroup.horizontal(
+                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(520)),
+                subitems: [groupV]
+            )
+            
+            let section = NSCollectionLayoutSection(group: group)
+            section.orthogonalScrollingBehavior = .groupPaging
+            section.boundarySupplementaryItems = supplementaryView
+            return section
+        default :
+            let item = NSCollectionLayoutItem(
+                layoutSize: NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1),
+                    heightDimension: .fractionalHeight(1)
+                )
+            )
+            item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
+            
+            let groupV = NSCollectionLayoutGroup.vertical(
+                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(0.5)),
+                repeatingSubitem: item, count: 2)
+            
+            let group = NSCollectionLayoutGroup.horizontal(
+                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(520)),
+                subitems: [groupV]
+            )
+            
+            let section = NSCollectionLayoutSection(group: group)
+            section.orthogonalScrollingBehavior = .groupPaging
+            section.boundarySupplementaryItems = supplementaryView
+            return section
+        }
+        
     }
 }
 
@@ -147,27 +232,42 @@ class CartViewController: UIViewController {
 // MARK: - Extension - CartView
 
 extension CartViewController: CartView {
+    func hideItems() {
+        DispatchQueue.main.async {
+            self.aTableView.isHidden = true
+        }
+    }
+    
+    func showItems(items: [DetailModelCell]) {
+        DispatchQueue.main.async {
+            self.aTableView.isHidden = false
+            self.items = items
+            self.aTableView.reloadData()
+        }
+    }
+    
+    func hideSuggestion() {
+        DispatchQueue.main.async {
+            self.aCollectionView.isHidden = true
+        }
+    }
+    
+    
+    func showSuggestion(items: [ItemModelCell]) {
+        DispatchQueue.main.async {
+//            self.aTableView.isHidden = true
+            self.aCollectionView.isHidden = false
+            self.itemsSugguest = items
+            self.aCollectionView.reloadData()
+        }
+    }
+    
     func hideError(message: String) {
         DispatchQueue.main.async {
             self.alertIcon.isHidden = true
             self.messageError.isHidden = true
             self.tryAgainButton.isHidden = true
             self.messageError.text = ""
-        }
-    }
-    
-    func showAlert(title: String, message: String) {
-        DispatchQueue.main.async {
-            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
-            self.present(alert, animated: true)
-        }
-    }
-    
-    func showItems(items: [DetailModelCell]) {
-        DispatchQueue.main.async {
-            self.items = items
-            self.aTableView.reloadData()
         }
     }
     
@@ -181,13 +281,20 @@ extension CartViewController: CartView {
         
     }
     
+    func showAlert(title: String, message: String) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+            self.present(alert, animated: true)
+        }
+    }
+    
     func reloadCell(index: Int) {
         DispatchQueue.main.async {
             self.items.remove(at: index)
             self.aTableView.reloadData()
         }
     }
-    
     
     func showSpinner() {
         DispatchQueue.main.async {
@@ -235,4 +342,41 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource {
             presenter.deleteItem(index: indexPath.row)
         }
     }
+}
+
+
+// MARK: - UICollectionViewDelegate, UICollectionViewDataSource
+extension CartViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return itemsSugguest.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: CoverItemCell.identifier,
+            for: indexPath
+        ) as? CoverItemCell else {
+            return UICollectionViewCell()
+        }
+        cell.configuration(model: itemsSugguest[indexPath.row])
+        
+        return cell
+    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard let header = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: HeaderReusableCellView.identifier,
+            for: indexPath) as? HeaderReusableCellView else {
+            return UICollectionReusableView()
+        }
+        header.configure(with: presenter.titleGenre)
+        return header
+    }
+    
+    
 }

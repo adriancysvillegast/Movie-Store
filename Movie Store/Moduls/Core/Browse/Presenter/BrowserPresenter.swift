@@ -282,7 +282,6 @@ enum RowSelected {
 enum ItemType {
     case movie
     case tv
-//    case favorite
 }
 
 
