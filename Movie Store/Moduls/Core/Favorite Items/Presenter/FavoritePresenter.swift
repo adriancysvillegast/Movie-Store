@@ -13,8 +13,9 @@ protocol FavoritePresentable: AnyObject {
     var idItem: String? { get }
     
     func addItems()
-    func getItems()
+    func readItems()
     func deleteItem(index: Int)
+    func reloadIfItNeeded()
     
 }
 
@@ -27,7 +28,6 @@ class FavoritePresenter : FavoritePresentable {
     var idItem: String?
     var typeItem: ItemType?
     var itemsInDB: [ItemsDB] = []
-    private var itemsModel: [DetailModelCell] = []
     
     // MARK: - Init
     
@@ -49,24 +49,28 @@ class FavoritePresenter : FavoritePresentable {
             interactor.saveItem(id: id, type: type, completion: { success in
                 switch success {
                 case true:
+                    self.itNeedUpdate()
                     self.view?.showAlert(title: "Added", message: "The item was added successfully")
-                    self.getItems()
+                    self.readItems()
                 case false:
-                    self.view?.showAlert(title: "Error", message: "We got an error trying to add the item to your favorite list, please try again.")
+                    self.view?.showError(message: "We got an error trying to add the item to your favorite list, please try again.")
                     self.view?.desactivateSpinner()
                 }
             })
             
         } else {
-            getItems()
+            readItems()
         }
     }
     
     
-    func getItems() {
+    func readItems() {
+        self.view?.hideError()
+        self.view?.activateSpinner()
         Task {
-            
+            var itemsModel: [DetailModelCell] = []
             do {
+                
                 let items = try await interactor.getItems()
                 itemsInDB = items
                 
@@ -82,10 +86,11 @@ class FavoritePresenter : FavoritePresentable {
                         itemsModel.append(model)
                     }
                 }
+                
                 self.view?.getItems(items: itemsModel)
                 self.view?.desactivateSpinner()
             } catch {
-                self.view?.showAlert(title: "Error", message: "We got an error trying to get the items of your favorite list, please try again.")
+                self.view?.showError(message: "We got an error trying to get the items")
                 self.view?.desactivateSpinner()
             }
         }
@@ -110,5 +115,20 @@ class FavoritePresenter : FavoritePresentable {
             }
         
         
+    }
+    
+    func reloadIfItNeeded() {
+        if UserDefaults.standard.bool(forKey: "updateFavoriteView"){
+            readItems()
+            self.notNeedUpdate()
+        }
+    }
+    
+    private func itNeedUpdate() {
+        UserDefaults.standard.set(true, forKey: "updateFavoriteView")
+    }
+    
+    private func notNeedUpdate() {
+        UserDefaults.standard.set(false, forKey: "updateFavoriteView")
     }
 }
