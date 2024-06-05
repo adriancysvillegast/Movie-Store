@@ -103,6 +103,18 @@ class MapperManager {
         return model
     }
     
+    
+    func formatItem(value: [ListByGenreEntity]) -> [ItemModelCell] {
+        let model = value.compactMap {
+            ItemModelCell(
+                id: $0.id,
+                artWork: URL(string: "https://image.tmdb.org/t/p/w200" + ($0.posterPath ?? "")),
+                releaseDate: $0.releaseDate ?? "",
+                title: $0.originalTitle)
+        }
+        return model
+    }
+    
     func formatItem(value: DetailMovieResponseEntity) -> DetailModelCell {
         let companies = value.productionCompanies.compactMap {
             Companies(id: $0.id,

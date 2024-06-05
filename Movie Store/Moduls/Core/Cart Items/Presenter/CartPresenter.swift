@@ -14,10 +14,13 @@ protocol CartPresentable: AnyObject {
     var idItem: String? { get }
     var itemsInDB: [ItemsDB] { get }
     
-    func addItemToCart()
+    func loadCartPresenter()
+    func saveItems(id: String, type: ItemType)
     func readItemsOnDB()
     func deleteItem(index: Int)
     func reloadIfItNeeded()
+    
+    func getRecommendation()
     
 }
 
@@ -34,6 +37,7 @@ class CartPresenter: CartPresentable {
     private var interactor: CartInteractable
     private var router: CartRouting
     var typeItem: ItemType?
+    var titleGenre : String = ""
     
     
     // MARK: - Init
@@ -47,35 +51,46 @@ class CartPresenter: CartPresentable {
     
     // MARK: - Methods
     
-    func addItemToCart() {
-        self.view?.showSpinner()
+    func loadCartPresenter() {
+        
         guard let id = idItem, let type = typeItem else {
+            
             self.readItemsOnDB()
             return
         }
         
-        interactor.saveItem(
-            section: .cart,
-            idItem: id,
-            type: type) { success in
-                switch success {
-                case true:
-                    self.itNeedUpdate()
-                    self.readItemsOnDB()
-                case false:
-                    self.view?.hideSpinner()
-                    self.view?.showError( message: "We got an error adding the item to the Cart. Please try again")
-                    self.readItemsOnDB()
-                }
-            }
-        
+        saveItems(id: id, type: type)
     }
     
     
-    func readItemsOnDB()  {
-        self.view?.hideError(message: "")
+    func saveItems(id: String, type: ItemType) {
         self.view?.showSpinner()
+        interactor.saveItem(
+            section: .cart,
+            idItem: id,
+            type: type) {  [weak self] success in
+                switch success {
+                case true:
+                    self?.itNeedUpdate()
+                    self?.view?.hideError(message: "")
+                    self?.readItemsOnDB()
+                case false:
+                    self?.view?.hideSpinner()
+                    self?.view?.showError( message: "We got an error adding the item to the Cart. Please try again")
+                    self?.readItemsOnDB()
+                }
+            }
+    }
+    
+    
+    
+    func readItemsOnDB()  {
+        self.view?.showSpinner()
+        self.view?.hideSuggestion()
+        self.view?.hideItems()
+        
         Task {
+            
             var itemsModel : [DetailModelCell] = []
             do {
                 let items = try await FirestoreDatabaseManager.shared.readItems(section: .cart)
@@ -96,8 +111,16 @@ class CartPresenter: CartPresentable {
                         break
                     }
                 }
-                self.view?.hideSpinner()
-                self.view?.showItems(items: itemsModel)
+                
+                
+                if itemsModel.isEmpty {
+                    self.getRecommendation()
+                }else {
+                    self.view?.hideSpinner()
+                    self.view?.hideError(message: "")
+                    self.view?.hideSuggestion()
+                    self.view?.showItems(items: itemsModel)
+                }
                 
             }catch errorDB.errorID {
                 self.view?.hideSpinner()
@@ -117,12 +140,7 @@ class CartPresenter: CartPresentable {
         
     }
     
-    func reloadIfItNeeded() {
-        if UserDefaults.standard.bool(forKey: "updateView"){
-            readItemsOnDB()
-            self.notNeedUpdate()
-        }
-    }
+    
     
     func deleteItem(index: Int) {
         let item = itemsInDB[index]
@@ -136,7 +154,8 @@ class CartPresenter: CartPresentable {
             switch success {
             case true:
                 self.itemsInDB.remove(at: index)
-                self.view?.reloadCell(index: index)
+                
+                self.itemsInDB.isEmpty ? self.getRecommendation() : self.view?.reloadCell(index: index)
             case false:
                 
                 self.view?.showAlert(title: "Error", message: "We got an error trying to delete the item")
@@ -166,6 +185,7 @@ class CartPresenter: CartPresentable {
         }
     }
     
+    // MARK: - To reload
     private func itNeedUpdate() {
         UserDefaults.standard.set(true, forKey: "updateView")
     }
@@ -174,5 +194,52 @@ class CartPresenter: CartPresentable {
         UserDefaults.standard.set(false, forKey: "updateView")
     }
     
+    func reloadIfItNeeded() {
+        self.view?.showSpinner()
+        if UserDefaults.standard.bool(forKey: "updateView") {
+            readItemsOnDB()
+            self.notNeedUpdate()
+        } else if itemsInDB.isEmpty && !UserDefaults.standard.bool(forKey: "updateView") {
+            getRecommendation()
+        }
+    }
+    
+    // MARK: - Recommendation
+    
+    func getRecommendation() {
+        self.view?.showSpinner()
+        self.view?.hideItems()
+        self.view?.hideSuggestion()
+        self.view?.hideError(message: "")
+        
+        Task {
+            do {
+                let genres = try await interactor.getGenres()
+                if let genre = genres.genres.randomElement() {
+                    self.titleGenre = genre.name
+                    let movies = try await interactor.getRecomendationMovie(id: genre.id, page: nil)
+                    
+                    let itemsModel =  MapperManager.shared.formatItem(value: movies.results)
+                    self.view?.hideSpinner()
+                    self.view?.showSuggestion(items: itemsModel)
+                    
+                }else {
+                    self.view?.showError(message: "We are having troubles to get the items")
+                }
+                
+            }catch {
+                print("error getRecommendation ")
+                self.view?.hideSpinner()
+                self.view?.showError(message: "we got an error trying to show you recommendations")
+            }
+            
+            
+        }
+    }
+    
+    // MARK: - deinit
+    deinit {
+        print("CartPresenter --> \(#function)")
+    }
     
 }
