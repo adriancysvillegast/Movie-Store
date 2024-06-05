@@ -168,7 +168,6 @@ extension CartViewController: CartView {
         DispatchQueue.main.async {
             self.items = items
             self.aTableView.reloadData()
-            print("showItems running")
         }
     }
     

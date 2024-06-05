@@ -28,7 +28,6 @@ class FavoritePresenter : FavoritePresentable {
     var idItem: String?
     var typeItem: ItemType?
     var itemsInDB: [ItemsDB] = []
-    private var itemsModel: [DetailModelCell] = []
     
     // MARK: - Init
     
@@ -54,7 +53,7 @@ class FavoritePresenter : FavoritePresentable {
                     self.view?.showAlert(title: "Added", message: "The item was added successfully")
                     self.readItems()
                 case false:
-                    self.view?.showAlert(title: "Error", message: "We got an error trying to add the item to your favorite list, please try again.")
+                    self.view?.showError(message: "We got an error trying to add the item to your favorite list, please try again.")
                     self.view?.desactivateSpinner()
                 }
             })
@@ -66,9 +65,12 @@ class FavoritePresenter : FavoritePresentable {
     
     
     func readItems() {
+        self.view?.hideError()
+        self.view?.activateSpinner()
         Task {
-            
+            var itemsModel: [DetailModelCell] = []
             do {
+                
                 let items = try await interactor.getItems()
                 itemsInDB = items
                 
@@ -84,10 +86,11 @@ class FavoritePresenter : FavoritePresentable {
                         itemsModel.append(model)
                     }
                 }
+                
                 self.view?.getItems(items: itemsModel)
                 self.view?.desactivateSpinner()
             } catch {
-                self.view?.showAlert(title: "Error", message: "We got an error trying to get the items of your favorite list, please try again.")
+                self.view?.showError(message: "We got an error trying to get the items")
                 self.view?.desactivateSpinner()
             }
         }

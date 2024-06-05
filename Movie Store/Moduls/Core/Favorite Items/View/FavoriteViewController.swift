@@ -13,6 +13,9 @@ protocol FavoriteView: AnyObject {
     func getItems(items: [DetailModelCell])
     func showAlert(title: String, message: String)
     func reloadCell(index: Int)
+    
+    func showError(message: String)
+    func hideError()
 }
 
 class FavoriteViewController: UIViewController {
@@ -31,7 +34,7 @@ class FavoriteViewController: UIViewController {
         return aTable
     }()
     
-    private var spinnerLoading: UIActivityIndicatorView = {
+    private var spinner: UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView()
         spinner.style = .large
         spinner.color = .label
@@ -40,19 +43,36 @@ class FavoriteViewController: UIViewController {
         return spinner
     }()
     
-//    private lazy var aView : UIView = {
-//        let aView = UIView()
-//        let aLabel = UILabel()
-//        aLabel.text = "Add a Movie or Serie to Favorite typing '+' on the details view of it"
-//        aLabel.textAlignment = .center
-//        aLabel.textColor = .label
-//        aLabel.font = .systemFont(ofSize: 20, weight: .bold)
-//        aView.addSubview(aLabel)
-//        aView.backgroundColor = .systemBackground
-//        aView.isHidden = true
-//        aView.translatesAutoresizingMaskIntoConstraints = false
-//        return aView
-//    }()
+    private lazy var alertIcon: UIImageView = {
+        var aView = UIImageView(frame: CGRect(x: 0, y: 0, width: 100, height: 100) )
+        aView.image = UIImage(systemName: "exclamationmark.triangle")
+        aView.contentMode = .scaleAspectFit
+        aView.tintColor = .red
+        aView.isHidden = true
+        return aView
+    }()
+    
+    private lazy var messageError: UILabel = {
+        var aLable = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 60))
+        aLable.text = "Ups, We have problems to connect"
+        aLable.textColor = .secondaryLabel
+        aLable.numberOfLines = 3
+        aLable.textAlignment = .center
+        aLable.isHidden = true
+        aLable.font = .systemFont(ofSize: 20, weight: .bold)
+        return aLable
+    }()
+    
+    private lazy var tryAgainButton: UIButton = {
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 150, height: 60))
+        button.setTitle("Try Again".uppercased(), for: .normal)
+        button.backgroundColor = .systemGray4
+        button.layer.cornerRadius = 12
+        //        button.isEnabled = false
+        button.isHidden = true
+        button.addTarget(self, action: #selector(tryAgain), for: .touchUpInside)
+        return button
+    }()
     
     // MARK: - Init
     
@@ -80,13 +100,23 @@ class FavoriteViewController: UIViewController {
         presenter.addItems()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        messageError.center = CGPoint(x: view.frame.width/2, y: view.frame.height/2 - 15 )//20
+        tryAgainButton.center = CGPoint(x: view.frame.width/2, y: view.frame.height/2 + 50)
+        alertIcon.center = CGPoint(x: view.frame.width/2, y: view.frame.height/2 - 90)
+    }
     
     
     // MARK: - SetupView
     
     private func setUpView() {
-        view.addSubview(aTableView)
-        view.addSubview(spinnerLoading)
+        
+        [aTableView, spinner, alertIcon, messageError, tryAgainButton].forEach {
+            view.addSubview($0)
+        }
+        
         NSLayoutConstraint.activate([
             aTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
                                             constant: 0),
@@ -97,29 +127,50 @@ class FavoriteViewController: UIViewController {
             aTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
                                                constant: 0),
 
-            spinnerLoading.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            spinnerLoading.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
     
     
     // MARK: - Methods
 
+    @objc func tryAgain() {
+        presenter.readItems()
+    }
 }
 
 // MARK: - FavoriteView
 extension FavoriteViewController: FavoriteView {
+    func showError(message: String) {
+        DispatchQueue.main.async {
+            self.alertIcon.isHidden = false
+            self.messageError.isHidden = false
+            self.tryAgainButton.isHidden = false
+            self.messageError.text = message
+        }
+    }
+    
+    func hideError() {
+        DispatchQueue.main.async {
+            self.alertIcon.isHidden = true
+            self.messageError.isHidden = true
+            self.tryAgainButton.isHidden = true
+            self.messageError.text = ""
+        }
+    }
+    
     func activateSpinner() {
         DispatchQueue.main.async {
-            self.spinnerLoading.isHidden = false
-            self.spinnerLoading.startAnimating()
+            self.spinner.isHidden = false
+            self.spinner.startAnimating()
         }
     }
     
     func desactivateSpinner() {
         DispatchQueue.main.async {
-            self.spinnerLoading.isHidden = true
-            self.spinnerLoading.stopAnimating()
+            self.spinner.isHidden = true
+            self.spinner.stopAnimating()
         }
     }
     
