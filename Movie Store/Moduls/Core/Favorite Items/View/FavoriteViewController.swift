@@ -67,10 +67,11 @@ class FavoriteViewController: UIViewController {
     
     // MARK: - LifeCicle
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        refreshData()
-//    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        presenter.reloadIfItNeeded()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -103,11 +104,6 @@ class FavoriteViewController: UIViewController {
     
     
     // MARK: - Methods
-    
-
-    private func refreshData() {
-        presenter.getItems()
-    }
 
 }
 
