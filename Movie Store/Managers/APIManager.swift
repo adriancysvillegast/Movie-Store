@@ -33,6 +33,29 @@ final class APIManager {
         }
     }
     
+    func get<T: Codable>(
+        expenting: T.Type,
+        endPoint: String,
+        nextPage: Int?
+    ) async throws -> T {
+        
+        guard let url = URL(string: Constants.baseURL + "/\(endPoint)?api_key=" + Constants.token + "&page=\(nextPage ?? 1)") else {
+            throw APIError.errorUrl
+        }
+//        print(url.absoluteString)
+        
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        do {
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            return try decoder.decode(expenting, from: data)
+        } catch  {
+            
+            throw APIError.errorApi
+        }
+    }
+    
     // MARK: - Recommendations
     
     func getRecommendation<T: Codable>(
