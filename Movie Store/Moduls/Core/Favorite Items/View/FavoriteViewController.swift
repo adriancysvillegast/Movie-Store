@@ -8,14 +8,20 @@
 import UIKit
 
 protocol FavoriteView: AnyObject {
-    func activateSpinner()
-    func desactivateSpinner()
-    func getItems(items: [DetailModelCell])
+    func showSpinner()
+    func hideSpinner()
+    func showError(message: String)
+    func hideError()
+    
+    func hideSuggestions()
+    func showSuggestion(items: [ItemModelCell])
+    
+    
+    func showFavoriteItems(items: [DetailModelCell])
+    func hideFavoriteItems()
     func showAlert(title: String, message: String)
     func reloadCell(index: Int)
     
-    func showError(message: String)
-    func hideError()
 }
 
 class FavoriteViewController: UIViewController {
@@ -23,6 +29,7 @@ class FavoriteViewController: UIViewController {
     // MARK: - Properties
     var presenter: FavoritePresentable
     var items: [DetailModelCell] = []
+    var itemsSugguest: [ItemModelCell] = []
     
     private lazy var aTableView: UITableView = {
         let aTable = UITableView()
@@ -32,6 +39,21 @@ class FavoriteViewController: UIViewController {
         aTable.rowHeight = 110
         aTable.translatesAutoresizingMaskIntoConstraints = false
         return aTable
+    }()
+    
+    private lazy var aCollectionView: UICollectionView = {
+        let aCollection = UICollectionView(frame: .zero,
+                                           collectionViewLayout: UICollectionViewCompositionalLayout(sectionProvider: { sections, _ in
+            return self.createSectionLayout(with: sections)
+        }))
+        //        aCollection.backgroundColor = .systemBackground
+        aCollection.delegate = self
+        aCollection.dataSource = self
+        aCollection.isHidden = true
+        aCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        aCollection.register(HeaderReusableCellView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderReusableCellView.identifier)
+        aCollection.register(CoverItemCell.self, forCellWithReuseIdentifier: CoverItemCell.identifier)
+        return aCollection
     }()
     
     private var spinner: UIActivityIndicatorView = {
@@ -90,14 +112,14 @@ class FavoriteViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        presenter.reloadIfItNeeded()
+//        presenter.reloadIfItNeeded()
+        
+        presenter.loadFavoritePresenter()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setUpView()
-        presenter.addItems()
     }
     
     override func viewDidLayoutSubviews() {
@@ -106,6 +128,7 @@ class FavoriteViewController: UIViewController {
         messageError.center = CGPoint(x: view.frame.width/2, y: view.frame.height/2 - 15 )//20
         tryAgainButton.center = CGPoint(x: view.frame.width/2, y: view.frame.height/2 + 50)
         alertIcon.center = CGPoint(x: view.frame.width/2, y: view.frame.height/2 - 90)
+        aCollectionView.frame = view.bounds
     }
     
     
@@ -113,7 +136,7 @@ class FavoriteViewController: UIViewController {
     
     private func setUpView() {
         
-        [aTableView, spinner, alertIcon, messageError, tryAgainButton].forEach {
+        [aTableView, spinner, alertIcon, messageError, tryAgainButton, aCollectionView].forEach {
             view.addSubview($0)
         }
         
@@ -133,15 +156,96 @@ class FavoriteViewController: UIViewController {
     }
     
     
-    // MARK: - Methods
+    
 
+    // MARK: - Targets
+    
     @objc func tryAgain() {
         presenter.readItems()
+    }
+    
+    // MARK: - Methods
+    
+    private func createSectionLayout(with section: Int) -> NSCollectionLayoutSection {
+        
+        let supplementaryView = [
+            NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1),
+                    heightDimension: .absolute(50)),
+                elementKind: UICollectionView.elementKindSectionHeader,
+                alignment: .top)
+        ]
+        
+        switch section{
+        case 0:
+            let item = NSCollectionLayoutItem(
+                layoutSize: NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1),
+                    heightDimension: .fractionalHeight(1)
+                )
+            )
+            item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
+            
+            let groupV = NSCollectionLayoutGroup.vertical(
+                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(0.5)),
+                repeatingSubitem: item, count: 2)
+            
+            let group = NSCollectionLayoutGroup.horizontal(
+                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(520)),
+                subitems: [groupV]
+            )
+            
+            let section = NSCollectionLayoutSection(group: group)
+            section.orthogonalScrollingBehavior = .groupPaging
+            section.boundarySupplementaryItems = supplementaryView
+            return section
+        default :
+            let item = NSCollectionLayoutItem(
+                layoutSize: NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1),
+                    heightDimension: .fractionalHeight(1)
+                )
+            )
+            item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
+            
+            let groupV = NSCollectionLayoutGroup.vertical(
+                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(0.5)),
+                repeatingSubitem: item, count: 2)
+            
+            let group = NSCollectionLayoutGroup.horizontal(
+                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(520)),
+                subitems: [groupV]
+            )
+            
+            let section = NSCollectionLayoutSection(group: group)
+            section.orthogonalScrollingBehavior = .groupPaging
+            section.boundarySupplementaryItems = supplementaryView
+            return section
+        }
+        
     }
 }
 
 // MARK: - FavoriteView
 extension FavoriteViewController: FavoriteView {
+    
+    
+    
+    func hideSuggestions() {
+        DispatchQueue.main.async {
+            self.aCollectionView.isHidden = true
+        }
+    }
+    
+    func showSuggestion(items: [ItemModelCell]) {
+        DispatchQueue.main.async {
+            self.aCollectionView.isHidden = false
+            self.itemsSugguest = items
+            self.aCollectionView.reloadData()
+        }
+    }
+    
     func showError(message: String) {
         DispatchQueue.main.async {
             self.alertIcon.isHidden = false
@@ -160,29 +264,31 @@ extension FavoriteViewController: FavoriteView {
         }
     }
     
-    func activateSpinner() {
+    func showSpinner() {
         DispatchQueue.main.async {
             self.spinner.isHidden = false
             self.spinner.startAnimating()
         }
     }
     
-    func desactivateSpinner() {
+    func hideSpinner() {
         DispatchQueue.main.async {
             self.spinner.isHidden = true
             self.spinner.stopAnimating()
         }
     }
     
-    func getItems(items: [DetailModelCell]) {
+    func showFavoriteItems(items: [DetailModelCell]) {
         DispatchQueue.main.async {
-            if items.isEmpty {
-                self.aTableView.isHidden = true
-            }else {
-                self.items = items
-                self.aTableView.isHidden = false
-                self.aTableView.reloadData()
-            }
+            self.items = items
+            self.aTableView.isHidden = false
+            self.aTableView.reloadData()
+        }
+    }
+    
+    func hideFavoriteItems() {
+        DispatchQueue.main.async {
+            self.aTableView.isHidden = true
         }
     }
     
@@ -228,4 +334,39 @@ extension FavoriteViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     
+}
+
+
+// MARK: - UICollectionViewDelegate, UICollectionViewDataSource
+extension FavoriteViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return itemsSugguest.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: CoverItemCell.identifier,
+            for: indexPath
+        ) as? CoverItemCell else {
+            return UICollectionViewCell()
+        }
+        cell.configuration(model: itemsSugguest[indexPath.row])
+        return cell
+    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard let header = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: HeaderReusableCellView.identifier,
+            for: indexPath) as? HeaderReusableCellView else {
+            return UICollectionReusableView()
+        }
+        header.configure(with: presenter.titleGenre)
+        return header
+    }
 }

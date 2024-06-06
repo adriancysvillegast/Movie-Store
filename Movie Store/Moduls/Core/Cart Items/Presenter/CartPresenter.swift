@@ -88,6 +88,7 @@ class CartPresenter: CartPresentable {
         self.view?.showSpinner()
         self.view?.hideSuggestion()
         self.view?.hideItems()
+        self.view?.hideError(message: "")
         
         Task {
             
