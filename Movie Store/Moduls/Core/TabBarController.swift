@@ -35,7 +35,8 @@ class TabBarController: UITabBarController {
             viewControllers = [
                 createNavController(for: BrowserRouter().showBrowser(), title: NSLocalizedString("Browse", comment: ""), image: UIImage(systemName: "house")!),
                 createNavController(for: FavoriteRouter().showFavoriteFromTabBar(), title: NSLocalizedString("Favorite", comment: ""), image: UIImage(systemName: "bookmark")!),
-                createNavController(for: CartRouter().showCartFromTabBar(), title: NSLocalizedString("Cart", comment: ""), image: UIImage(systemName: "cart")!)
+                createNavController(for: CartRouter().showCartFromTabBar(), title: NSLocalizedString("Cart", comment: ""), image: UIImage(systemName: "cart")!),
+                createNavController(for: SearchRouter().showSearch(), title: NSLocalizedString("Search", comment: ""), image: UIImage(systemName: "magnifyingglass")!)
                 
             ]
         }
