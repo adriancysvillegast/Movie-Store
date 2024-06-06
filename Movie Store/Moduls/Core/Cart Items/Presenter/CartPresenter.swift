@@ -13,6 +13,7 @@ protocol CartPresentable: AnyObject {
     var view: CartView? { get }
     var idItem: String? { get }
     var itemsInDB: [ItemsDB] { get }
+    var titleGenre : String { get }
     
     func loadCartPresenter()
     func saveItems(id: String, type: ItemType)

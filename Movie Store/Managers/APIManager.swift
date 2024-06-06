@@ -19,7 +19,7 @@ final class APIManager {
         guard let url = URL(string: Constants.baseURL + "/\(endPoint)?api_key=" + Constants.token) else {
             throw APIError.errorUrl
         }
-        print(url.absoluteString)
+//        print(url.absoluteString)
         
         let (data, _) = try await URLSession.shared.data(from: url)
         

@@ -30,7 +30,7 @@ class CartViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let presenter: CartPresenter
+    private let presenter: CartPresentable
     
     private var items: [DetailModelCell] = []
     private var itemsSugguest: [ItemModelCell] = []
