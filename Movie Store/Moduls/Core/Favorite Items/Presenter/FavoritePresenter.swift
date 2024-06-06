@@ -14,11 +14,10 @@ protocol FavoritePresentable: AnyObject {
     var titleGenre: String { get }
     
     func loadFavoritePresenter()
-//    func addItems()
-    func saveItem(id: String, type: ItemType)
+    
+    func createItem(id: String, type: ItemType)
     func readItems()
     func deleteItem(index: Int)
-    func reloadIfItNeeded()
     func getRecommendation()
     
 }
@@ -57,17 +56,16 @@ class FavoritePresenter : FavoritePresentable {
             self.readItems()
             return
         }
-        saveItem(id: id, type: type)
+        createItem(id: id, type: type)
     }
     
     
-    func saveItem(id: String, type: ItemType) {
+    func createItem(id: String, type: ItemType) {
         self.view?.showSpinner()
         
-        interactor.saveItem(id: id, type: type) { [weak self] success in
+        interactor.createItem(id: id, type: type) { [weak self] success in
             switch success {
             case true:
-                self?.itNeedUpdate()
                 self?.view?.hideSpinner()
                 self?.view?.showAlert(title: "Added", message: "The item was added successfully")
                 self?.readItems()
@@ -90,7 +88,7 @@ class FavoritePresenter : FavoritePresentable {
             var itemsModel: [DetailModelCell] = []
             do {
                 
-                let items = try await interactor.getItems()
+                let items = try await interactor.readItems()
                 itemsInDB = items
                 
                 for item in items {
@@ -127,7 +125,6 @@ class FavoritePresenter : FavoritePresentable {
                 switch success {
                 case true:
                     self.itemsInDB.remove(at: index)
-//                    if its empty get recommendations and show it
                     self.itemsInDB.isEmpty ? self.getRecommendation() : self.view?.reloadCell(index: index)
                 case false:
                     self.view?.showAlert(title: "Error", message: "we got an error trying to delete the item")
@@ -135,23 +132,6 @@ class FavoritePresenter : FavoritePresentable {
             }
         
         
-    }
-    
-    // MARK: - Review it necessary to update The view
-    
-    func reloadIfItNeeded() {
-        if UserDefaults.standard.bool(forKey: "updateFavoriteView"){
-            readItems()
-            self.notNeedUpdate()
-        }
-    }
-    
-    private func itNeedUpdate() {
-        UserDefaults.standard.set(true, forKey: "updateFavoriteView")
-    }
-    
-    private func notNeedUpdate() {
-        UserDefaults.standard.set(false, forKey: "updateFavoriteView")
     }
     
     // MARK: - Recommendations

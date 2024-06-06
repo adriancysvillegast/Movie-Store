@@ -10,14 +10,15 @@ import Foundation
 protocol FavoriteInteractable: AnyObject {
     var presenter: FavoritePresentable? { get }
     
-    func saveItem(id: String,
+    func createItem(id: String,
                   type: ItemType,
                   completion: @escaping (Bool) -> Void)
-    func getItems() async throws -> [ItemsDB]
+    func readItems() async throws -> [ItemsDB]
     func deleteItems(section: SectionDB,
                      type: ItemType,
                      idDB: String,
                      completion: @escaping (Bool) -> Void)
+    
     func getGenres() async throws -> GenresResponse
     func getRecomendationMovie(id: Int, page: Int?) async throws -> ListByGenrerResponseEntity
     
@@ -39,7 +40,7 @@ class FavoriteInteractor: FavoriteInteractable {
     }
     // MARK: - CRUD
     
-    func saveItem(
+    func createItem(
         id: String,
         type: ItemType,
         completion: @escaping (Bool) -> Void
@@ -55,7 +56,7 @@ class FavoriteInteractor: FavoriteInteractable {
         
     }
     
-    func getItems() async throws -> [ItemsDB] {
+    func readItems() async throws -> [ItemsDB] {
         
         do {
             let items = try await FirestoreDatabaseManager.shared.readItems(section: .favorite)
