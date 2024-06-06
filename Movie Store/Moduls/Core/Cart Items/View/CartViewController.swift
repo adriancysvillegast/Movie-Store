@@ -11,7 +11,7 @@ import UIKit
 // MARK: - CartView
 protocol CartView: AnyObject {
     func showError(message: String)
-    func hideError(message: String)
+    func hideError()
     func showAlert(title: String, message: String)
     func showItems(items: [DetailModelCell])
     func hideItems()
@@ -262,7 +262,7 @@ extension CartViewController: CartView {
         }
     }
     
-    func hideError(message: String) {
+    func hideError() {
         DispatchQueue.main.async {
             self.alertIcon.isHidden = true
             self.messageError.isHidden = true
