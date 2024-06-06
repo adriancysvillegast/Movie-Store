@@ -20,10 +20,15 @@ protocol CartInteractable: AnyObject {
                     type: ItemType,
                     idDB: String,
                     completion: @escaping (Bool) -> Void)
-    func saveItem(section: SectionDB,idItem: String, type: ItemType, completion: @escaping (Bool) -> Void)
+    
+    func createItem(section: SectionDB,
+                  idItem: String,
+                  type: ItemType,
+                  completion: @escaping (Bool) -> Void)
     
     func getGenres() async throws -> GenresResponse
-    func getRecomendationMovie(id: Int, page: Int?) async throws -> ListByGenrerResponseEntity
+    func getRecomendationMovie(id: Int,
+                               page: Int?) async throws -> ListByGenrerResponseEntity
     
 }
 
@@ -73,7 +78,7 @@ class CartInteractor: CartInteractable {
                     type: ItemType,
                     idDB: String,
                     completion: @escaping (Bool) -> Void) {
-        FirestoreDatabaseManager.shared.deleteItems(
+        FirestoreDatabaseManager.shared.deleteItem(
             section: section,
             type: type,
             idDB: idDB) { success in
@@ -81,14 +86,14 @@ class CartInteractor: CartInteractable {
             }
     }
     
-    func saveItem(
+    func createItem(
         section: SectionDB,
         idItem: String,
         type: ItemType,
         completion: @escaping (Bool) -> Void
     ) {
         
-        FirestoreDatabaseManager.shared.saveItem(
+        FirestoreDatabaseManager.shared.createItem(
             id: idItem,
             typeItem: type,
             section: section) { success in

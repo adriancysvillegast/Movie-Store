@@ -46,7 +46,7 @@ class FavoriteInteractor: FavoriteInteractable {
         completion: @escaping (Bool) -> Void
     ){
         
-        FirestoreDatabaseManager.shared.saveItem(
+        FirestoreDatabaseManager.shared.createItem(
             id: id,
             typeItem: type,
             section: .favorite
@@ -72,7 +72,7 @@ class FavoriteInteractor: FavoriteInteractable {
         idDB: String,
         completion: @escaping (Bool) -> Void
     ) {
-        FirestoreDatabaseManager.shared.deleteItems(
+        FirestoreDatabaseManager.shared.deleteItem(
             section: section,
             type: type,
             idDB: idDB

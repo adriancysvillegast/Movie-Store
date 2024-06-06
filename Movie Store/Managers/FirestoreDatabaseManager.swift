@@ -21,7 +21,7 @@ final class FirestoreDatabaseManager {
     private var ref = Database.database().reference()
     private var auth = AuthManager()
     
-    func saveItem(id: String, typeItem: ItemType, section: SectionDB,
+    func createItem(id: String, typeItem: ItemType, section: SectionDB,
                   completion: @escaping (Bool) -> Void) {
         
         guard let user = auth.user?.uid else {
@@ -133,7 +133,7 @@ final class FirestoreDatabaseManager {
         
     }
     
-    func deleteItems(
+    func deleteItem(
         section: SectionDB,
         type: ItemType,
         idDB: String,

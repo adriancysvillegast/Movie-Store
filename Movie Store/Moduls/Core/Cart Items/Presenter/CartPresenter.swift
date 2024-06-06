@@ -66,7 +66,7 @@ class CartPresenter: CartPresentable {
     
     func saveItems(id: String, type: ItemType) {
         self.view?.showSpinner()
-        interactor.saveItem(
+        interactor.createItem(
             section: .cart,
             idItem: id,
             type: type) {  [weak self] success in
