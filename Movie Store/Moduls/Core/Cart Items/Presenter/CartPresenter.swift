@@ -72,7 +72,7 @@ class CartPresenter: CartPresentable {
                 switch success {
                 case true:
                     self?.itNeedUpdate()
-                    self?.view?.hideError(message: "")
+                    self?.view?.hideError()
                     self?.readItemsOnDB()
                 case false:
                     self?.view?.hideSpinner()
@@ -88,6 +88,7 @@ class CartPresenter: CartPresentable {
         self.view?.showSpinner()
         self.view?.hideSuggestion()
         self.view?.hideItems()
+        self.view?.hideError()
         
         Task {
             
@@ -117,7 +118,7 @@ class CartPresenter: CartPresentable {
                     self.getRecommendation()
                 }else {
                     self.view?.hideSpinner()
-                    self.view?.hideError(message: "")
+                    self.view?.hideError()
                     self.view?.hideSuggestion()
                     self.view?.showItems(items: itemsModel)
                 }
@@ -210,7 +211,7 @@ class CartPresenter: CartPresentable {
         self.view?.showSpinner()
         self.view?.hideItems()
         self.view?.hideSuggestion()
-        self.view?.hideError(message: "")
+        self.view?.hideError()
         
         Task {
             do {
