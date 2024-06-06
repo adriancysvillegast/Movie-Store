@@ -9,6 +9,7 @@ import Foundation
 
 protocol BrowserInteractable : AnyObject {
     var presenter: BrowserPresentable? { get }
+    var service: APIManager { get }
     
     func getTopRateMovies(page: Int?) async throws -> TopRateMovieResponseEntity
     func getPopularMovies(page: Int?) async throws -> PopularMoviesResponseEntity
@@ -28,139 +29,126 @@ class BrowserInteractor: BrowserInteractable {
     
     weak var presenter: BrowserPresentable?
     private var authManager: AuthManager
+    var service: APIManager
     
-    init(authManager: AuthManager = AuthManager() ) {
+    init(authManager: AuthManager = AuthManager(),
+         service: APIManager = APIManager() ) {
         self.authManager = authManager
+        self.service = service
     }
     
     
     // MARK: - Methods
     
+    
     func getTopRateMovies(page: Int?) async throws -> TopRateMovieResponseEntity {
-        guard let url = URL(string: Constants.baseURL + "/movie/top_rated?api_key=" + Constants.token + "&page=\(page ?? 1)") else {
-            throw APIError.errorUrl
-        }
-        
-        let (data, _) = try await URLSession.shared.data(from: url)
         
         do {
-            let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .convertFromSnakeCase
-            return try decoder.decode(TopRateMovieResponseEntity.self, from: data)
+            let items = try await service.get(
+                expenting: TopRateMovieResponseEntity.self,
+                endPoint: "/movie/top_rated",
+                nextPage: page)
+            
+            return items
         } catch  {
             throw APIError.errorApi
         }
     }
     
     func getPopularMovies(page: Int?) async throws -> PopularMoviesResponseEntity {
-        guard let url = URL(string: Constants.baseURL + "/movie/popular?api_key=" + Constants.token + "&page=\(page ?? 1)") else {
-            throw APIError.errorUrl
-        }
-        let (data, _) = try await URLSession.shared.data(from: url)
         
         do {
-            let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .convertFromSnakeCase
-            return try decoder.decode(PopularMoviesResponseEntity.self, from: data)
-        } catch  {
+            let items = try await service.get(
+                expenting: PopularMoviesResponseEntity.self,
+                endPoint: "/movie/popular", nextPage: page)
+            
+            return items
+        } catch {
             throw APIError.errorApi
         }
     }
     
     func getNowPlayingMovies(page: Int?) async throws -> NowPlayingResponseEntity {
-        guard let url = URL(string: Constants.baseURL + "/movie/now_playing?api_key=" + Constants.token + "&page=\(page ?? 1)") else {
-            throw APIError.errorUrl
-        }
-        let (data, _) = try await URLSession.shared.data(from: url)
         
         do {
-            let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .convertFromSnakeCase
-            return try decoder.decode(NowPlayingResponseEntity.self, from: data)
+            let items = try await service.get(
+                expenting: NowPlayingResponseEntity.self,
+                endPoint: "/movie/now_playing",
+                nextPage: page)
+            return items
         } catch  {
             throw APIError.errorApi
         }
     }
     
     func getUpComingMovies(page: Int?) async throws -> UpComingResponseEntity {
-        guard let url = URL(string: Constants.baseURL + "/movie/upcoming?api_key=" + Constants.token + "&page=\(page ?? 1)") else {
-            throw APIError.errorUrl
-        }
-        let (data, _) = try await URLSession.shared.data(from: url)
         
         do {
-            let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .convertFromSnakeCase
-            return try decoder.decode(UpComingResponseEntity.self, from: data)
+            let items = try await service.get(
+                expenting: UpComingResponseEntity.self,
+                endPoint: "/movie/upcoming",
+                nextPage: page)
+            return items
         } catch  {
             throw APIError.errorApi
         }
     }
     
-    
     func getTopRateTV(page: Int?) async throws -> TopRateTVResponseEntity {
-        guard let url = URL(string: Constants.baseURL + "/tv/top_rated?api_key=" + Constants.token + "&page=\(page ?? 1)") else {
-            throw APIError.errorUrl
-        }
-        let (data, _) = try await URLSession.shared.data(from: url)
         
         do {
-            let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .convertFromSnakeCase
-            return try decoder.decode(TopRateTVResponseEntity.self, from: data)
+            let items = try await service.get(
+                expenting: TopRateTVResponseEntity.self,
+                endPoint: "/tv/top_rated",
+                nextPage: page)
+            return items
         } catch  {
             throw APIError.errorApi
         }
     }
     
     func getPopularTV(page: Int?) async throws -> PopularTVResponseEntity {
-        guard let url = URL(string: Constants.baseURL + "/tv/popular?api_key=" + Constants.token + "&page=\(page ?? 1)") else {
-            throw APIError.errorUrl
-        }
-        let (data, _) = try await URLSession.shared.data(from: url)
         
         do {
-            let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .convertFromSnakeCase
-            return try decoder.decode(PopularTVResponseEntity.self, from: data)
+            let items = try await service.get(
+                expenting: PopularTVResponseEntity.self,
+                endPoint: "/tv/popular",
+                nextPage: page)
+            return items
         } catch  {
             throw APIError.errorApi
         }
     }
     
     func getOnAirTV(page: Int?) async throws -> OnAirTVResponseEntity {
-        guard let url = URL(string: Constants.baseURL + "/discover/tv?api_key=" + Constants.token + "&page=\(page ?? 1)") else {
-            throw APIError.errorUrl
-        }
-        let (data, _) = try await URLSession.shared.data(from: url)
         
         do {
-            let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .convertFromSnakeCase
-            return try decoder.decode(OnAirTVResponseEntity.self, from: data)
-        } catch {
-            print(error.localizedDescription)
-            throw APIError.errorApi
-        }
-    }
-    
-    func getAiringTodayTV(page: Int?) async throws -> TVAiringTodayResponseEntity {
-        guard let url = URL(string: Constants.baseURL + "/tv/airing_today?api_key=" + Constants.token + "&page=\(page ?? 1)") else {
-            throw APIError.errorUrl
-        }
-        let (data, _) = try await URLSession.shared.data(from: url)
-        
-        do {
-            let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .convertFromSnakeCase
-            return try decoder.decode(TVAiringTodayResponseEntity.self, from: data)
+            let items = try await service.get(
+                expenting: OnAirTVResponseEntity.self,
+                endPoint: "/discover/tv",
+                nextPage: page)
+            return items
         } catch  {
             throw APIError.errorApi
         }
     }
-    
+
+    func getAiringTodayTV(page: Int?) async throws -> TVAiringTodayResponseEntity {
+        do {
+            let items = try await service.get(
+                expenting: TVAiringTodayResponseEntity.self,
+                endPoint: "/tv/airing_today",
+                nextPage: page)
+            return items
+        } catch  {
+            throw APIError.errorApi
+        }
+        
+    }
+
     func logOutAccount() -> Bool {
         let result = authManager.logOut()
         return result
     }
+    
 }
