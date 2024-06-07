@@ -51,6 +51,7 @@
 		0998E4A52BD956D700C55407 /* ItemFirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0998E4A42BD956D700C55407 /* ItemFirestoreModel.swift */; };
 		0998E4A72BDC0A5400C55407 /* ItemsCartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0998E4A62BDC0A5400C55407 /* ItemsCartCell.swift */; };
 		099B9E9E2C134300003E0769 /* GenreModelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099B9E9D2C134300003E0769 /* GenreModelCell.swift */; };
+		099B9EA22C138484003E0769 /* ResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099B9EA12C138484003E0769 /* ResultsViewController.swift */; };
 		099CCCC02BF29842002C3199 /* FirestoreDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099CCCBF2BF29842002C3199 /* FirestoreDatabaseManager.swift */; };
 		09AD151E2C09FB080049183C /* ItemCart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AD151D2C09FB080049183C /* ItemCart.swift */; };
 		09AD91092C10BA16003E17AA /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AD91082C10BA16003E17AA /* APIManager.swift */; };
@@ -151,6 +152,7 @@
 		0998E4A42BD956D700C55407 /* ItemFirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemFirestoreModel.swift; sourceTree = "<group>"; };
 		0998E4A62BDC0A5400C55407 /* ItemsCartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsCartCell.swift; sourceTree = "<group>"; };
 		099B9E9D2C134300003E0769 /* GenreModelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreModelCell.swift; sourceTree = "<group>"; };
+		099B9EA12C138484003E0769 /* ResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsViewController.swift; sourceTree = "<group>"; };
 		099CCCBF2BF29842002C3199 /* FirestoreDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDatabaseManager.swift; sourceTree = "<group>"; };
 		09AD151D2C09FB080049183C /* ItemCart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCart.swift; sourceTree = "<group>"; };
 		09AD91082C10BA16003E17AA /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
@@ -497,6 +499,7 @@
 			isa = PBXGroup;
 			children = (
 				09E026422B7014490033B2D4 /* SearchViewController.swift */,
+				099B9EA12C138484003E0769 /* ResultsViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -899,6 +902,7 @@
 				098DF0672B9638A800580718 /* GenresResponseEntity.swift in Sources */,
 				092B23F32B8D586000B2CB69 /* UpComingResponseEntity.swift in Sources */,
 				098DF05D2B96290500580718 /* DetailsItemPresenter.swift in Sources */,
+				099B9EA22C138484003E0769 /* ResultsViewController.swift in Sources */,
 				09AD91102C10CCE4003E17AA /* GenresResponse.swift in Sources */,
 				09FECB6A2B9FA7C400AB5DD9 /* GenresCell.swift in Sources */,
 				098DF0652B96385A00580718 /* DetailMovieResponseEntity.swift in Sources */,

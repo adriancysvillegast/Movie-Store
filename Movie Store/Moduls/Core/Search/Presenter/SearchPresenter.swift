@@ -12,6 +12,7 @@ protocol SearchPresentable: AnyObject {
     var interactor: SearchInteractable { get }
     
     func showGenres()
+    func getQuery(query: String?)
 }
 
 class SearchPresenter: SearchPresentable{
@@ -45,20 +46,14 @@ class SearchPresenter: SearchPresentable{
             }
         }
     }
-}
-
-
-enum GenreArray {
-    case movie(model: [GenreModelCell])
-    case tv(model: [GenreModelCell])
     
-    var title : String {
-        switch self {
-        case .movie:
-            return "Movie Categories"
-        case .tv:
-            return "TV Categories"
+    func getQuery(query: String?) {
+        guard let text = query, !text.trimmingCharacters(in: .whitespaces).isEmpty else {
+            return
         }
+        
+        
     }
-    
 }
+
+

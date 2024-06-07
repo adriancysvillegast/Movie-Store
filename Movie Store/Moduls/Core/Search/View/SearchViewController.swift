@@ -22,6 +22,8 @@ protocol SearchView: AnyObject {
 
 class SearchViewController: UIViewController {
     
+    
+    
     // MARK: - Properties
     var presenter: SearchPresentable
     
@@ -33,7 +35,7 @@ class SearchViewController: UIViewController {
         aSearchBar.delegate = self
         aSearchBar.searchBar.placeholder = "Movies, Tv Series and More"
         aSearchBar.definesPresentationContext = true
-        
+        aSearchBar.searchResultsUpdater = self
         return aSearchBar
     }()
     
@@ -264,13 +266,14 @@ extension SearchViewController: SearchView {
 
 // MARK: - SearchBarDelegate
 
-extension SearchViewController: UISearchControllerDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+extension SearchViewController: UISearchControllerDelegate, UISearchResultsUpdating {
+    
+    func updateSearchResults(for searchController: UISearchController) {
         
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
+        presenter.getQuery(query: searchBar.text)
     }
 }
 
