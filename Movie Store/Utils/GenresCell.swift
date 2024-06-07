@@ -32,7 +32,6 @@ class GenresCell: UICollectionViewCell {
         contentView.layer.borderWidth = 2.0//1.0
         contentView.layer.borderColor = UIColor.clear.cgColor
         contentView.layer.masksToBounds = true
-        contentView.backgroundColor = .systemCyan
 
     }
     
@@ -54,5 +53,12 @@ class GenresCell: UICollectionViewCell {
     
     func configuration(model: GenresResponseEntity) {
         nameGenre.text = model.name
+        contentView.backgroundColor = .systemCyan
     }
+    
+    func configuration(model: GenreModelCell) {
+        nameGenre.text = model.name
+        contentView.backgroundColor = .secondarySystemBackground
+    }
+    
 }

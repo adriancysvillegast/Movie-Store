@@ -115,6 +115,13 @@ class MapperManager {
         return model
     }
     
+    func formatItem(value: GenresResponse) -> [GenreModelCell] {
+        let model = value.genres.compactMap {
+            GenreModelCell(id: $0.id, name: $0.name)
+        }
+        return model
+    }
+    
     func formatItem(value: DetailMovieResponseEntity) -> DetailModelCell {
         let companies = value.productionCompanies.compactMap {
             Companies(id: $0.id,
