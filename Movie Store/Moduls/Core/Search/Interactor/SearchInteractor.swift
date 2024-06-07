@@ -10,6 +10,9 @@ import Foundation
 protocol SearchInteractable: AnyObject {
     var presenter: SearchPresentable? { get }
     
+    
+    func getMovieGenres() async throws -> GenresResponse
+    func getTVGenres() async throws -> GenresResponse
 }
 
 class SearchInteractor: SearchInteractable {
@@ -25,5 +28,31 @@ class SearchInteractor: SearchInteractable {
         self.service = service
     }
     
+    // MARK: - Methods
     
+    func getMovieGenres() async throws -> GenresResponse {
+        do {
+            let items = try await service.get(
+                expenting: GenresResponse.self,
+                endPoint: "genre/movie/list" )
+            
+            return items
+        } catch  {
+            
+            throw APIError.errorApi
+        }
+    }
+    
+    func getTVGenres() async throws -> GenresResponse {
+        do {
+            let items = try await service.get(
+                expenting: GenresResponse.self,
+                endPoint: "genre/tv/list" )
+            
+            return items
+        } catch  {
+            
+            throw APIError.errorApi
+        }
+    }
 }
