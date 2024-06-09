@@ -14,8 +14,12 @@ protocol SearchView: AnyObject {
     func showAlert(title: String, message: String)
     func showErrorLabel(text: String)
     func hideErrorLabel()
+    func showResult(items: [ItemsResult])
+    func hideResults()
     func showGenres(movieItems: [GenreModelCell],
-                    tvItems: [GenreModelCell]) 
+                    tvItems: [GenreModelCell])
+    func showGenres()
+    func hideGenres()
     func showSpinner()
     func hideSpinner()
 }
@@ -26,16 +30,18 @@ class SearchViewController: UIViewController {
     
     // MARK: - Properties
     var presenter: SearchPresentable
+    var result = [ItemsResult]()
     
     private var movieItems: [GenreModelCell] = []
     private var tvItems: [GenreModelCell] = []
     
     private lazy var aSearchBar: UISearchController = {
-        let aSearchBar = UISearchController()
-        aSearchBar.delegate = self
+        let aSearchBar = UISearchController(searchResultsController: nil )
         aSearchBar.searchBar.placeholder = "Movies, Tv Series and More"
+        aSearchBar.searchBar.searchBarStyle = .minimal
         aSearchBar.definesPresentationContext = true
         aSearchBar.searchResultsUpdater = self
+        aSearchBar.delegate = self
         return aSearchBar
     }()
     
@@ -58,12 +64,23 @@ class SearchViewController: UIViewController {
         //        aCollection.backgroundColor = .systemBackground
         aCollection.delegate = self
         aCollection.dataSource = self
-        aCollection.isHidden = true
+        aCollection.isHidden = false
         aCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         aCollection.register(HeaderReusableCellView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderReusableCellView.identifier)
         aCollection.register(CoverItemCell.self, forCellWithReuseIdentifier: CoverItemCell.identifier)
         aCollection.register(GenresCell.self, forCellWithReuseIdentifier: GenresCell.identifier)
         return aCollection
+    }()
+    
+    private lazy var aTableView: UITableView = {
+        let aTable = UITableView(frame: .zero)
+        aTable.delegate = self
+        aTable.dataSource = self
+        aTable.register(ItemsCartCell.self, forCellReuseIdentifier: ItemsCartCell.identifier)
+        aTable.rowHeight = 110
+        aTable.isHidden = true
+        aTable.translatesAutoresizingMaskIntoConstraints = false
+        return aTable
     }()
     
     private var spinner: UIActivityIndicatorView = {
@@ -92,6 +109,7 @@ class SearchViewController: UIViewController {
         super.viewDidLayoutSubviews()
         
         aCollectionView.frame = view.bounds
+        
     }
     
     override func viewDidLoad() {
@@ -108,7 +126,7 @@ class SearchViewController: UIViewController {
         view.backgroundColor = .systemBackground
         navigationItem.searchController = aSearchBar
         
-        [aCollectionView, textError, spinner].forEach {
+        [aCollectionView, textError, spinner, aTableView].forEach {
             view.addSubview($0)
         }
         
@@ -116,7 +134,15 @@ class SearchViewController: UIViewController {
             textError.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             textError.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30),
             textError.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
-            textError.heightAnchor.constraint(equalToConstant: 50)
+            textError.heightAnchor.constraint(equalToConstant: 50),
+            
+            spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            aTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
+            aTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
+            aTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
+            aTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0)
         ])
     }
     
@@ -212,6 +238,20 @@ class SearchViewController: UIViewController {
 // MARK: - SearchView
 
 extension SearchViewController: SearchView {
+    func hideResults() {
+        DispatchQueue.main.async {
+            self.aTableView.isHidden = true
+        }
+    }
+    
+    
+    func showResult(items: [ItemsResult]) {
+        DispatchQueue.main.async {
+            self.aTableView.isHidden = false
+            self.result =  items
+            self.aTableView.reloadData()
+        }
+    }
     
     func showSpinner() {
         DispatchQueue.main.async {
@@ -250,6 +290,18 @@ extension SearchViewController: SearchView {
         }
     }
     
+    func showGenres() {
+        DispatchQueue.main.async {
+            self.aCollectionView.isHidden = false
+        }
+    }
+    
+    func hideGenres() {
+        DispatchQueue.main.async {
+            self.aCollectionView.isHidden = true
+        }
+    }
+    
     func showAlert(title: String, message: String) {
         DispatchQueue.main.async {
             let alert = UIAlertController(
@@ -269,12 +321,9 @@ extension SearchViewController: SearchView {
 extension SearchViewController: UISearchControllerDelegate, UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
-        
+        presenter.getQuery(query: searchController.searchBar.text)
     }
     
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        presenter.getQuery(query: searchBar.text)
-    }
 }
 
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource
@@ -333,6 +382,74 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
             }
             header.configure(with: "TV Categories")
             return header
+        }
+    }
+    
+}
+
+
+// MARK: - UITableViewDelegate, UITableViewDataSource
+
+extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let type = result[section]
+        switch type {
+        case .movie(let model):
+            return model.count
+        case .tv(let model):
+            return model.count
+        case .person(let model):
+            return model.count
+        }
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return result.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let type = result[indexPath.section]
+        
+        switch type {
+        case .movie(let model):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ItemsCartCell.identifier, for: indexPath) as? ItemsCartCell else {
+                return UITableViewCell()
+            }
+            
+            cell.configure(with: model[indexPath.row])
+            return cell
+            
+        case .tv(let model):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ItemsCartCell.identifier, for: indexPath) as? ItemsCartCell else {
+                return UITableViewCell()
+            }
+            
+            cell.configure(with: model[indexPath.row])
+            return cell
+            
+        case .person(let model):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ItemsCartCell.identifier, for: indexPath) as? ItemsCartCell else {
+                return UITableViewCell()
+            }
+            
+            cell.configure(with: model[indexPath.row])
+            return cell
+            
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let type = result[section]
+        
+        switch type {
+            
+        case .movie:
+            return "Movies"
+        case .tv:
+            return "TV Shows"
+        case .person:
+            return "Actors"
         }
     }
     

@@ -24,6 +24,8 @@
 		092B23F32B8D586000B2CB69 /* UpComingResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092B23F22B8D586000B2CB69 /* UpComingResponseEntity.swift */; };
 		092B23F52B8D588B00B2CB69 /* UpComingEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092B23F42B8D588B00B2CB69 /* UpComingEntity.swift */; };
 		092B23F72B8D59DB00B2CB69 /* MapperManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092B23F62B8D59DB00B2CB69 /* MapperManager.swift */; };
+		09451D292C16192500FDF2AA /* SearchResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09451D282C16192500FDF2AA /* SearchResponseEntity.swift */; };
+		09451D2B2C16199D00FDF2AA /* SearchEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09451D2A2C16199D00FDF2AA /* SearchEntity.swift */; };
 		0962A81D2B8E8B0B00FA051B /* Test_ValidateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0962A81C2B8E8B0B00FA051B /* Test_ValidateManager.swift */; };
 		096782582B86D26800BB1C7A /* BrowseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096782572B86D26800BB1C7A /* BrowseViewController.swift */; };
 		0967825A2B87CAA600BB1C7A /* BrowserInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096782592B87CAA600BB1C7A /* BrowserInteractor.swift */; };
@@ -51,7 +53,6 @@
 		0998E4A52BD956D700C55407 /* ItemFirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0998E4A42BD956D700C55407 /* ItemFirestoreModel.swift */; };
 		0998E4A72BDC0A5400C55407 /* ItemsCartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0998E4A62BDC0A5400C55407 /* ItemsCartCell.swift */; };
 		099B9E9E2C134300003E0769 /* GenreModelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099B9E9D2C134300003E0769 /* GenreModelCell.swift */; };
-		099B9EA22C138484003E0769 /* ResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099B9EA12C138484003E0769 /* ResultsViewController.swift */; };
 		099CCCC02BF29842002C3199 /* FirestoreDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099CCCBF2BF29842002C3199 /* FirestoreDatabaseManager.swift */; };
 		09AD151E2C09FB080049183C /* ItemCart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AD151D2C09FB080049183C /* ItemCart.swift */; };
 		09AD91092C10BA16003E17AA /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AD91082C10BA16003E17AA /* APIManager.swift */; };
@@ -130,6 +131,8 @@
 		092B23F22B8D586000B2CB69 /* UpComingResponseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpComingResponseEntity.swift; sourceTree = "<group>"; };
 		092B23F42B8D588B00B2CB69 /* UpComingEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpComingEntity.swift; sourceTree = "<group>"; };
 		092B23F62B8D59DB00B2CB69 /* MapperManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapperManager.swift; sourceTree = "<group>"; };
+		09451D282C16192500FDF2AA /* SearchResponseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResponseEntity.swift; sourceTree = "<group>"; };
+		09451D2A2C16199D00FDF2AA /* SearchEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEntity.swift; sourceTree = "<group>"; };
 		0962A81C2B8E8B0B00FA051B /* Test_ValidateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_ValidateManager.swift; sourceTree = "<group>"; };
 		096782572B86D26800BB1C7A /* BrowseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseViewController.swift; sourceTree = "<group>"; };
 		096782592B87CAA600BB1C7A /* BrowserInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserInteractor.swift; sourceTree = "<group>"; };
@@ -152,7 +155,6 @@
 		0998E4A42BD956D700C55407 /* ItemFirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemFirestoreModel.swift; sourceTree = "<group>"; };
 		0998E4A62BDC0A5400C55407 /* ItemsCartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsCartCell.swift; sourceTree = "<group>"; };
 		099B9E9D2C134300003E0769 /* GenreModelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreModelCell.swift; sourceTree = "<group>"; };
-		099B9EA12C138484003E0769 /* ResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsViewController.swift; sourceTree = "<group>"; };
 		099CCCBF2BF29842002C3199 /* FirestoreDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDatabaseManager.swift; sourceTree = "<group>"; };
 		09AD151D2C09FB080049183C /* ItemCart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCart.swift; sourceTree = "<group>"; };
 		09AD91082C10BA16003E17AA /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
@@ -475,6 +477,8 @@
 		09AD91132C1237ED003E17AA /* Entity */ = {
 			isa = PBXGroup;
 			children = (
+				09451D282C16192500FDF2AA /* SearchResponseEntity.swift */,
+				09451D2A2C16199D00FDF2AA /* SearchEntity.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -499,7 +503,6 @@
 			isa = PBXGroup;
 			children = (
 				09E026422B7014490033B2D4 /* SearchViewController.swift */,
-				099B9EA12C138484003E0769 /* ResultsViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -886,11 +889,13 @@
 				0998E4A52BD956D700C55407 /* ItemFirestoreModel.swift in Sources */,
 				09E026882B7041270033B2D4 /* LogInInterector.swift in Sources */,
 				099B9E9E2C134300003E0769 /* GenreModelCell.swift in Sources */,
+				09451D292C16192500FDF2AA /* SearchResponseEntity.swift in Sources */,
 				09BC1E1D2B8FC9EB00646B72 /* OnAirTVResponseEntity.swift in Sources */,
 				09E026802B703CA90033B2D4 /* LogInRouter.swift in Sources */,
 				092832F32BD6BA20003376BC /* CartPresenter.swift in Sources */,
 				09E026432B7014490033B2D4 /* SearchViewController.swift in Sources */,
 				0992BED32C0784F0007E202C /* FavoriteViewController.swift in Sources */,
+				09451D2B2C16199D00FDF2AA /* SearchEntity.swift in Sources */,
 				092832F12BD6BA0C003376BC /* CartInteractor.swift in Sources */,
 				09E026862B703F940033B2D4 /* SignUpRouter.swift in Sources */,
 				09E0267A2B7022B80033B2D4 /* AuthManager.swift in Sources */,
@@ -902,7 +907,6 @@
 				098DF0672B9638A800580718 /* GenresResponseEntity.swift in Sources */,
 				092B23F32B8D586000B2CB69 /* UpComingResponseEntity.swift in Sources */,
 				098DF05D2B96290500580718 /* DetailsItemPresenter.swift in Sources */,
-				099B9EA22C138484003E0769 /* ResultsViewController.swift in Sources */,
 				09AD91102C10CCE4003E17AA /* GenresResponse.swift in Sources */,
 				09FECB6A2B9FA7C400AB5DD9 /* GenresCell.swift in Sources */,
 				098DF0652B96385A00580718 /* DetailMovieResponseEntity.swift in Sources */,

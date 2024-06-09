@@ -68,6 +68,10 @@ class ItemsCartCell: UITableViewCell {
         titleLabel.text = item.name
     }
     
+    func configure(with item: ItemModelCell) {
+        aImageCover.kf.setImage(with: item.artWork)
+        titleLabel.text = item.title
+    }
     
 
 }

@@ -67,7 +67,7 @@ final class APIManager {
         guard let url = URL(string: Constants.baseURL + "/\(endPoint1)?api_key=" + Constants.token + "\(endPoint2)") else {
             throw APIError.errorUrl
         }
-        print(url.absoluteString)
+//        print(url.absoluteString)
         
         let (data, _) = try await URLSession.shared.data(from: url)
         
@@ -81,6 +81,28 @@ final class APIManager {
         }
     }
     
+    // MARK: - Search
+    func search<T: Codable>(
+        expenting: T.Type,
+        endPoint: String
+    ) async throws -> T {
+        
+        guard let url = URL(string: Constants.baseURL + "/\(endPoint)&api_key=" + Constants.token) else {
+            throw APIError.errorUrl
+        }
+//        print(url.absoluteString)
+        
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        do {
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            return try decoder.decode(expenting, from: data)
+        } catch  {
+//            print(error.localizedDescription)
+            throw APIError.errorApi
+        }
+    }
     
     
     // MARK: - Details

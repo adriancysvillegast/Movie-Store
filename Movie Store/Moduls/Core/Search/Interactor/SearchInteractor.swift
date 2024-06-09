@@ -13,6 +13,7 @@ protocol SearchInteractable: AnyObject {
     
     func getMovieGenres() async throws -> GenresResponse
     func getTVGenres() async throws -> GenresResponse
+    func searchItems(with query: String) async throws -> SearchResponseEntity
 }
 
 class SearchInteractor: SearchInteractable {
@@ -52,6 +53,19 @@ class SearchInteractor: SearchInteractable {
             return items
         } catch  {
             
+            throw APIError.errorApi
+        }
+    }
+    
+    func searchItems(with query: String) async throws -> SearchResponseEntity {
+        
+        do {
+            let items = try await service.search(
+                expenting: SearchResponseEntity.self,
+                endPoint: "search/multi?query=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "" )")
+            
+            return items
+        } catch  {
             throw APIError.errorApi
         }
     }
