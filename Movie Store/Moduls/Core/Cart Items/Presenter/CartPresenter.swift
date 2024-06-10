@@ -23,6 +23,7 @@ protocol CartPresentable: AnyObject {
     
     func getRecommendation()
     func itemSelected(with item: DetailModelCell)
+    func suggestionSelected(with item: ItemModelCell)
 }
 
 
@@ -245,6 +246,9 @@ class CartPresenter: CartPresentable {
         router.showDetails(with: item)
     }
     
+    func suggestionSelected(with item: ItemModelCell) {
+        router.showSuggestion(with: item)
+    }
     // MARK: - deinit
     deinit {
         print("CartPresenter --> \(#function)")

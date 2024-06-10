@@ -16,6 +16,7 @@ protocol CartRouting: AnyObject {
     func showCart(from: UIViewController, idItem: String, type: ItemType)
     func showCartFromTabBar() -> UIViewController
     func showDetails(with item: DetailModelCell)
+    func showSuggestion(with item: ItemModelCell)
 }
 
 // MARK: - CartRouter
@@ -71,5 +72,10 @@ class CartRouter: CartRouting {
         guard let vc = viewCart else { return }
         detailsRouter?.hideNavBotton = true
         detailsRouter?.showDetails(idItem: item.id, type: item.isAMovie ? .movie : .tv, fromVC: vc)
+    }
+    
+    func showSuggestion(with item: ItemModelCell) {
+        guard let vc = viewCart else { return }
+        detailsRouter?.showDetails(idItem: String(item.id), type: .movie, fromVC: vc)
     }
 }

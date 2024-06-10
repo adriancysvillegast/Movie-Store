@@ -387,5 +387,12 @@ extension CartViewController: UICollectionViewDelegate, UICollectionViewDataSour
         return header
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let item = itemsSugguest[indexPath.row]
+        presenter.suggestionSelected(with: item)
+    }
     
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+    }
 }
