@@ -22,7 +22,7 @@ protocol CartPresentable: AnyObject {
     func reloadIfItNeeded()
     
     func getRecommendation()
-    
+    func itemSelected(with item: DetailModelCell)
 }
 
 
@@ -237,6 +237,12 @@ class CartPresenter: CartPresentable {
             
             
         }
+    }
+    
+    // MARK: - Details
+    
+    func itemSelected(with item: DetailModelCell) {
+        router.showDetails(with: item)
     }
     
     // MARK: - deinit

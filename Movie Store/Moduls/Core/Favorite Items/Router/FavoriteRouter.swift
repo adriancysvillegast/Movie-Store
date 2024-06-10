@@ -63,7 +63,7 @@ class FavoriteRouter: FavoriteRouting {
         guard let vc = favoriteView else {
             return
         }
-        
+        details?.hideNavBotton = true
         details?.showDetails(idItem: item.id, type: item.isAMovie ? .movie : .tv, fromVC: vc)
     }
 }
