@@ -11,9 +11,11 @@ import UIKit
 
 protocol CartRouting: AnyObject {
     var viewCart: CartViewController? { get }
+    var detailsRouter: DetailsItemRouter? { get }
     
     func showCart(from: UIViewController, idItem: String, type: ItemType)
     func showCartFromTabBar() -> UIViewController
+    func showDetails(with item: DetailModelCell)
 }
 
 // MARK: - CartRouter
@@ -23,10 +25,14 @@ class CartRouter: CartRouting {
     // MARK: - Properties
     
     weak var viewCart: CartViewController?
+    var detailsRouter: DetailsItemRouter?
     
     // MARK: - Methods
     
     func showCart(from: UIViewController, idItem: String, type: ItemType) {
+        
+        detailsRouter = DetailsItemRouter()
+        
         let interactor = CartInteractor()
         let presenter = CartPresenter(
             interactor: interactor,
@@ -43,6 +49,9 @@ class CartRouter: CartRouting {
     }
     
     func showCartFromTabBar() -> UIViewController {
+        
+        detailsRouter = DetailsItemRouter()
+        
         let interactor = CartInteractor()
         let presenter = CartPresenter(
             interactor: interactor,
@@ -51,10 +60,16 @@ class CartRouter: CartRouting {
             type: nil)
         let view = CartViewController(presenter: presenter)
         
+        viewCart = view
         interactor.presenter = presenter
         presenter.view = view
         return view
     }
     
     
+    func showDetails(with item: DetailModelCell) {
+        guard let vc = viewCart else { return }
+        detailsRouter?.hideNavBotton = true
+        detailsRouter?.showDetails(idItem: item.id, type: item.isAMovie ? .movie : .tv, fromVC: vc)
+    }
 }

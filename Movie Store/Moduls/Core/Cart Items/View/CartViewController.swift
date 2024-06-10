@@ -342,6 +342,15 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource {
             presenter.deleteItem(index: indexPath.row)
         }
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let item = items[indexPath.row]
+        presenter.itemSelected(with: item)
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 }
 
 

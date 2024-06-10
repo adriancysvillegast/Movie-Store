@@ -18,6 +18,8 @@ class DetailsItemViewController: UIViewController {
     // MARK: - Properties
 
     let presenter: DetailsItemPresentable
+    var hideItems: Bool = false
+    
     lazy var contentViewSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 300)
 
     private lazy var aScrollView: UIScrollView = {
@@ -180,12 +182,15 @@ class DetailsItemViewController: UIViewController {
     }
     
     // MARK: - Lifecycle
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navBar()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter.getItem()
         setUpView()
-        navBar()
+        
         print("DetailsItemViewController")
     }
     
@@ -257,10 +262,15 @@ class DetailsItemViewController: UIViewController {
     // MARK: - Navigation bar
     
     private func navBar() {
-        navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(image: UIImage(systemName: "bag"), style: .done, target: self, action: #selector(buyMovie)),
-            UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addToSaved))
-        ]
+        if hideItems {
+            navigationItem.rightBarButtonItems = []
+        }else {
+            navigationItem.rightBarButtonItems = [
+                UIBarButtonItem(image: UIImage(systemName: "bag"), style: .done, target: self, action: #selector(buyMovie)),
+                UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addToSaved))
+            ]
+        }
+        
     }
     
     
