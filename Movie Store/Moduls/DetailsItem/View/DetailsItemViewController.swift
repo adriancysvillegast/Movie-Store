@@ -186,6 +186,7 @@ class DetailsItemViewController: UIViewController {
         super.viewWillAppear(animated)
         navBar()
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter.getItem()
