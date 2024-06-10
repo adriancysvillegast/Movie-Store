@@ -19,7 +19,7 @@ protocol FavoritePresentable: AnyObject {
     func readItems()
     func deleteItem(index: Int)
     func getRecommendation()
-    
+    func showDetails(with item: DetailModelCell)
 }
 
 class FavoritePresenter : FavoritePresentable {
@@ -161,5 +161,12 @@ class FavoritePresenter : FavoritePresentable {
                 self.view?.showError(message: "we got an error trying to show you recommendations")
             }
         }
+    }
+    
+    // MARK: - Details
+    
+    func showDetails(with item: DetailModelCell) {
+        router.showDetails(with: item)
+    
     }
 }
