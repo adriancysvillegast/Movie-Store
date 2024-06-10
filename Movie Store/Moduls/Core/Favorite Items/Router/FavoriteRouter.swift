@@ -9,21 +9,24 @@ import Foundation
 import UIKit
 
 protocol FavoriteRouting: AnyObject {
-    var favoriteView: FavoriteView? { get }
+    var favoriteView: FavoriteViewController? { get }
+    var details: DetailsItemRouter? { get }
     
     func showFavoriteFromTabBar() -> UIViewController
     func showFavorite(from: UIViewController, idItem: String, type: ItemType)
+    func showDetails(with item: DetailModelCell)
 }
 
 class FavoriteRouter: FavoriteRouting {
     
     // MARK: - Properties
-    weak var favoriteView: FavoriteView?
-    
+    weak var favoriteView: FavoriteViewController?
+    var details: DetailsItemRouter?
     // MARK: - Init
     
     // MARK: - Methods
     func showFavoriteFromTabBar() -> UIViewController {
+        details = DetailsItemRouter()
         
         let interactor = FavoriteInteractor()
         let presenter = FavoritePresenter(interactor: interactor,
@@ -56,5 +59,11 @@ class FavoriteRouter: FavoriteRouting {
         from.navigationController?.pushViewController(view, animated: true)
     }
     
-    
+    func showDetails(with item: DetailModelCell) {
+        guard let vc = favoriteView else {
+            return
+        }
+        
+        details?.showDetails(idItem: item.id, type: item.isAMovie ? .movie : .tv, fromVC: vc)
+    }
 }
