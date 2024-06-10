@@ -51,7 +51,7 @@ class FavoriteRouter: FavoriteRouting {
                                           idItem: idItem,
                                           typeItem: type)
         let view = FavoriteViewController(presenter: presenter)
-        view.title = "Favorite"
+        view.title = "Favourite"
         view.navigationItem.largeTitleDisplayMode = .never
         presenter.view = view
         interactor.presenter = presenter
