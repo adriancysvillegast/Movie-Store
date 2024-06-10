@@ -15,6 +15,7 @@ protocol FavoriteRouting: AnyObject {
     func showFavoriteFromTabBar() -> UIViewController
     func showFavorite(from: UIViewController, idItem: String, type: ItemType)
     func showDetails(with item: DetailModelCell)
+    func showDetails(with item: ItemModelCell)
 }
 
 class FavoriteRouter: FavoriteRouting {
@@ -65,5 +66,12 @@ class FavoriteRouter: FavoriteRouting {
         }
         details?.hideNavBotton = true
         details?.showDetails(idItem: item.id, type: item.isAMovie ? .movie : .tv, fromVC: vc)
+    }
+    
+    func showDetails(with item: ItemModelCell) {
+        guard let vc = favoriteView else {
+            return
+        }
+        details?.showDetails(idItem: String(item.id), type: .movie, fromVC: vc)
     }
 }

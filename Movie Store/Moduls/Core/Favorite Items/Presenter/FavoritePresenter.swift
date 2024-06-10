@@ -19,7 +19,8 @@ protocol FavoritePresentable: AnyObject {
     func readItems()
     func deleteItem(index: Int)
     func getRecommendation()
-    func showDetails(with item: DetailModelCell)
+    func itemSelected(with item: DetailModelCell)
+    func suggestionSelected(with item: ItemModelCell)
 }
 
 class FavoritePresenter : FavoritePresentable {
@@ -165,7 +166,12 @@ class FavoritePresenter : FavoritePresentable {
     
     // MARK: - Details
     
-    func showDetails(with item: DetailModelCell) {
+    func itemSelected(with item: DetailModelCell) {
+        router.showDetails(with: item)
+    
+    }
+    
+    func suggestionSelected(with item: ItemModelCell) {
         router.showDetails(with: item)
     
     }

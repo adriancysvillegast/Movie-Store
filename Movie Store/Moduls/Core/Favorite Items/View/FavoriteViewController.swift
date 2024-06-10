@@ -339,7 +339,7 @@ extension FavoriteViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = items[indexPath.row]
-        presenter.showDetails(with: item)
+        presenter.itemSelected(with: item)
     }
     
 }
@@ -376,5 +376,14 @@ extension FavoriteViewController: UICollectionViewDelegate, UICollectionViewData
         }
         header.configure(with: presenter.titleGenre)
         return header
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let item = itemsSugguest[indexPath.row]
+        presenter.suggestionSelected(with: item)
     }
 }
