@@ -110,7 +110,7 @@ class MapperManager {
                 id: $0.id,
                 artWork: URL(string: "https://image.tmdb.org/t/p/w200" + ($0.posterPath ?? "")),
                 releaseDate: $0.releaseDate ?? "",
-                title: $0.originalTitle)
+                title: $0.originalTitle ?? "")
         }
         return model
     }

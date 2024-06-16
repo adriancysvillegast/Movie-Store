@@ -385,6 +385,27 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         }
     }
     
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let section  = indexPath.section
+        switch section {
+        case 0 :
+            let itemMovie = movieItems[indexPath.row]
+            presenter.genreSelected(id: itemMovie.id, type: .movie, name: itemMovie.name)
+            print("movie", itemMovie)
+        case 1:
+            
+            let itemTV = tvItems[indexPath.row]
+            print("tv", itemTV)
+            presenter.genreSelected(id: itemTV.id, type: .tv, name: itemTV.name)
+        default:
+            break
+        }
+    }
 }
 
 

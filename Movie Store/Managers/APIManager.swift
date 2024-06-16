@@ -67,7 +67,7 @@ final class APIManager {
         guard let url = URL(string: Constants.baseURL + "/\(endPoint1)?api_key=" + Constants.token + "\(endPoint2)") else {
             throw APIError.errorUrl
         }
-//        print(url.absoluteString)
+        print(url.absoluteString)
         
         let (data, _) = try await URLSession.shared.data(from: url)
         
@@ -76,7 +76,7 @@ final class APIManager {
             decoder.keyDecodingStrategy = .convertFromSnakeCase
             return try decoder.decode(expenting, from: data)
         } catch  {
-            
+//            print(error.localizedDescription)
             throw APIError.errorApi
         }
     }

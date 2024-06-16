@@ -26,6 +26,10 @@
 		092B23F72B8D59DB00B2CB69 /* MapperManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092B23F62B8D59DB00B2CB69 /* MapperManager.swift */; };
 		09451D292C16192500FDF2AA /* SearchResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09451D282C16192500FDF2AA /* SearchResponseEntity.swift */; };
 		09451D2B2C16199D00FDF2AA /* SearchEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09451D2A2C16199D00FDF2AA /* SearchEntity.swift */; };
+		09451D332C174E9000FDF2AA /* ListByGenreRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09451D322C174E9000FDF2AA /* ListByGenreRouter.swift */; };
+		09451D352C174F5D00FDF2AA /* ListByGenrePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09451D342C174F5D00FDF2AA /* ListByGenrePresenter.swift */; };
+		09451D372C174F8C00FDF2AA /* ListByGenreInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09451D362C174F8C00FDF2AA /* ListByGenreInteractor.swift */; };
+		09451D392C174FCC00FDF2AA /* ListByGenreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09451D382C174FCC00FDF2AA /* ListByGenreViewController.swift */; };
 		0962A81D2B8E8B0B00FA051B /* Test_ValidateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0962A81C2B8E8B0B00FA051B /* Test_ValidateManager.swift */; };
 		096782582B86D26800BB1C7A /* BrowseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096782572B86D26800BB1C7A /* BrowseViewController.swift */; };
 		0967825A2B87CAA600BB1C7A /* BrowserInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096782592B87CAA600BB1C7A /* BrowserInteractor.swift */; };
@@ -133,6 +137,10 @@
 		092B23F62B8D59DB00B2CB69 /* MapperManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapperManager.swift; sourceTree = "<group>"; };
 		09451D282C16192500FDF2AA /* SearchResponseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResponseEntity.swift; sourceTree = "<group>"; };
 		09451D2A2C16199D00FDF2AA /* SearchEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEntity.swift; sourceTree = "<group>"; };
+		09451D322C174E9000FDF2AA /* ListByGenreRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListByGenreRouter.swift; sourceTree = "<group>"; };
+		09451D342C174F5D00FDF2AA /* ListByGenrePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListByGenrePresenter.swift; sourceTree = "<group>"; };
+		09451D362C174F8C00FDF2AA /* ListByGenreInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListByGenreInteractor.swift; sourceTree = "<group>"; };
+		09451D382C174FCC00FDF2AA /* ListByGenreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListByGenreViewController.swift; sourceTree = "<group>"; };
 		0962A81C2B8E8B0B00FA051B /* Test_ValidateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_ValidateManager.swift; sourceTree = "<group>"; };
 		096782572B86D26800BB1C7A /* BrowseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseViewController.swift; sourceTree = "<group>"; };
 		096782592B87CAA600BB1C7A /* BrowserInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserInteractor.swift; sourceTree = "<group>"; };
@@ -282,6 +290,57 @@
 				092832F02BD6BA0C003376BC /* CartInteractor.swift */,
 			);
 			path = Interactor;
+			sourceTree = "<group>";
+		};
+		09451D2C2C174CF400FDF2AA /* List by Genre */ = {
+			isa = PBXGroup;
+			children = (
+				09451D312C174D3500FDF2AA /* View */,
+				09451D302C174D2B00FDF2AA /* Interactor */,
+				09451D2F2C174D2000FDF2AA /* Presenter */,
+				09451D2E2C174D1800FDF2AA /* Entity */,
+				09451D2D2C174D0800FDF2AA /* Router */,
+			);
+			path = "List by Genre";
+			sourceTree = "<group>";
+		};
+		09451D2D2C174D0800FDF2AA /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				09451D322C174E9000FDF2AA /* ListByGenreRouter.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		09451D2E2C174D1800FDF2AA /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
+		09451D2F2C174D2000FDF2AA /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				09451D342C174F5D00FDF2AA /* ListByGenrePresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		09451D302C174D2B00FDF2AA /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				09451D362C174F8C00FDF2AA /* ListByGenreInteractor.swift */,
+			);
+			path = Interactor;
+			sourceTree = "<group>";
+		};
+		09451D312C174D3500FDF2AA /* View */ = {
+			isa = PBXGroup;
+			children = (
+				09451D382C174FCC00FDF2AA /* ListByGenreViewController.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		096782522B86D1F000BB1C7A /* View */ = {
@@ -581,6 +640,7 @@
 		09E0266F2B7021210033B2D4 /* Moduls */ = {
 			isa = PBXGroup;
 			children = (
+				09451D2C2C174CF400FDF2AA /* List by Genre */,
 				098DF0542B9626DB00580718 /* DetailsItem */,
 				09E0267D2B7035710033B2D4 /* Sign Up */,
 				09E026712B70213F0033B2D4 /* Log In */,
@@ -885,10 +945,12 @@
 				09AD91092C10BA16003E17AA /* APIManager.swift in Sources */,
 				0992BED92C078659007E202C /* FavoriteRouter.swift in Sources */,
 				09AD911A2C123948003E17AA /* SearchPresenter.swift in Sources */,
+				09451D352C174F5D00FDF2AA /* ListByGenrePresenter.swift in Sources */,
 				098DF05B2B96279500580718 /* DetailsItemRouter.swift in Sources */,
 				0998E4A52BD956D700C55407 /* ItemFirestoreModel.swift in Sources */,
 				09E026882B7041270033B2D4 /* LogInInterector.swift in Sources */,
 				099B9E9E2C134300003E0769 /* GenreModelCell.swift in Sources */,
+				09451D392C174FCC00FDF2AA /* ListByGenreViewController.swift in Sources */,
 				09451D292C16192500FDF2AA /* SearchResponseEntity.swift in Sources */,
 				09BC1E1D2B8FC9EB00646B72 /* OnAirTVResponseEntity.swift in Sources */,
 				09E026802B703CA90033B2D4 /* LogInRouter.swift in Sources */,
@@ -899,6 +961,7 @@
 				092832F12BD6BA0C003376BC /* CartInteractor.swift in Sources */,
 				09E026862B703F940033B2D4 /* SignUpRouter.swift in Sources */,
 				09E0267A2B7022B80033B2D4 /* AuthManager.swift in Sources */,
+				09451D332C174E9000FDF2AA /* ListByGenreRouter.swift in Sources */,
 				09E0263F2B7014490033B2D4 /* AppDelegate.swift in Sources */,
 				0967825A2B87CAA600BB1C7A /* BrowserInteractor.swift in Sources */,
 				09AD910C2C10C30D003E17AA /* ListByGenrerResponseEntity.swift in Sources */,
@@ -929,6 +992,7 @@
 				09E0267C2B7024420033B2D4 /* LogInViewController.swift in Sources */,
 				09BC1E1F2B8FCA3B00646B72 /* OnAirTVEntity.swift in Sources */,
 				092832F52BD6BA5D003376BC /* CartRouter.swift in Sources */,
+				09451D372C174F8C00FDF2AA /* ListByGenreInteractor.swift in Sources */,
 				09BC1E212B8FCD7200646B72 /* TVAiringTodayResponseEntity.swift in Sources */,
 				09E026412B7014490033B2D4 /* SceneDelegate.swift in Sources */,
 				09BC1E172B8FC86C00646B72 /* PopularTVEntity.swift in Sources */,

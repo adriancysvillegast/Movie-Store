@@ -10,21 +10,22 @@ import UIKit
 
 protocol SearchRouting: AnyObject {
     var searchView: SearchViewController? { get }
-
+    var listByGenre: ListByGenreRouter? { get }
+    
     func showSearch() -> UIViewController
+    func showItemsGenre( id: Int, type: ItemType, name: String)
 }
 
 class SearchRouter: SearchRouting {
-    
-    
     // MARK: - Properties
     
     weak var searchView: SearchViewController?
-    
+    var listByGenre: ListByGenreRouter?
     
     // MARK: - Methods
     
     func showSearch() -> UIViewController {
+        listByGenre = ListByGenreRouter()
         
         let interactor = SearchInteractor()
         let presenter = SearchPresenter(interactor: interactor, router: self)
@@ -37,5 +38,11 @@ class SearchRouter: SearchRouting {
     }
     
 
+    
+    func showItemsGenre( id: Int, type: ItemType, name: String) {
+        guard let vc = searchView else { return }
+        
+        listByGenre?.showItemsByGenre(from: vc, id: id, type: type, name: name)
+    }
     
 }
