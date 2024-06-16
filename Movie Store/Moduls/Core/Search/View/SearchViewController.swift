@@ -396,11 +396,11 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         case 0 :
             let itemMovie = movieItems[indexPath.row]
             presenter.genreSelected(id: itemMovie.id, type: .movie, name: itemMovie.name)
-            print("movie", itemMovie)
+//            print("movie", itemMovie)
         case 1:
             
             let itemTV = tvItems[indexPath.row]
-            print("tv", itemTV)
+//            print("tv", itemTV)
             presenter.genreSelected(id: itemTV.id, type: .tv, name: itemTV.name)
         default:
             break

@@ -66,8 +66,6 @@ class ListByGenreViewController: UIViewController {
         super.viewDidLoad()
         setUpView()
         presenter.getItems()
-        
-        print("ggdgd")
     }
     
     override func viewDidLayoutSubviews() {
