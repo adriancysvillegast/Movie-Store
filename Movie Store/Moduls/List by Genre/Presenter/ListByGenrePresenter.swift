@@ -11,6 +11,7 @@ protocol ListByGenrePresentable: AnyObject {
     var view: ListByGenreView? { get }
     
     func getItems()
+    func getNextPage()
 }
 
 class ListByGenrePresenter : ListByGenrePresentable{
@@ -22,7 +23,9 @@ class ListByGenrePresenter : ListByGenrePresentable{
     var router: ListByGenreRouting
     var type: ItemType
     var id: Int
-    var itemsEntity: ListByGenrerResponseEntity?
+    var itemsEntity: [ListByGenrerResponseEntity] = []
+    var items: [ItemModelCell] = []
+    var newItems: [ItemModelCell] = []
     
     // MARK: - Init
     
@@ -41,12 +44,14 @@ class ListByGenrePresenter : ListByGenrePresentable{
     func getItems() {
         Task {
             do{
-                let items = try await interactor.getItems(id: id, type: type, pages: nil)
+                let itemsData = try await interactor.getItems(id: id, type: type, pages: nil)
                 
-                itemsEntity = items
+                itemsEntity.append(itemsData)
                 
-                let model =  MapperManager.shared.formatItem(value: items.results)
-                self.view?.showItems(items: model)
+                items = MapperManager.shared.formatItem(value: itemsData.results)
+                
+//                aqui debo almacenar los medelos en un avaribale que los va almacenar a todos sin borrarlos
+                self.view?.showItems(items: items)
             }catch {
                 
                 self.view?.hideCollection()
@@ -56,5 +61,34 @@ class ListByGenrePresenter : ListByGenrePresentable{
         }
     }
     
+    func getNextPage() {
+        
+        Task {
+            guard let items = itemsEntity.last else {
+                
+                return
+            }
+            
+            if items.page < items.totalPages {
+                
+                newItems = []
+                let page = items.page + 1
+                do {
+                    let itemsData = try await interactor.getItems(id: id, type: type, pages: page)
+                    itemsEntity.append(itemsData)
+                    newItems = MapperManager.shared.formatItem(value: itemsData.results)
+                    self.view?.addNext(items: newItems)
+                    
+                } catch  {
+                    self.view?.showAlert(title: "Error",
+                                         message: "We had trouble to show more items")
+                }
+                
+            }
+            
+            
+        }
+        
+    }
     
 }
