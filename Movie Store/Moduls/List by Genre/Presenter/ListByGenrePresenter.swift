@@ -12,6 +12,7 @@ protocol ListByGenrePresentable: AnyObject {
     
     func getItems()
     func getNextPage()
+    func itemWasSelected(id: Int)
 }
 
 class ListByGenrePresenter : ListByGenrePresentable{
@@ -20,12 +21,12 @@ class ListByGenrePresenter : ListByGenrePresentable{
     
     weak var view: ListByGenreView?
     var interactor: ListByGenreInteractable
-    var router: ListByGenreRouting
-    var type: ItemType
-    var id: Int
-    var itemsEntity: [ListByGenrerResponseEntity] = []
-    var items: [ItemModelCell] = []
-    var newItems: [ItemModelCell] = []
+    private var router: ListByGenreRouting
+    private var type: ItemType
+    private var id: Int
+    private var itemsEntity: [ListByGenrerResponseEntity] = []
+    private var items: [ItemModelCell] = []
+    private var newItems: [ItemModelCell] = []
     
     // MARK: - Init
     
@@ -42,15 +43,15 @@ class ListByGenrePresenter : ListByGenrePresentable{
     // MARK: - Methods
     
     func getItems() {
+        
         Task {
+            
             do{
                 let itemsData = try await interactor.getItems(id: id, type: type, pages: nil)
                 
                 itemsEntity.append(itemsData)
                 
                 items = MapperManager.shared.formatItem(value: itemsData.results)
-                
-//                aqui debo almacenar los medelos en un avaribale que los va almacenar a todos sin borrarlos
                 self.view?.showItems(items: items)
             }catch {
                 
@@ -64,8 +65,8 @@ class ListByGenrePresenter : ListByGenrePresentable{
     func getNextPage() {
         
         Task {
+            
             guard let items = itemsEntity.last else {
-                
                 return
             }
             
@@ -74,7 +75,9 @@ class ListByGenrePresenter : ListByGenrePresentable{
                 newItems = []
                 let page = items.page + 1
                 do {
-                    let itemsData = try await interactor.getItems(id: id, type: type, pages: page)
+                    let itemsData = try await interactor.getItems(id: id,
+                                                                  type: type,
+                                                                  pages: page)
                     itemsEntity.append(itemsData)
                     newItems = MapperManager.shared.formatItem(value: itemsData.results)
                     self.view?.addNext(items: newItems)
@@ -83,12 +86,12 @@ class ListByGenrePresenter : ListByGenrePresentable{
                     self.view?.showAlert(title: "Error",
                                          message: "We had trouble to show more items")
                 }
-                
             }
-            
-            
         }
-        
+    }
+    
+    func itemWasSelected(id: Int) {
+        router.goToDetails(id: String(id), type: type)
     }
     
 }

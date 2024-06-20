@@ -10,21 +10,28 @@ import UIKit
 
 protocol ListByGenreRouting: AnyObject {
     
-    var view: ListByGenreViewController? { get }
+    var viewListByGenre: ListByGenreViewController? { get }
+    var detailRouter: DetailsItemRouter? { get }
     
     func showItemsByGenre(from: UIViewController, id: Int, type: ItemType, name: String)
+    func goToDetails(id: String, type: ItemType)
 }
 
 class ListByGenreRouter: ListByGenreRouting {
     
     // MARK: - Properties
-    weak var view: ListByGenreViewController?
+    var viewListByGenre: ListByGenreViewController?
+    var detailRouter: DetailsItemRouter?
+    
     
     // MARK: - Methods
     
     func showItemsByGenre(from: UIViewController,
                           id: Int,
                           type: ItemType, name: String) {
+        
+        detailRouter = DetailsItemRouter()
+        
         let interactor = ListByGenreInteractor()
         let presenter = ListByGenrePresenter(
             interactor: interactor,
@@ -33,9 +40,22 @@ class ListByGenreRouter: ListByGenreRouting {
             id: id)
         let view = ListByGenreViewController(presenter: presenter)
         view.title = name
+        viewListByGenre = view
         
         presenter.view = view
         interactor.presenter = presenter
         from.navigationController?.pushViewController(view, animated: true)
     }
+    
+    
+    func goToDetails(id: String, type: ItemType) {
+        
+        guard let view = viewListByGenre else {
+            return
+        }
+        
+        detailRouter?.showDetails(idItem: id, type: type, fromVC: view)
+        
+    }
+    
 }

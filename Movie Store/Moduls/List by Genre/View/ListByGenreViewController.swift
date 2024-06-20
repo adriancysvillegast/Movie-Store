@@ -75,15 +75,18 @@ class ListByGenreViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
+        messageError.center = CGPoint(x: view.frame.width/2, y: view.frame.height/2)
     }
     
     // MARK: - SetUpView
     private func setUpView() {
+        
         navigationController?.navigationBar.prefersLargeTitles = false
+        
         [aCollectionView, messageError].forEach {
             view.addSubview($0)
         }
+        
         NSLayoutConstraint.activate([
             aCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
             aCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 5),
@@ -102,7 +105,9 @@ class ListByGenreViewController: UIViewController {
 extension ListByGenreViewController: ListByGenreView {
     
     func showAlert(title: String, message: String) {
+        
         DispatchQueue.main.async {
+            
             let alert = UIAlertController(title: title,
                                           message: message,
                                           preferredStyle: .alert)
@@ -112,6 +117,7 @@ extension ListByGenreViewController: ListByGenreView {
     }
     
     func addNext(items: [ItemModelCell]) {
+        
         DispatchQueue.main.async {
             
             self.items += items
@@ -120,6 +126,7 @@ extension ListByGenreViewController: ListByGenreView {
     }
     
     func showError(message: String) {
+        
         DispatchQueue.main.async {
             
             self.messageError.text = message
@@ -128,6 +135,7 @@ extension ListByGenreViewController: ListByGenreView {
     }
     
     func hideError(message: String) {
+        
         DispatchQueue.main.async {
             
             self.messageError.isHidden = true
@@ -135,6 +143,7 @@ extension ListByGenreViewController: ListByGenreView {
     }
     
     func hideCollection() {
+        
         DispatchQueue.main.async {
             
             self.aCollectionView.isHidden = true
@@ -142,7 +151,7 @@ extension ListByGenreViewController: ListByGenreView {
     }
     
     func showItems(items: [ItemModelCell]) {
-        
+
         DispatchQueue.main.async {
             
             self.items = items
@@ -160,10 +169,12 @@ extension ListByGenreViewController: ListByGenreView {
 extension ListByGenreViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
         return items.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CoverItemCell.identifier, for: indexPath) as? CoverItemCell else {
             return UICollectionViewCell()
         }
@@ -173,10 +184,12 @@ extension ListByGenreViewController: UICollectionViewDelegate, UICollectionViewD
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
+        
         return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
         return CGSize(width: view.frame.width/2.11, height: view.frame.height/3.2)
     }
     
@@ -188,5 +201,9 @@ extension ListByGenreViewController: UICollectionViewDelegate, UICollectionViewD
             self.loading =  false
             
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        presenter.itemWasSelected(id: items[indexPath.row].id)
     }
 }
