@@ -191,8 +191,6 @@ class DetailsItemViewController: UIViewController {
         super.viewDidLoad()
         presenter.getItem()
         setUpView()
-        
-        print("DetailsItemViewController")
     }
     
     // MARK: - setUpView
