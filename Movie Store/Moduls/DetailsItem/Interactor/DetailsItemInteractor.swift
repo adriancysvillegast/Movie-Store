@@ -13,6 +13,7 @@ protocol DetailsItemInteractable: AnyObject {
     
     func getMovieDetails(id: String) async throws -> DetailMovieResponseEntity
     func getTVDetails(id: String) async throws -> DetailTVResponseEntity
+    func getPersonDetails(id: String) async throws -> PersonDetailResponse
 }
 
 class DetailsItemInteractor: DetailsItemInteractable {
@@ -32,6 +33,7 @@ class DetailsItemInteractor: DetailsItemInteractable {
     // MARK: - Methods
     
     func getMovieDetails(id: String) async throws -> DetailMovieResponseEntity {
+        
         do {
            let items = try await service.get(
                 expenting: DetailMovieResponseEntity.self,
@@ -41,12 +43,22 @@ class DetailsItemInteractor: DetailsItemInteractable {
         } catch  {
             throw APIError.errorApi
         }
-        
     }
     
     func getTVDetails(id: String) async throws -> DetailTVResponseEntity {
+        
         do {
            let items = try await service.get(expenting: DetailTVResponseEntity.self, endPoint: "/tv/\(id)")
+            return items
+        } catch  {
+            throw APIError.errorApi
+        }
+    }
+    
+    func getPersonDetails(id: String) async throws -> PersonDetailResponse {
+        
+        do {
+           let items = try await service.get(expenting: PersonDetailResponse.self, endPoint: "/person/\(id)")
             return items
         } catch  {
             throw APIError.errorApi

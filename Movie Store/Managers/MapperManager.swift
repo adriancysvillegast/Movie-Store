@@ -122,6 +122,38 @@ class MapperManager {
         return model
     }
     
+    func formatItem(value: PersonDetailResponse) -> PersonModelCell {
+        let genre = genrePerson(genre: value.gender)
+        let model = PersonModelCell(
+            id: String(value.id),
+            name: value.name,
+            gender: genre,
+            deathDay: value.deathday,
+            biography: value.biography,
+            birthday: value.birthday ?? "Unknown",
+            ocupation: value.knownForDepartment,
+            placeOfBirth: value.placeOfBirth ?? "Unknown",
+            popularity: value.popularity,
+            artWork: URL(string: "https://image.tmdb.org/t/p/w200" + (value.profilePath ?? "")))
+        
+        return model
+    }
+    
+    private func genrePerson(genre: Int) -> String {
+        switch genre {
+        case 0:
+            return "Not set / not specified"
+        case 1:
+            return "Female"
+        case 2:
+            return "Male"
+        case 3:
+            return "Non-binary"
+        default:
+            return "Not set / not specified"
+        }
+    }
+    
     func formatItem(value: DetailMovieResponseEntity) -> DetailModelCell {
         let companies = value.productionCompanies.compactMap {
             Companies(id: $0.id,
@@ -211,3 +243,4 @@ enum DataMovie {
     
 
 }
+

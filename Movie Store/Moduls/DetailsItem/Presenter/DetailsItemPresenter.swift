@@ -39,15 +39,43 @@ class DetailsItemPresenter: DetailsItemPresentable {
     func getItem() {
         
         Task {
+            self.view?.showSpinner()
+            
             switch typeItem {
             case .movie:
-                let detailItem = try await interactor.getMovieDetails(id: idItem)
-                let model = MapperManager.shared.formatItem(value: detailItem)
-                view?.updateViewMovie(item: model)
+                do{
+                    let detailItem = try await interactor.getMovieDetails(id: idItem)
+                    let model = MapperManager.shared.formatItem(value: detailItem)
+                    self.view?.hideSpiner()
+                    view?.showMovieDetail(item: model)
+                }catch {
+                    view?.hideSpiner()
+                    view?.showError(message: "We have troubles to show the info")
+                }
             case .tv:
-                let detailItem = try await interactor.getTVDetails(id: idItem)
-                let model = MapperManager.shared.formatItem(value: detailItem)
-                view?.updateViewTv(item: model)
+                
+                do {
+                    let detailItem = try await interactor.getTVDetails(id: idItem)
+                    let model = MapperManager.shared.formatItem(value: detailItem)
+                    self.view?.hideSpiner()
+                    view?.showTVDetail(item: model)
+                } catch  {
+                    view?.hideSpiner()
+                    view?.showError(message: "We have troubles to show the info")
+                }
+            case .person:
+                
+                do {
+                    let person = try await interactor.getPersonDetails(id: idItem)
+                    let model = MapperManager.shared.formatItem(value: person)
+                    self.view?.hideSpiner()
+                    view?.showPerson(person: model)
+//                    print(person)
+                } catch  {
+                    print("error")
+                    view?.hideSpiner()
+                    view?.showError(message: "We have troubles to show the info")
+                }
             }
         }
         

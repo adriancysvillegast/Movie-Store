@@ -250,6 +250,8 @@ class BrowserPresenter: BrowserPresentable {
             router.showDetails(id: String(id), type: type)
         case .tv:
             router.showDetails(id: String(id), type: type)
+        case .person:
+            router.showDetails(id: String(id), type: type)
         }
     }
     
@@ -282,6 +284,7 @@ enum RowSelected {
 enum ItemType {
     case movie
     case tv
+    case person
 }
 
 
