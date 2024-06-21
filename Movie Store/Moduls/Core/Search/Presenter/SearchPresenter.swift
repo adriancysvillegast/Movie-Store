@@ -15,6 +15,7 @@ protocol SearchPresentable: AnyObject {
     func getQuery(query: String?)
     func mappingModel(items: [SearchEntity]) -> [ItemsResult]
     func genreSelected(id: Int, type: ItemType, name: String)
+    func itemSelected(id: Int, type: ItemType)
 }
 
 class SearchPresenter: SearchPresentable{
@@ -122,8 +123,14 @@ class SearchPresenter: SearchPresentable{
         return result
     }
     
+    // MARK: - Navigation
+    
     func genreSelected(id: Int, type: ItemType, name: String) {
         router?.showItemsGenre(id: id, type: type, name: name)
+    }
+    
+    func itemSelected(id: Int, type: ItemType) {
+        router?.showItem(id: String(id), type: type)
     }
     
 }

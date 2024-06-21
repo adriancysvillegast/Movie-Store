@@ -45,6 +45,8 @@ class ListByGenreInteractor: ListByGenreInteractable {
             } catch  {
                 throw APIError.errorApi
             }
+        case .person:
+            throw APIError.errorApi
         }
     }
     

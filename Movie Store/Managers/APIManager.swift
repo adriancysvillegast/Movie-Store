@@ -28,7 +28,7 @@ final class APIManager {
             decoder.keyDecodingStrategy = .convertFromSnakeCase
             return try decoder.decode(expenting, from: data)
         } catch  {
-            
+//            print(error.localizedDescription)
             throw APIError.errorApi
         }
     }

@@ -96,6 +96,8 @@
 		09E5CE202B88194C00060770 /* ItemModelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09E5CE1F2B88194C00060770 /* ItemModelCell.swift */; };
 		09E5CE222B88201700060770 /* HeaderReusableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09E5CE212B88201700060770 /* HeaderReusableCellView.swift */; };
 		09E5CE242B88FE4700060770 /* Test_AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09E5CE232B88FE4700060770 /* Test_AuthManager.swift */; };
+		09EB86872C24D5250074D624 /* PersonDetailResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09EB86862C24D5250074D624 /* PersonDetailResponse.swift */; };
+		09EB86892C24DB270074D624 /* PersonModelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09EB86882C24DB270074D624 /* PersonModelCell.swift */; };
 		09FECB682B9F652F00AB5DD9 /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09FECB672B9F652F00AB5DD9 /* DescriptionView.swift */; };
 		09FECB6A2B9FA7C400AB5DD9 /* GenresCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09FECB692B9FA7C400AB5DD9 /* GenresCell.swift */; };
 /* End PBXBuildFile section */
@@ -205,6 +207,8 @@
 		09E5CE1F2B88194C00060770 /* ItemModelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemModelCell.swift; sourceTree = "<group>"; };
 		09E5CE212B88201700060770 /* HeaderReusableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderReusableCellView.swift; sourceTree = "<group>"; };
 		09E5CE232B88FE4700060770 /* Test_AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_AuthManager.swift; sourceTree = "<group>"; };
+		09EB86862C24D5250074D624 /* PersonDetailResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailResponse.swift; sourceTree = "<group>"; };
+		09EB86882C24DB270074D624 /* PersonModelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonModelCell.swift; sourceTree = "<group>"; };
 		09FECB672B9F652F00AB5DD9 /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		09FECB692B9FA7C400AB5DD9 /* GenresCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenresCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -424,6 +428,7 @@
 				098DF0622B96376800580718 /* DetailTVResponseEntity.swift */,
 				098DF0642B96385A00580718 /* DetailMovieResponseEntity.swift */,
 				098DF0662B9638A800580718 /* GenresResponseEntity.swift */,
+				09EB86862C24D5250074D624 /* PersonDetailResponse.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -795,6 +800,7 @@
 				09E5CE212B88201700060770 /* HeaderReusableCellView.swift */,
 				0911703A2B98DFB3002B9DE8 /* DetailModelCell.swift */,
 				099B9E9D2C134300003E0769 /* GenreModelCell.swift */,
+				09EB86882C24DB270074D624 /* PersonModelCell.swift */,
 			);
 			path = ModelsCells;
 			sourceTree = "<group>";
@@ -1001,6 +1007,7 @@
 				092832EF2BD6B9DB003376BC /* CartViewController.swift in Sources */,
 				09E5CE202B88194C00060770 /* ItemModelCell.swift in Sources */,
 				098DF05F2B962B5600580718 /* DetailsItemInteractor.swift in Sources */,
+				09EB86892C24DB270074D624 /* PersonModelCell.swift in Sources */,
 				09BC1E192B8FC8F600646B72 /* TopRateTVResponseEntity.swift in Sources */,
 				09E0268F2B7042C90033B2D4 /* SignUpInteractor.swift in Sources */,
 				0967825C2B87CB1600BB1C7A /* BrowserPresenter.swift in Sources */,
@@ -1016,6 +1023,7 @@
 				09BC1E232B8FCDA400646B72 /* TVAiringTodayEntity.swift in Sources */,
 				0992BED72C078645007E202C /* FavoritePresenter.swift in Sources */,
 				091E28222B87DE7700957CE6 /* APIError.swift in Sources */,
+				09EB86872C24D5250074D624 /* PersonDetailResponse.swift in Sources */,
 				092B23F12B8D581700B2CB69 /* NowPlayingEntity.swift in Sources */,
 				09BC1E1B2B8FC96800646B72 /* TopRateTVEntity.swift in Sources */,
 				092B23ED2B8D57B400B2CB69 /* PopularMovieEntity.swift in Sources */,

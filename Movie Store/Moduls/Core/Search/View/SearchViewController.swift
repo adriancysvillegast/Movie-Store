@@ -474,4 +474,24 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let type = result[indexPath.section]
+        
+        switch type {
+            
+        case .movie(let model):
+            let item = model[indexPath.row]
+            presenter.itemSelected(id: item.id , type: .movie)
+        case .tv(model: let model):
+            let item = model[indexPath.row]
+            presenter.itemSelected(id: item.id , type: .tv)
+        case .person(model: let model):
+            let item = model[indexPath.row]
+            presenter.itemSelected(id: item.id , type: .person)
+        }
+    }
 }

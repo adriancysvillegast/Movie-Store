@@ -9,19 +9,25 @@ import UIKit
 import Kingfisher
 
 protocol DetailsItemView: AnyObject {
-    func updateViewTv(item: DetailModelCell)
-    func updateViewMovie(item: DetailModelCell)
+    func showSpinner()
+    func hideSpiner()
+    func showError(message: String)
+    func hideError()
+    
+    func showTVDetail(item: DetailModelCell)
+    func showMovieDetail(item: DetailModelCell)
+    func showPerson(person: PersonModelCell)
 }
 
 class DetailsItemViewController: UIViewController {
     
     // MARK: - Properties
-
+    
     let presenter: DetailsItemPresentable
     var hideItems: Bool = false
     
     lazy var contentViewSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 300)
-
+    
     private lazy var aScrollView: UIScrollView = {
         let aScrollView = UIScrollView(frame: .zero)
         aScrollView.frame = view.bounds
@@ -29,7 +35,6 @@ class DetailsItemViewController: UIViewController {
         aScrollView.autoresizingMask = .flexibleHeight
         aScrollView.bounces = true
         aScrollView.backgroundColor = .systemBackground
-//        aScrollView.translatesAutoresizingMaskIntoConstraints = false
         return aScrollView
     }()
     
@@ -37,7 +42,6 @@ class DetailsItemViewController: UIViewController {
         let view = UIView()
         view.backgroundColor = .systemBackground
         view.frame.size = contentViewSize
-//        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
@@ -48,16 +52,31 @@ class DetailsItemViewController: UIViewController {
         aImage.layer.borderWidth = 2.0//1.0
         aImage.layer.borderColor = UIColor.clear.cgColor
         aImage.layer.masksToBounds = true
-//        aImage.backgroundColor = .red
+        aImage.isHidden = true
         aImage.translatesAutoresizingMaskIntoConstraints = false
         return aImage
     }()
+    
+    private lazy var personImage: UIImageView = {
+        let aImage = UIImageView()
+        aImage.contentMode = .scaleAspectFit //.scaleAspectFill
+        aImage.layer.cornerRadius = 12
+        aImage.layer.borderWidth = 2.0//1.0
+        aImage.layer.borderColor = UIColor.clear.cgColor
+        aImage.layer.masksToBounds = true
+        aImage.clipsToBounds = true
+        aImage.isHidden = true
+        aImage.translatesAutoresizingMaskIntoConstraints = false
+        return aImage
+    }()
+    
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .label
         label.numberOfLines = 2
         label.font = .systemFont(ofSize: 20, weight: .bold)
+        label.isHidden = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -72,12 +91,11 @@ class DetailsItemViewController: UIViewController {
         return aImage
     }()
     
-    private var spinnerLoading: UIActivityIndicatorView = {
+    private var spinner: UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView()
         spinner.style = .large
-        spinner.color = .systemRed
+        spinner.color = .secondaryLabel
         spinner.isHidden = true
-        spinner.translatesAutoresizingMaskIntoConstraints = false
         return spinner
     }()
     
@@ -85,7 +103,38 @@ class DetailsItemViewController: UIViewController {
         let label = UILabel()
         label.textColor = .secondaryLabel
         label.numberOfLines = 1
-        label.font = .systemFont(ofSize: 15, weight: .light)
+        label.font = .systemFont(ofSize: 16, weight: .light)
+        label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var ocupation: UILabel = {
+        let label = UILabel()
+        label.textColor = .secondaryLabel
+        label.numberOfLines = 1
+        label.font = .systemFont(ofSize: 16, weight: .medium)
+        label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var gender: UILabel = {
+        let label = UILabel()
+        label.textColor = .secondaryLabel
+        label.numberOfLines = 1
+        label.font = .systemFont(ofSize: 16, weight: .medium)
+        label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var placeOfBirth : UILabel = {
+        let label = UILabel()
+        label.textColor = .secondaryLabel
+        label.numberOfLines = 2
+        label.font = .systemFont(ofSize: 16, weight: .medium)
+        label.isHidden = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -94,8 +143,8 @@ class DetailsItemViewController: UIViewController {
         let label = UILabel()
         label.textColor = .secondaryLabel
         label.numberOfLines = 10
-        label.font = .systemFont(ofSize: 20, weight: .medium)
-        label.isHidden = false
+        label.font = .systemFont(ofSize: 18, weight: .medium)
+        label.isHidden = true
         label.textAlignment = .justified
         let labelTap = UITapGestureRecognizer(target: self, action: #selector(showDescription))
         label.isUserInteractionEnabled =  true
@@ -104,12 +153,26 @@ class DetailsItemViewController: UIViewController {
         return label
     }()
     
+    private lazy var textView: UITextView = {
+        let view = UITextView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: CGFloat.greatestFiniteMagnitude))
+        view.isScrollEnabled = true
+        view.font =  .systemFont(ofSize: 18, weight: .medium)
+        view.textColor = .secondaryLabel
+        view.isEditable = false
+        view.delegate = self
+        view.sizeToFit()
+        view.isHidden = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     private lazy var genresLabel: UILabel = {
         let label = UILabel()
         label.textColor = .label
         label.numberOfLines = 2
         label.text = "Genres"
         label.font = .systemFont(ofSize: 20, weight: .bold)
+        label.isHidden = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -123,7 +186,8 @@ class DetailsItemViewController: UIViewController {
         aCollection.delegate = self
         aCollection.dataSource = self
         aCollection.showsVerticalScrollIndicator = true
-//        aCollection.isHidden = false
+        aCollection.isHidden = true
+        aCollection.register(HeaderReusableCellView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderReusableCellView.identifier)
         aCollection.register(GenresCell.self, forCellWithReuseIdentifier: GenresCell.identifier)
         aCollection.translatesAutoresizingMaskIntoConstraints = false
         return aCollection
@@ -137,6 +201,7 @@ class DetailsItemViewController: UIViewController {
         label.textColor = .secondaryLabel
         label.numberOfLines = 1
         label.font = .systemFont(ofSize: 15, weight: .light)
+        label.isHidden = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -147,6 +212,7 @@ class DetailsItemViewController: UIViewController {
         label.numberOfLines = 2
         label.text = "Companies"
         label.font = .systemFont(ofSize: 20, weight: .bold)
+        label.isHidden = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -158,6 +224,7 @@ class DetailsItemViewController: UIViewController {
         aCollection.delegate = self
         aCollection.dataSource = self
         aCollection.register(CoverItemCell.self, forCellWithReuseIdentifier: CoverItemCell.identifier)
+        aCollection.isHidden = true
         aCollection.translatesAutoresizingMaskIntoConstraints = false
         return aCollection
     }()
@@ -167,7 +234,18 @@ class DetailsItemViewController: UIViewController {
         label.textColor = .secondaryLabel
         label.numberOfLines = 1
         label.font = .systemFont(ofSize: 15, weight: .light)
+        label.isHidden = true
         label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    lazy var textError: UILabel = {
+        let label = UILabel()
+        label.textColor = .secondaryLabel
+        label.textAlignment = .center
+        label.isHidden = true
+        label.font = .systemFont(ofSize: 20, weight: .bold)
+        
         return label
     }()
     
@@ -187,6 +265,12 @@ class DetailsItemViewController: UIViewController {
         navBar()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+//        spinner.center = CGPoint(x: containerView.frame.width/2, y: containerView.frame.height/2)
+//        textError.center = CGPoint(x: containerView.frame.width/2, y: containerView.frame.height/2)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter.getItem()
@@ -196,14 +280,66 @@ class DetailsItemViewController: UIViewController {
     // MARK: - setUpView
     
     private func setUpView() {
+        navigationController?.navigationBar.prefersLargeTitles = false
         
-        view.backgroundColor = .blue
+//        view.addSubview(aScrollView)
+//        aScrollView.addSubview(containerView)
+
+//        [aImageCover, titleLabel, adultIcon, spinner, firstDayAir, genresLabel, overview, aCollectionViewGenres, numberSeasons, companyLabel, aCollectionViewCompanies, votesCount
+//        ].forEach {
+//            containerView.addSubview($0)
+//        }
+        
+    }
+    
+    private func personConstraints() {
+
+        [personImage, titleLabel, placeOfBirth, ocupation, gender, textView, spinner, textError ].forEach {
+            view.addSubview($0)
+        }
+        
+        titleLabel.textAlignment = .center
+        
+        NSLayoutConstraint.activate([
+            personImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            personImage.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            personImage.widthAnchor.constraint(equalToConstant: view.frame.width/2.4),
+            personImage.heightAnchor.constraint(equalToConstant: view.frame.height/3.5),
+            
+            titleLabel.topAnchor.constraint(equalTo: personImage.bottomAnchor, constant: 5),
+            titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            titleLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            titleLabel.heightAnchor.constraint(equalToConstant: 35),
+            
+            textView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 2),
+            textView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            textView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            textView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -90),
+            
+            placeOfBirth.topAnchor.constraint(equalTo: textView.bottomAnchor, constant: 2),
+            placeOfBirth.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            placeOfBirth.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            placeOfBirth.heightAnchor.constraint(equalToConstant: 30),
+
+            ocupation.topAnchor.constraint(equalTo: placeOfBirth.bottomAnchor, constant: 2),
+            ocupation.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            ocupation.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            ocupation.heightAnchor.constraint(equalToConstant: 30),
+
+            gender.topAnchor.constraint(equalTo: ocupation.bottomAnchor, constant: 2),
+            gender.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            gender.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            gender.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0) 
+        ])
+        
+    }
+    
+    private func movieAndTvConstraints() {
         
         view.addSubview(aScrollView)
         aScrollView.addSubview(containerView)
-        
-        [aImageCover, titleLabel, adultIcon, spinnerLoading, firstDayAir, genresLabel, overview, aCollectionViewGenres, numberSeasons, companyLabel, aCollectionViewCompanies, votesCount
-         
+
+        [aImageCover, titleLabel, adultIcon, firstDayAir, genresLabel, overview, aCollectionViewGenres, numberSeasons, companyLabel, aCollectionViewCompanies, votesCount, spinner, textError
         ].forEach {
             containerView.addSubview($0)
         }
@@ -234,7 +370,7 @@ class DetailsItemViewController: UIViewController {
             
             genresLabel.topAnchor.constraint(equalTo: overview.bottomAnchor, constant: 5),
             genresLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 10),
-
+            
             aCollectionViewGenres.topAnchor.constraint(equalTo: genresLabel.bottomAnchor, constant: 5),
             aCollectionViewGenres.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 10),
             aCollectionViewGenres.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -10),
@@ -274,7 +410,9 @@ class DetailsItemViewController: UIViewController {
     
     
     // MARK: - Methods
-
+    
+    
+    
     // MARK: - Targets
     
     @objc func addToSaved() {
@@ -283,11 +421,10 @@ class DetailsItemViewController: UIViewController {
     
     @objc func buyMovie() {
         presenter.addToCart(from: self)
-    
     }
     
     @objc func showDescription() {
-         let view = DescriptionView(textDescription: descriptionItem)
+        let view = DescriptionView(textDescription: descriptionItem)
         view.modalPresentationStyle = .overFullScreen
         present(view, animated: true)
     }
@@ -295,15 +432,49 @@ class DetailsItemViewController: UIViewController {
 
 // MARK: - DetailsItemView
 extension DetailsItemViewController: DetailsItemView {
-
-    func updateViewMovie(item: DetailModelCell) {
+    
+    
+    func showSpinner() {
         DispatchQueue.main.async {
-            self.firstDayAir.isHidden = true
-            self.adultIcon.isHidden = item.adult ?? false
-            self.numberSeasons.isHidden = true
+            self.spinner.isHidden = false
+            self.spinner.startAnimating()
+        }
+    }
+    
+    func hideSpiner() {
+        DispatchQueue.main.async {
+            self.spinner.isHidden = true
+            self.spinner.stopAnimating()
+        }
+    }
+    
+    func showError(message: String) {
+        DispatchQueue.main.async {
+            self.textError.text = message
+            self.textError.isHidden = false
+        }
+    }
+    
+    func hideError() {
+        DispatchQueue.main.async {
+            self.textError.isHidden = true
+        }
+    }
+    
+    
+    func showMovieDetail(item: DetailModelCell) {
+        DispatchQueue.main.async {
+            self.movieAndTvConstraints()
+
+            [
+                self.aImageCover, self.titleLabel, self.overview, self.votesCount, self.aCollectionViewGenres, self.aCollectionViewCompanies, self.genresLabel, self.companyLabel
+                
+            ].forEach {
+                $0.isHidden = false
+            }
             
+            self.adultIcon.isHidden = item.adult ?? false
             self.aImageCover.kf.setImage(with: item.artwork)
-//                .sd_setImage(with: item.artwork)
             self.titleLabel.text = item.name
             self.overview.text = item.overview
             self.descriptionItem = item.overview
@@ -316,20 +487,22 @@ extension DetailsItemViewController: DetailsItemView {
         }
     }
     
-    func updateViewTv(item: DetailModelCell) {
+    func showTVDetail(item: DetailModelCell) {
         DispatchQueue.main.async {
-            self.firstDayAir.isHidden = false
-            self.numberSeasons.isHidden = false
+            self.movieAndTvConstraints()
+            
+            [
+                self.aImageCover, self.titleLabel, self.overview, self.votesCount, self.aCollectionViewGenres, self.aCollectionViewCompanies, self.firstDayAir, self.numberSeasons, self.genresLabel, self.companyLabel
+            ].forEach {
+                $0.isHidden = false
+            }
+            
             self.adultIcon.isHidden = item.adult ?? false
-            
-            
             self.aImageCover.kf.setImage(with: item.artwork)
-//                .sd_setImage(with: item.artwork)
             self.titleLabel.text = item.name
             self.overview.text = item.overview
             self.descriptionItem = item.overview
             self.genres = item.genres ?? []
-            
             self.firstDayAir.text = "On Air since: \(item.firstAirDate ?? "N/A" )"
             self.numberSeasons.text = "Number Seasons: \(item.numSeasons ?? 1)"
             self.companies = item.productionCompanies
@@ -340,7 +513,26 @@ extension DetailsItemViewController: DetailsItemView {
         }
     }
     
-    
+    func showPerson(person: PersonModelCell) {
+        
+        DispatchQueue.main.async {
+            self.personConstraints()
+            
+            [self.personImage, self.titleLabel, self.placeOfBirth, self.ocupation, self.gender, self.textView].forEach {
+                $0.isHidden = false
+            }
+            
+            
+            self.personImage.kf.setImage(with: person.artWork)
+            self.titleLabel.text = person.name
+            self.placeOfBirth.text = "Placer of Birth: \(person.placeOfBirth)"
+            self.ocupation.text = "Ocupation: \(person.ocupation)"
+            self.gender.text = "Gender: \(person.gender)"
+            self.descriptionItem = person.biography
+            self.textView.text = person.biography
+            
+        }
+    }
 }
 
 extension DetailsItemViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -359,7 +551,31 @@ extension DetailsItemViewController: UICollectionViewDelegate, UICollectionViewD
         default:
             return 0
         }
-        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        switch collectionView {
+        case aCollectionViewCompanies:
+            
+            guard let header = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: HeaderReusableCellView.identifier,
+                for: indexPath) as? HeaderReusableCellView else {
+                return UICollectionReusableView()
+            }
+            header.configure(with: "Companies")
+            return header
+            
+        default:
+            guard let header = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: HeaderReusableCellView.identifier,
+                for: indexPath) as? HeaderReusableCellView else {
+                return UICollectionReusableView()
+            }
+            header.configure(with: "Genres")
+            return header
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -414,4 +630,13 @@ extension DetailsItemViewController: UICollectionViewDelegate, UICollectionViewD
         }
     }
     
+}
+
+// MARK: - UITextViewDelegate
+
+extension DetailsItemViewController: UITextViewDelegate {
+    
+    func textViewDidChange(_ textView: UITextView) {
+        
+    }
 }

@@ -26,7 +26,6 @@ final class FirestoreDatabaseManager {
         
         guard let user = auth.user?.uid else {
             completion(false)
-            //            print("false -----")
             return
         }
         
@@ -34,7 +33,9 @@ final class FirestoreDatabaseManager {
         case .cart:
             
             switch typeItem {
+                
             case .movie:
+                
                 self.ref.child("itemsOnBag").child(user).child("items").child("movies").childByAutoId().setValue(id) { error, success in
                     guard error == nil else {
                         completion(false)
@@ -43,6 +44,7 @@ final class FirestoreDatabaseManager {
                     completion(true)
                 }
             case .tv:
+                
                 self.ref.child("itemsOnBag").child(user).child("items").child("tv").childByAutoId().setValue(id) { error, success in
                     guard error == nil else {
                         completion(false)
@@ -50,11 +52,16 @@ final class FirestoreDatabaseManager {
                     }
                     completion(true)
                 }
+                
+            case .person:
+                break
             }
             
             
         case .favorite:
+            
             switch typeItem {
+                
             case .movie:
                 self.ref.child("itemsOnBag").child(user).child("items").child("favorite").child("movies").childByAutoId().setValue(id) { error, success in
                     guard error == nil else {
@@ -63,6 +70,7 @@ final class FirestoreDatabaseManager {
                     }
                     completion(true)
                 }
+                
             case .tv:
                 self.ref.child("itemsOnBag").child(user).child("items").child("favorite").child("tv").childByAutoId().setValue(id) { error, success in
                     guard error == nil else {
@@ -71,6 +79,9 @@ final class FirestoreDatabaseManager {
                     }
                     completion(true)
                 }
+                
+            case .person:
+                break
             }
         }
     }
@@ -81,6 +92,7 @@ final class FirestoreDatabaseManager {
         if let id = auth.user?.uid {
             
             switch section {
+                
             case .cart:
                 
                 do {
@@ -104,7 +116,6 @@ final class FirestoreDatabaseManager {
                 }
                 
             case .favorite:
-                
                 
                 do {
                     
@@ -157,6 +168,7 @@ final class FirestoreDatabaseManager {
                         completion(true)
                     }
                 }
+                
             case .tv:
                 let item = ref.child("itemsOnBag/\(id)/items/tv/\(idDB)")
                 item.removeValue { error, reference in
@@ -166,7 +178,10 @@ final class FirestoreDatabaseManager {
                         completion(true)
                     }
                 }
+            case .person:
+                break
             }
+            
         case .favorite:
             
             switch type {
@@ -180,8 +195,6 @@ final class FirestoreDatabaseManager {
                     }
                 }
                 
-                
-                
             case .tv :
                 let item = ref.child("itemsOnBag/\(id)/items/favorite/tv/\(idDB)")
                 item.removeValue { error, reference in
@@ -191,6 +204,8 @@ final class FirestoreDatabaseManager {
                         completion(true)
                     }
                 }
+            case .person:
+                break
             }
         }
     }
