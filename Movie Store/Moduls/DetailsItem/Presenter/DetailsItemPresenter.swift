@@ -70,7 +70,6 @@ class DetailsItemPresenter: DetailsItemPresentable {
                     let model = MapperManager.shared.formatItem(value: person)
                     self.view?.hideSpiner()
                     view?.showPerson(person: model)
-//                    print(person)
                 } catch  {
                     print("error")
                     view?.hideSpiner()
