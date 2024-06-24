@@ -34,7 +34,7 @@ class HeaderReusableCellView: UICollectionReusableView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        titleLabel.frame = CGRect(x: 15, y: 0, width: frame.width-30, height: frame.height)
+        titleLabel.frame = CGRect(x: 10, y: 0, width: frame.width-30, height: frame.height)
     }
     
     // MARK: - Methods
