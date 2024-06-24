@@ -71,7 +71,6 @@ class DetailsItemPresenter: DetailsItemPresentable {
                     self.view?.hideSpiner()
                     view?.showPerson(person: model)
                 } catch  {
-                    print("error")
                     view?.hideSpiner()
                     view?.showError(message: "We have troubles to show the info")
                 }
