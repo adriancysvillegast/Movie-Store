@@ -15,6 +15,7 @@ protocol BrowseView: AnyObject {
     func showError(message: String)
     func reloadTable()
     func goBackToLogIn()
+    func showAlert(title: String, message: String)
     
 }
 
@@ -159,7 +160,7 @@ class BrowseViewController: UIViewController {
                     heightDimension: .fractionalHeight(1)
                 )
             )
-            item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 2, bottom: 5, trailing: 2)
+            item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.4), heightDimension: .absolute(240)), subitems: [item])
             
             let section = NSCollectionLayoutSection(group: group)
@@ -181,7 +182,7 @@ class BrowseViewController: UIViewController {
                 repeatingSubitem: item, count: 2)
             
             let group = NSCollectionLayoutGroup.horizontal(
-                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(520)),
+                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.95), heightDimension: .absolute(500)),
                 subitems: [groupV]
             )
             
@@ -197,7 +198,7 @@ class BrowseViewController: UIViewController {
                     heightDimension: .fractionalHeight(1)
                 )
             )
-            item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 2, bottom: 5, trailing: 2)
+            item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
             let groupH = NSCollectionLayoutGroup.horizontal(
                 layoutSize: NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(0.7),
@@ -216,7 +217,7 @@ class BrowseViewController: UIViewController {
                     heightDimension: .fractionalHeight(1)
                 )
             )
-            item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 2, bottom: 5, trailing: 2)
+            item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.4), heightDimension: .absolute(240)), subitems: [item])
             
             let section = NSCollectionLayoutSection(group: group)
@@ -238,7 +239,7 @@ class BrowseViewController: UIViewController {
                 repeatingSubitem: item, count: 2)
             
             let group = NSCollectionLayoutGroup.horizontal(
-                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(520)),
+                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.95), heightDimension: .absolute(500)),
                 subitems: [groupV]
             )
             
@@ -254,7 +255,7 @@ class BrowseViewController: UIViewController {
                     heightDimension: .fractionalHeight(1)
                 )
             )
-            item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 2, bottom: 5, trailing: 2)
+            item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
             let groupH = NSCollectionLayoutGroup.horizontal(
                 layoutSize: NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(0.7),
@@ -272,7 +273,7 @@ class BrowseViewController: UIViewController {
                     heightDimension: .fractionalHeight(1)
                 )
             )
-            item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 2, bottom: 5, trailing: 2)
+            item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.4), heightDimension: .absolute(240)), subitems: [item])
             
             let section = NSCollectionLayoutSection(group: group)
@@ -294,7 +295,7 @@ class BrowseViewController: UIViewController {
                 repeatingSubitem: item, count: 2)
             
             let group = NSCollectionLayoutGroup.horizontal(
-                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(520)),
+                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.95), heightDimension: .absolute(520)),
                 subitems: [groupV]
             )
             
@@ -310,6 +311,16 @@ class BrowseViewController: UIViewController {
 
 // MARK: - BrowseView
 extension BrowseViewController: BrowseView {
+    func showAlert(title: String, message: String) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: title,
+                                          message: message,
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            self.present(alert, animated: true)
+        }
+    }
+    
     func goBackToLogIn() {
         DispatchQueue.main.async {
             self.navigationController?.dismiss(animated: true)
