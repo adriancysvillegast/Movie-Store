@@ -14,7 +14,7 @@ class CoverItemCell: UICollectionViewCell {
     
     private lazy var aImageCover: UIImageView = {
         let aImage = UIImageView()
-        aImage.contentMode = .scaleAspectFit
+        aImage.contentMode = .scaleToFill//.scaleAspectFit
 //        aImage.layer.cornerRadius = 12
         return aImage
     }()
@@ -27,7 +27,7 @@ class CoverItemCell: UICollectionViewCell {
         [aImageCover].forEach {
             contentView.addSubview($0)
         }
-        contentView.layer.cornerRadius = 12
+        contentView.layer.cornerRadius = 15
         contentView.layer.borderWidth = 2.0//1.0
         contentView.layer.borderColor = UIColor.clear.cgColor
         contentView.layer.masksToBounds = true
@@ -54,6 +54,7 @@ class CoverItemCell: UICollectionViewCell {
     }
     
     func configuration(model: Companies) {
+        aImageCover.contentMode = .scaleAspectFit
         aImageCover.kf.setImage(with: model.logoPath)
     }
 }
