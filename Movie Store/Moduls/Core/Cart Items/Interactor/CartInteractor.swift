@@ -47,9 +47,6 @@ class CartInteractor: CartInteractable {
     
     // MARK: - Methods
     
-    
-    // MARK: - Get Details
-    
     func getMovieDetails(id: String) async throws -> DetailMovieResponseEntity {
         
         do {

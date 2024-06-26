@@ -7,8 +7,6 @@
 
 import UIKit
 
-
-// MARK: - CartView
 protocol CartView: AnyObject {
     func showError(message: String)
     func hideError()
@@ -21,9 +19,6 @@ protocol CartView: AnyObject {
     func showSuggestion(items: [ItemModelCell])
     func hideSuggestion()
 }
-
-
-// MARK: - CartViewController
 
 class CartViewController: UIViewController {
 
@@ -110,7 +105,6 @@ class CartViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     
     // MARK: - LifeCycle
     
