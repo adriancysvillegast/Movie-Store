@@ -322,9 +322,7 @@ extension BrowseViewController: BrowseView {
     }
     
     func goBackToLogIn() {
-        DispatchQueue.main.async {
-            self.navigationController?.dismiss(animated: true)
-        }
+        self.navigationController?.dismiss(animated: true)
     }
     
     func reloadTable() {

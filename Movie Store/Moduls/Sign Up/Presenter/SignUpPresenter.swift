@@ -11,9 +11,8 @@ import Foundation
 protocol SignUpPresentable: AnyObject {
     var view: SignUpView? { get }
     
-    func signUpWasTapped(email: String?, name: String?, password: String?, passwordConf: String?)
-    func validateValues(email: String?, name: String?, password: String?, passwordConf: String?) -> Bool
-    func signUpUser(email: String, name: String, password: String, passwordConf: String)
+    func isEditingValues(email: String?, password: String?, passwordConf: String?)
+    func signUpUser(email: String, password: String)
 }
 
 class SignUpPresenter: SignUpPresentable {
@@ -35,38 +34,26 @@ class SignUpPresenter: SignUpPresentable {
     
     // MARK: - Methods
     
-    func signUpWasTapped(email: String?, name: String?, password: String?, passwordConf: String?) {
-//        if validateValues(email: email, name: name, password: password, passwordConf: passwordConf) {
-//            self.signUpUser(email: email!, name: name!, password: password!, passwordConf: passwordConf!)
-//        } else {
-////            show error on view
-//            view?.showAlertWithErrorInValidation()
-//        }
-        self.router.showBrowser()
+    func isEditingValues(email: String?, password: String?, passwordConf: String?) {
+        if interactor.validate(email: email, password: password, confiPassword: passwordConf) {
+            self.view?.activateButton()
+        }else {
+            self.view?.desactivateButton()
+        }
     }
     
-    func validateValues(email: String?, name: String?, password: String?, passwordConf: String?) -> Bool {
-//        guard let email = email, let name = name, let password = password, let passwordConf = passwordConf, password == passwordConf else {
-//            return false
-//        }
 
-            if ValidateManager.shared.validateEmail(emailUser: email),
-               ValidateManager.shared.validateName(nameUser: name),
-               ValidateManager.shared.validatePassword(passwordUser: password) {
-                return true
-            } else {
-                return false
-            }
-    }
     
-    func signUpUser(email: String, name: String, password: String, passwordConf: String) {
-        authManager.createNewUser(email: email, password: password, userName: name) { success in
-            
-//            if success {
-//                self.router.showBrowser()
-//            }else {
-//                self.view?.showAlertWithErrorSignUp()
-//            }
+    func signUpUser(email: String, password: String) {
+        
+        interactor.signUp(email: email, password: password) { success in
+            switch success {
+                
+            case true:
+                self.view?.showTabBar()
+            case false:
+                self.view?.showAlertWithErrorSignUp(title: "Error", message: "Try to add a correct email, name and password\nEmail must be in tihis format example@gmail.com\nName must have more than 3 characters\nPassword must have at leat 1 special character, 1 uppercase, 1 lowercase and 1 number ")
+            }
         }
     }
     

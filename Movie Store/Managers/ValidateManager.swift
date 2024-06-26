@@ -58,7 +58,7 @@ final class ValidateManager {
         }
     }
     
-    func validateNumber(numberUser: String) -> Bool {
+    private func validateNumber(numberUser: String) -> Bool {
         if contentDigit(value: numberUser) && numberUser.count == 10 {
             return true
         }else {
@@ -66,25 +66,25 @@ final class ValidateManager {
         }
     }
     
-    func contentDigit(value: String) -> Bool{
+    private func contentDigit(value: String) -> Bool{
         let regularExpresion = ".*[0-9]+.*"
         let predicate = NSPredicate(format: "SELF MATCHES %@",regularExpresion)
         return predicate.evaluate(with: value)
     }
     
-    func contentLowerCase(value: String) -> Bool{
+    private func contentLowerCase(value: String) -> Bool{
         let regularExpresion = ".*[a-z]+.*"
         let predicate = NSPredicate(format: "SELF MATCHES %@",regularExpresion)
         return predicate.evaluate(with: value)
     }
     
-    func contentUpperCase(value: String) -> Bool{
+    private func contentUpperCase(value: String) -> Bool{
         let regularExpresion = ".*[A-Z]+.*"
         let predicate = NSPredicate(format: "SELF MATCHES %@",regularExpresion)
         return predicate.evaluate(with: value)
     }
     
-    func contentSpecialCharacters(value: String) -> Bool{
+    private func contentSpecialCharacters(value: String) -> Bool{
         let regularExpresion = ".*[^A-Za-z0-9].*"
         let predicate = NSPredicate(format: "SELF MATCHES %@",regularExpresion)
         return predicate.evaluate(with: value)
