@@ -37,13 +37,11 @@ class SearchRouter: SearchRouting {
         searchView = view
         interactor.presenter = presenter
         presenter.view = searchView
-        
         return view
     }
     
     func showItemsGenre( id: Int, type: ItemType, name: String) {
         guard let vc = searchView else { return }
-        
         listByGenreRouter?.showItemsByGenre(from: vc, id: id, type: type, name: name)
     }
     

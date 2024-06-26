@@ -10,7 +10,6 @@ import UIKit
 
 protocol SearchView: AnyObject {
     var presenter: SearchPresentable { get }
-    
     func showAlert(title: String, message: String)
     func showErrorLabel(text: String)
     func hideErrorLabel()
@@ -26,9 +25,8 @@ protocol SearchView: AnyObject {
 
 class SearchViewController: UIViewController {
     
-    
-    
     // MARK: - Properties
+    
     var presenter: SearchPresentable
     var result = [ItemsResult]()
     
@@ -61,7 +59,6 @@ class SearchViewController: UIViewController {
                 sectionProvider: { sections, _ in
                 return self.createSectionLayout(with: sections)
             }))
-        //        aCollection.backgroundColor = .systemBackground
         aCollection.delegate = self
         aCollection.dataSource = self
         aCollection.isHidden = false
@@ -109,7 +106,6 @@ class SearchViewController: UIViewController {
         super.viewDidLayoutSubviews()
         
         aCollectionView.frame = view.bounds
-        
     }
     
     override func viewDidLoad() {
@@ -396,11 +392,9 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         case 0 :
             let itemMovie = movieItems[indexPath.row]
             presenter.genreSelected(id: itemMovie.id, type: .movie, name: itemMovie.name)
-//            print("movie", itemMovie)
         case 1:
             
             let itemTV = tvItems[indexPath.row]
-//            print("tv", itemTV)
             presenter.genreSelected(id: itemTV.id, type: .tv, name: itemTV.name)
         default:
             break
