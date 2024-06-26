@@ -291,7 +291,7 @@ class BrowserPresenter: BrowserPresentable {
         if interactor.logOutAccount() {
             view?.goBackToLogIn() //este no esta funcionando 
         }else {
-            view?.showError(message: "Error trying to log out")
+            view?.showAlert(title: "Error", message: "Error when go out")
         }
     }
     

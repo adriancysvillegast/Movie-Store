@@ -22,7 +22,6 @@ final class AuthManager {
 
     func createNewUser(email: String,
                        password: String,
-                       userName: String,
                        success: @escaping(Bool) -> Void) {
         Auth.auth().createUser(
             withEmail: email,
@@ -35,7 +34,7 @@ final class AuthManager {
             }
 
 
-            self.saveUserName(user: response.user, userName: userName)
+//            self.saveUserName(user: response.user, userName: userName)
             success(true)
             print(response.user)
 
