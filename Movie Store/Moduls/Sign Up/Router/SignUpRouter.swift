@@ -9,19 +9,36 @@ import Foundation
 import UIKit
 
 protocol SignUpRouting: AnyObject {
+    var viewSignUp: SignUpViewController? { get }
+    var browser: BrowserRouting? { get }
+    
     func showSignUp(fromVC: UIViewController)
+    func showBrowser()
 }
 
 class SignUpRouter: SignUpRouting {
+    
+    var viewSignUp: SignUpViewController?
+    var browser: BrowserRouting?
+    
     func showSignUp(fromVC: UIViewController) {
-        let interactor = SignUpInteractor()
-        let presenter = SignUpPresenter(interactor: interactor)
-        let view = SignUpViewController(presenter: presenter)
+        self.browser = BrowserRouter()
         
+        let interactor = SignUpInteractor()
+        let presenter = SignUpPresenter(interactor: interactor, router: self)
+        let view = SignUpViewController(presenter: presenter)
+        viewSignUp = view
         presenter.view = view
         interactor.presenter = presenter
         fromVC.navigationController?.pushViewController(view, animated: true)
     }
     
+    func showBrowser() {
+        guard let controller = viewSignUp else {
+            return
+        }
+        browser?.showBrowser(fromVC: controller)
+        
+    }
     
 }
