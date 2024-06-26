@@ -103,7 +103,4 @@ final class APIManager {
             throw APIError.errorApi
         }
     }
-    
-    
-    // MARK: - Details
 }

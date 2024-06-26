@@ -8,7 +8,6 @@
 import UIKit
 protocol BrowseView: AnyObject {
     func updateView()
-    
     func showSpinner()
     func hiddenSpinner()
     func hiddenError()
@@ -31,7 +30,6 @@ class BrowseViewController: UIViewController {
                                            collectionViewLayout: UICollectionViewCompositionalLayout(sectionProvider: { sections, _ in
             return self.createSectionLayout(with: sections)
         }))
-        //        aCollection.backgroundColor = .systemBackground
         aCollection.delegate = self
         aCollection.dataSource = self
         aCollection.isHidden = true
@@ -66,7 +64,6 @@ class BrowseViewController: UIViewController {
         button.setTitle("Try Again".uppercased(), for: .normal)
         button.backgroundColor = .systemGray4
         button.layer.cornerRadius = 12
-        //        button.isEnabled = false
         button.isHidden = true
         button.addTarget(self, action: #selector(tryAgain), for: .touchUpInside)
         return button
@@ -127,7 +124,6 @@ class BrowseViewController: UIViewController {
     @objc func tryAgain() {
         presenter.getMovies()
     }
-    
     
     @objc func logOut() {
         
@@ -578,7 +574,7 @@ extension BrowseViewController: UICollectionViewDelegate, UICollectionViewDataSo
         }
     }
 
-//
+
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
 
         let section = indexPath.section
@@ -589,7 +585,6 @@ extension BrowseViewController: UICollectionViewDelegate, UICollectionViewDataSo
                 guard !loading else { return }
                 self.loading = true
                 presenter.validatePagesToDownloadData(option: .popularMovie)
-//                aCollectionView.reloadData()
                 self.loading = false
             }
         case 1:
@@ -598,7 +593,6 @@ extension BrowseViewController: UICollectionViewDelegate, UICollectionViewDataSo
                 guard !loading else { return }
                 self.loading = true
                 presenter.validatePagesToDownloadData(option: .topRateTV)
-//                aCollectionView.reloadData()
                 self.loading = false
             }
         case 2:
@@ -606,7 +600,6 @@ extension BrowseViewController: UICollectionViewDelegate, UICollectionViewDataSo
                 guard !loading else { return }
                 self.loading = true
                 presenter.validatePagesToDownloadData(option: .topRateMovie)
-//                aCollectionView.reloadData()
                 self.loading = false
             }
         case 3:
@@ -614,7 +607,6 @@ extension BrowseViewController: UICollectionViewDelegate, UICollectionViewDataSo
                 guard !loading else { return }
                 self.loading = true
                 presenter.validatePagesToDownloadData(option: .popularTV)
-//                aCollectionView.reloadData()
                 self.loading = false
             }
         case 4:
@@ -622,7 +614,6 @@ extension BrowseViewController: UICollectionViewDelegate, UICollectionViewDataSo
                 guard !loading else { return }
                 self.loading = true
                 presenter.validatePagesToDownloadData(option: .upComingMovie)
-//                aCollectionView.reloadData()
                 self.loading = false
             }
         case 5:
@@ -630,7 +621,6 @@ extension BrowseViewController: UICollectionViewDelegate, UICollectionViewDataSo
                 guard !loading else { return }
                 self.loading = true
                 presenter.validatePagesToDownloadData(option: .onAirTV)
-//                aCollectionView.reloadData()
                 self.loading = false
             }
         case 6:
@@ -638,7 +628,6 @@ extension BrowseViewController: UICollectionViewDelegate, UICollectionViewDataSo
                 guard !loading else { return }
                 self.loading = true
                 presenter.validatePagesToDownloadData(option: .airingTV)
-//                aCollectionView.reloadData()
                 self.loading = false
             }
         default:
@@ -646,7 +635,6 @@ extension BrowseViewController: UICollectionViewDelegate, UICollectionViewDataSo
                 guard !loading else { return }
                 self.loading = true
                 presenter.validatePagesToDownloadData(option: .nowPlayingMovie)
-//                aCollectionView.reloadData()
                 self.loading = false
             }
         }
@@ -656,7 +644,7 @@ extension BrowseViewController: UICollectionViewDelegate, UICollectionViewDataSo
 
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        print("didDeselectItemAt")
+        collectionView.deselectItem(at: indexPath, animated: true)
     }
     
 }
