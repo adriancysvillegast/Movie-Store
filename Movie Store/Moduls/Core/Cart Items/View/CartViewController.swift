@@ -27,7 +27,6 @@ protocol CartView: AnyObject {
 
 class CartViewController: UIViewController {
 
-    
     // MARK: - Properties
     
     private let presenter: CartPresentable
@@ -50,7 +49,6 @@ class CartViewController: UIViewController {
                                            collectionViewLayout: UICollectionViewCompositionalLayout(sectionProvider: { sections, _ in
             return self.createSectionLayout(with: sections)
         }))
-        //        aCollection.backgroundColor = .systemBackground
         aCollection.delegate = self
         aCollection.dataSource = self
         aCollection.isHidden = true
@@ -97,7 +95,6 @@ class CartViewController: UIViewController {
         button.setTitle("Try Again".uppercased(), for: .normal)
         button.backgroundColor = .systemGray4
         button.layer.cornerRadius = 12
-        //        button.isEnabled = false
         button.isHidden = true
         button.addTarget(self, action: #selector(tryAgain), for: .touchUpInside)
         return button
@@ -119,15 +116,12 @@ class CartViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        presenter.reloadIfItNeeded()
         presenter.loadCartPresenter()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpView()
-//        presenter.loadCartPresenter()
-//        presenter.getRecommendation()
     }
     
     override func viewDidLayoutSubviews() {
@@ -135,7 +129,6 @@ class CartViewController: UIViewController {
         messageError.center = CGPoint(x: view.frame.width/2, y: view.frame.height/2 - 20 )
         tryAgainButton.center = CGPoint(x: view.frame.width/2, y: view.frame.height/2 + 50)
         alertIcon.center = CGPoint(x: view.frame.width/2, y: view.frame.height/2 - 90)
-        
         aCollectionView.frame = view.bounds
     }
     // MARK: - SetUpView
@@ -255,7 +248,6 @@ extension CartViewController: CartView {
     
     func showSuggestion(items: [ItemModelCell]) {
         DispatchQueue.main.async {
-//            self.aTableView.isHidden = true
             self.aCollectionView.isHidden = false
             self.itemsSugguest = items
             self.aCollectionView.reloadData()
@@ -278,7 +270,6 @@ extension CartViewController: CartView {
             self.tryAgainButton.isHidden = false
             self.messageError.text = message
         }
-        
     }
     
     func showAlert(title: String, message: String) {
@@ -331,12 +322,10 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete{
             presenter.deleteItem(index: indexPath.row)
@@ -369,13 +358,13 @@ extension CartViewController: UICollectionViewDelegate, UICollectionViewDataSour
             return UICollectionViewCell()
         }
         cell.configuration(model: itemsSugguest[indexPath.row])
-        
         return cell
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
+    
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard let header = collectionView.dequeueReusableSupplementaryView(
             ofKind: kind,

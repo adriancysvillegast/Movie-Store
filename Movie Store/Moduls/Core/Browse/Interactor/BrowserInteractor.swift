@@ -37,9 +37,7 @@ class BrowserInteractor: BrowserInteractable {
         self.service = service
     }
     
-    
     // MARK: - Methods
-    
     
     func getTopRateMovies(page: Int?) async throws -> TopRateMovieResponseEntity {
         
@@ -48,7 +46,6 @@ class BrowserInteractor: BrowserInteractable {
                 expenting: TopRateMovieResponseEntity.self,
                 endPoint: "/movie/top_rated",
                 nextPage: page)
-            
             return items
         } catch  {
             throw APIError.errorApi
@@ -61,7 +58,6 @@ class BrowserInteractor: BrowserInteractable {
             let items = try await service.get(
                 expenting: PopularMoviesResponseEntity.self,
                 endPoint: "/movie/popular", nextPage: page)
-            
             return items
         } catch {
             throw APIError.errorApi

@@ -289,7 +289,7 @@ class BrowserPresenter: BrowserPresentable {
     
     func logOutAccount() {
         if interactor.logOutAccount() {
-            view?.goBackToLogIn() //este no esta funcionando 
+            view?.goBackToLogIn() 
         }else {
             view?.showAlert(title: "Error", message: "Error when go out")
         }

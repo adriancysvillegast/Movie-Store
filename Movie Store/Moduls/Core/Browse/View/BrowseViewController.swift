@@ -6,6 +6,7 @@
 //
 
 import UIKit
+
 protocol BrowseView: AnyObject {
     func updateView()
     func showSpinner()
@@ -17,6 +18,7 @@ protocol BrowseView: AnyObject {
     func showAlert(title: String, message: String)
     
 }
+
 
 class BrowseViewController: UIViewController {
     
@@ -317,7 +319,7 @@ extension BrowseViewController: BrowseView {
         }
     }
     
-    func goBackToLogIn() {
+    func goBackToLogIn(){
         self.navigationController?.dismiss(animated: true)
     }
     

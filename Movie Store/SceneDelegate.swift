@@ -19,8 +19,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         
         if AuthManager().isSectionActive() {
-            let vc = TabBarController()
-            window?.rootViewController = vc
+            let tab = TabBarController()
+            window?.rootViewController = tab
             window?.makeKeyAndVisible()
         }else {
             let vc = logInRouter.showLogIn()
