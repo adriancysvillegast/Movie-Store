@@ -43,7 +43,7 @@ class LogInViewController: UIViewController {
     private lazy var aImageView: UIImageView = {
        let aImage = UIImageView()
         aImage.image = UIImage(named: "backgroundLogIn")
-        aImage.contentMode = .scaleAspectFill
+        aImage.contentMode = .scaleToFill
         
         return aImage
     }()
