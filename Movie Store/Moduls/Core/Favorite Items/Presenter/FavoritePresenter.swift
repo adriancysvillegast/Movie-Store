@@ -82,7 +82,6 @@ class FavoritePresenter : FavoritePresentable {
         self.view?.hideError()
         self.view?.hideSuggestions()
         self.view?.hideFavoriteItems()
-        
         self.view?.showSpinner()
     
         Task {
@@ -131,8 +130,6 @@ class FavoritePresenter : FavoritePresentable {
                     self.view?.showAlert(title: "Error", message: "we got an error trying to delete the item")
                 }
             }
-        
-        
     }
     
     // MARK: - Recommendations
@@ -168,11 +165,9 @@ class FavoritePresenter : FavoritePresentable {
     
     func itemSelected(with item: DetailModelCell) {
         router.showDetails(with: item)
-    
     }
     
     func suggestionSelected(with item: ItemModelCell) {
         router.showDetails(with: item)
-    
     }
 }

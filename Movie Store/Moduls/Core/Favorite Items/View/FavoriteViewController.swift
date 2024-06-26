@@ -12,11 +12,8 @@ protocol FavoriteView: AnyObject {
     func hideSpinner()
     func showError(message: String)
     func hideError()
-    
     func hideSuggestions()
     func showSuggestion(items: [ItemModelCell])
-    
-    
     func showFavoriteItems(items: [DetailModelCell])
     func hideFavoriteItems()
     func showAlert(title: String, message: String)
@@ -27,6 +24,7 @@ protocol FavoriteView: AnyObject {
 class FavoriteViewController: UIViewController {
 
     // MARK: - Properties
+    
     var presenter: FavoritePresentable
     var items: [DetailModelCell] = []
     var itemsSugguest: [ItemModelCell] = []
@@ -46,7 +44,6 @@ class FavoriteViewController: UIViewController {
                                            collectionViewLayout: UICollectionViewCompositionalLayout(sectionProvider: { sections, _ in
             return self.createSectionLayout(with: sections)
         }))
-        //        aCollection.backgroundColor = .systemBackground
         aCollection.delegate = self
         aCollection.dataSource = self
         aCollection.isHidden = true
@@ -107,13 +104,10 @@ class FavoriteViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - LifeCicle
+    // MARK: - LifeCycle
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-//        presenter.reloadIfItNeeded()
-        
         presenter.loadFavoritePresenter()
     }
     
@@ -155,9 +149,6 @@ class FavoriteViewController: UIViewController {
         ])
     }
     
-    
-    
-
     // MARK: - Targets
     
     @objc func tryAgain() {
@@ -229,9 +220,7 @@ class FavoriteViewController: UIViewController {
 
 // MARK: - FavoriteView
 extension FavoriteViewController: FavoriteView {
-    
-    
-    
+
     func hideSuggestions() {
         DispatchQueue.main.async {
             self.aCollectionView.isHidden = true
@@ -300,7 +289,6 @@ extension FavoriteViewController: FavoriteView {
             alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
             self.present(alert, animated: true)
         }
-        
     }
     
     func reloadCell(index: Int) {
@@ -321,9 +309,7 @@ extension FavoriteViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ItemsCartCell.identifier, for: indexPath) as? ItemsCartCell else {
             return UITableViewCell()
         }
-        
         cell.configure(with: items[indexPath.row])
-        
         return cell
     }
     

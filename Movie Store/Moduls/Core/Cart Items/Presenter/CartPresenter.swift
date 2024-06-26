@@ -41,7 +41,6 @@ class CartPresenter: CartPresentable {
     var typeItem: ItemType?
     var titleGenre : String = ""
     
-    
     // MARK: - Init
     
     init(interactor: CartInteractable, router: CartRouting, idItem: String?, type: ItemType?) {
@@ -83,8 +82,6 @@ class CartPresenter: CartPresentable {
                 }
             }
     }
-    
-    
     
     func readItemsOnDB()  {
         self.view?.showSpinner()

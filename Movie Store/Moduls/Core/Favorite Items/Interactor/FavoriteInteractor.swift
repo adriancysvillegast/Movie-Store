@@ -38,6 +38,7 @@ class FavoriteInteractor: FavoriteInteractable {
     init(service: APIManager = APIManager() ) {
         self.service = service
     }
+    
     // MARK: - CRUD
     
     func createItem(
@@ -53,7 +54,6 @@ class FavoriteInteractor: FavoriteInteractable {
         ) { success  in
             completion(success)
         }
-        
     }
     
     func readItems() async throws -> [ItemsDB] {
@@ -115,14 +115,12 @@ class FavoriteInteractor: FavoriteInteractable {
             let items = try await service.get(
                 expenting: GenresResponse.self,
                 endPoint: "genre/movie/list" )
-            
             return items
         } catch  {
             
             throw APIError.errorApi
         }
     }
-    
     
     func getRecomendationMovie(id: Int, page: Int?) async throws -> ListByGenrerResponseEntity {
         
