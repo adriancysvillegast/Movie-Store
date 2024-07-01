@@ -25,7 +25,6 @@ final class Test_AuthManager: XCTestCase {
     func test_createAccountDidError() {
         let email = ""
         let password = ""
-        let username = ""
         
         sut.createNewUser(email: email, password: password) { result in
             XCTAssertFalse(result)
@@ -36,7 +35,6 @@ final class Test_AuthManager: XCTestCase {
 //      change all properties to get a correct result
         let email = "Testing@gmail.com"
         let password = "testing123*"
-        let username = "testing"
         
         sut.createNewUser(email: email, password: password) { result in
             XCTAssertTrue(result)
@@ -58,7 +56,6 @@ final class Test_AuthManager: XCTestCase {
 //        Copy and used the same value of the methods "test_createAccountDidSuccess"
         let email = "Testing@gmail.com"
         let password = "testing123*"
-        let username = "testing"
         
         sut.logIn(email: email, password: password) { result in
             XCTAssertTrue(result)
