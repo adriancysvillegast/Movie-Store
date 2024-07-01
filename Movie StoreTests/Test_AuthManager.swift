@@ -27,7 +27,7 @@ final class Test_AuthManager: XCTestCase {
         let password = ""
         let username = ""
         
-        sut.createNewUser(email: email, password: password, userName: username) { result in
+        sut.createNewUser(email: email, password: password) { result in
             XCTAssertFalse(result)
         }
     }
@@ -38,7 +38,7 @@ final class Test_AuthManager: XCTestCase {
         let password = "testing123*"
         let username = "testing"
         
-        sut.createNewUser(email: email, password: password, userName: username) { result in
+        sut.createNewUser(email: email, password: password) { result in
             XCTAssertTrue(result)
         }
     }
@@ -47,7 +47,6 @@ final class Test_AuthManager: XCTestCase {
 //        used any values
         let email = "1234de@gmail.com"
         let password = "testing123*"
-        let username = "testing"
         
         sut.logIn(email: email, password: password) { result in
             XCTAssertTrue(result)
