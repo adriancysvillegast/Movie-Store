@@ -9,7 +9,7 @@ import Foundation
 
 struct NowPlayingEntity: Codable {
     let adult: Bool
-    let backdropPath: String
+    let backdropPath: String?
     let id: Int
     let genreIds: [Int]
     let originalLanguage: String

@@ -28,6 +28,7 @@ final class APIManager {
             decoder.keyDecodingStrategy = .convertFromSnakeCase
             return try decoder.decode(expenting, from: data)
         } catch  {
+//            print(url.absoluteString)
 //            print(error.localizedDescription)
             throw APIError.errorApi
         }
@@ -42,7 +43,7 @@ final class APIManager {
         guard let url = URL(string: Constants.baseURL + "/\(endPoint)?api_key=" + Constants.token + "&page=\(nextPage ?? 1)") else {
             throw APIError.errorUrl
         }
-//        print(url.absoluteString)
+        
         
         let (data, _) = try await URLSession.shared.data(from: url)
         
@@ -51,7 +52,8 @@ final class APIManager {
             decoder.keyDecodingStrategy = .convertFromSnakeCase
             return try decoder.decode(expenting, from: data)
         } catch  {
-            
+//            print(url.absoluteString)
+//            print(error.localizedDescription)
             throw APIError.errorApi
         }
     }
