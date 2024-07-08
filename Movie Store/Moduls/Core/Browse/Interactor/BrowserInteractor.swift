@@ -44,10 +44,11 @@ class BrowserInteractor: BrowserInteractable {
         do {
             let items = try await service.get(
                 expenting: TopRateMovieResponseEntity.self,
-                endPoint: "/movie/top_rated",
+                endPoint: "movie/top_rated",
                 nextPage: page)
             return items
         } catch  {
+//            print(error.localizedDescription)
             throw APIError.errorApi
         }
     }
@@ -57,9 +58,10 @@ class BrowserInteractor: BrowserInteractable {
         do {
             let items = try await service.get(
                 expenting: PopularMoviesResponseEntity.self,
-                endPoint: "/movie/popular", nextPage: page)
+                endPoint: "movie/popular", nextPage: page)
             return items
         } catch {
+//            print(error.localizedDescription)
             throw APIError.errorApi
         }
     }
@@ -69,10 +71,11 @@ class BrowserInteractor: BrowserInteractable {
         do {
             let items = try await service.get(
                 expenting: NowPlayingResponseEntity.self,
-                endPoint: "/movie/now_playing",
+                endPoint: "movie/now_playing",
                 nextPage: page)
             return items
         } catch  {
+//            print(error.localizedDescription)
             throw APIError.errorApi
         }
     }
@@ -82,10 +85,11 @@ class BrowserInteractor: BrowserInteractable {
         do {
             let items = try await service.get(
                 expenting: UpComingResponseEntity.self,
-                endPoint: "/movie/upcoming",
+                endPoint: "movie/upcoming",
                 nextPage: page)
             return items
         } catch  {
+//            print(error.localizedDescription)
             throw APIError.errorApi
         }
     }
@@ -95,10 +99,11 @@ class BrowserInteractor: BrowserInteractable {
         do {
             let items = try await service.get(
                 expenting: TopRateTVResponseEntity.self,
-                endPoint: "/tv/top_rated",
+                endPoint: "tv/top_rated",
                 nextPage: page)
             return items
         } catch  {
+//            print(error.localizedDescription)
             throw APIError.errorApi
         }
     }
@@ -108,10 +113,11 @@ class BrowserInteractor: BrowserInteractable {
         do {
             let items = try await service.get(
                 expenting: PopularTVResponseEntity.self,
-                endPoint: "/tv/popular",
+                endPoint: "tv/popular",
                 nextPage: page)
             return items
         } catch  {
+//            print(error.localizedDescription)
             throw APIError.errorApi
         }
     }
@@ -121,7 +127,7 @@ class BrowserInteractor: BrowserInteractable {
         do {
             let items = try await service.get(
                 expenting: OnAirTVResponseEntity.self,
-                endPoint: "/discover/tv",
+                endPoint: "discover/tv",
                 nextPage: page)
             return items
         } catch  {
@@ -133,7 +139,7 @@ class BrowserInteractor: BrowserInteractable {
         do {
             let items = try await service.get(
                 expenting: TVAiringTodayResponseEntity.self,
-                endPoint: "/tv/airing_today",
+                endPoint: "tv/airing_today",
                 nextPage: page)
             return items
         } catch  {

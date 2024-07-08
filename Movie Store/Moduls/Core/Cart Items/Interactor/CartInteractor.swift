@@ -52,7 +52,7 @@ class CartInteractor: CartInteractable {
         do {
             let item = try await service.get(
                 expenting: DetailMovieResponseEntity.self,
-                endPoint: "/movie/\(id)")
+                endPoint: "movie/\(id)")
             return item
         } catch  {
             throw APIError.errorApi
@@ -64,7 +64,7 @@ class CartInteractor: CartInteractable {
         do {
             let item = try await service.get(
                 expenting: DetailTVResponseEntity.self,
-                endPoint: "/tv/\(id)")
+                endPoint: "tv/\(id)")
             return item
         } catch  {
             throw APIError.errorApi

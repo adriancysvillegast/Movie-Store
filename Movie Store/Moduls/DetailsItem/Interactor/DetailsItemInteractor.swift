@@ -37,7 +37,7 @@ class DetailsItemInteractor: DetailsItemInteractable {
         do {
            let items = try await service.get(
                 expenting: DetailMovieResponseEntity.self,
-                endPoint: "/movie/\(id)")
+                endPoint: "movie/\(id)")
             
             return items
         } catch  {
@@ -48,7 +48,7 @@ class DetailsItemInteractor: DetailsItemInteractable {
     func getTVDetails(id: String) async throws -> DetailTVResponseEntity {
         
         do {
-           let items = try await service.get(expenting: DetailTVResponseEntity.self, endPoint: "/tv/\(id)")
+           let items = try await service.get(expenting: DetailTVResponseEntity.self, endPoint: "tv/\(id)")
             return items
         } catch  {
             throw APIError.errorApi
@@ -58,7 +58,7 @@ class DetailsItemInteractor: DetailsItemInteractable {
     func getPersonDetails(id: String) async throws -> PersonDetailResponse {
         
         do {
-           let items = try await service.get(expenting: PersonDetailResponse.self, endPoint: "/person/\(id)")
+           let items = try await service.get(expenting: PersonDetailResponse.self, endPoint: "person/\(id)")
             return items
         } catch  {
             throw APIError.errorApi

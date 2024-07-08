@@ -26,7 +26,7 @@ class DetailsItemViewController: UIViewController {
     let presenter: DetailsItemPresentable
     var hideItems: Bool = false
     
-    lazy var contentViewSize = CGSize(width: self.view.frame.width, height: self.view.frame.height)
+    lazy var contentViewSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 70 )
     
     private lazy var aScrollView: UIScrollView = {
         let aScrollView = UIScrollView(frame: .zero)
@@ -48,6 +48,7 @@ class DetailsItemViewController: UIViewController {
     private lazy var aImageCover: UIImageView = {
         let aImage = UIImageView()
         aImage.contentMode = .scaleAspectFill
+//        aImage.backgroundColor = .red
         aImage.layer.cornerRadius = 12
         aImage.layer.borderWidth = 2.0//1.0
         aImage.layer.borderColor = UIColor.clear.cgColor
@@ -265,7 +266,7 @@ class DetailsItemViewController: UIViewController {
             aImageCover.topAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.topAnchor, constant: 10),
             aImageCover.centerXAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.centerXAnchor),
             aImageCover.widthAnchor.constraint(equalToConstant: containerView.frame.width/1.8),
-            aImageCover.heightAnchor.constraint(equalToConstant: containerView.frame.height/3.5),
+            aImageCover.heightAnchor.constraint(equalToConstant: containerView.frame.height/2.6 - 25),
             
             
 //             TITLE
